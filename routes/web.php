@@ -19,6 +19,6 @@ Route::get('/otpSender', function () {
     return view('otpSender');
 })->name('otpSender'); 
 
-Route::get('/send-otp', function () {
-    return "hello";
-}); 
+Route::get('/verification', function () {
+    return view('verification');
+})->name('verification');
