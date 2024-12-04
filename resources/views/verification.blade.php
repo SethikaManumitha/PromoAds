@@ -10,7 +10,15 @@
 
 <div class="container mt-5">
     <h2>Enter OTP</h2>
-    <form id="otp-form" action="{{ url('/verify-otp') }}" method="POST">
+    
+    <!-- Show error message if OTP is invalid -->
+    @if ($errors->has('otp'))
+        <div class="alert alert-danger">
+            {{ $errors->first('otp') }}
+        </div>
+    @endif
+
+    <form id="otp-form" action="{{ route('verifyOtp') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="otp">OTP</label>
@@ -18,6 +26,12 @@
         </div>
         <button type="submit" class="btn btn-primary">Verify OTP</button>
     </form>
+
+    @if (session('otp_verified'))
+        <div class="alert alert-success mt-3">
+            OTP Verified Successfully!
+        </div>
+    @endif
 </div>
 
 </body>

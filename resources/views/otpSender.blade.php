@@ -11,7 +11,7 @@
 <body>
 <div class="form-container">
     <h2>Sign Up</h2>
-    <form action="{{ route('verification') }}" method="GET">
+    <form action="{{ route('sendOtp') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="phone">Phone Number</label>
