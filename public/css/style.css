@@ -1,0 +1,53 @@
+/* style.css */
+.navbar {
+    background-color: #d6cfcf;
+    padding: 1rem;
+}
+
+#txtsearch {
+    border-radius: 25px;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.btn-signIn {
+    background-color: #72cd3b;
+    border: none;
+    border-radius: 25px;
+    color: white;
+}
+
+.btn-signIn:hover {
+    background-color: #aaa;
+    color: white;
+}
+
+.icon-heart:hover {
+    color: red;
+}
+
+.icon-cart:hover {
+    color: #72cd3b;
+}
+
+.icon-user {
+    margin-right: 10px;
+}
+
+.nav-item {
+    margin-right: 15px;
+}
+
+.btn-signUp {
+    background-color: black;
+    color: white;
+    border-radius: 25px;
+}
+
+.btn-signUp:hover {
+    background-color: #ccc;
+    color: white;
+}
