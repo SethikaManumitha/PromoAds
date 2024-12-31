@@ -11,7 +11,7 @@
 <body>
     <div class="form-container">
         <h2>Sign In</h2>
-        <form action="{{ route('signin') }}" method="POST">
+        <form action="{{ route('login.post') }}" method="POST">
             @csrf
             <div class="form-group">
                 <label for="email">Email/Phone Number</label>
@@ -28,6 +28,7 @@
             </div>
             <button type="submit" class="btn btn-login mt-3">Log In</button>
         </form>
+
         <div class="footer">
             Not registered yet? <a href="{{ route('role') }}">Create an Account</a>
         </div>
