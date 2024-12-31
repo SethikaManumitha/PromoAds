@@ -27,12 +27,9 @@
                 <a href="#" class="float-right">Forgot Password?</a>
             </div>
             <button type="submit" class="btn btn-login mt-3">Log In</button>
-            <button type="button" class="btn btn-google mt-2">
-                <i class="fab fa-google"></i> Continue with Google
-            </button>
         </form>
         <div class="footer">
-            Not registered yet? <a href="{{ route('signup') }}">Create an Account</a>
+            Not registered yet? <a href="{{ route('role') }}">Create an Account</a>
         </div>
     </div>
 

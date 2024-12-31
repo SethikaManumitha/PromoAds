@@ -65,7 +65,7 @@
     }
 
     continueBtn.addEventListener('click', () => {
-        window.location.href = "{{ route('otpSender') }}";
+        window.location.href = "{{ route('businessSignUp') }}";
     });
     </script>
 
