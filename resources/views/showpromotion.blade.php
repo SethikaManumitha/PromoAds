@@ -10,6 +10,65 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
     <title>Promo Ads</title>
+    <style>
+        .promotion-card {
+            margin-bottom: 15px;
+        }
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+        }
+
+        .card-price {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .card-discount {
+            color: #dc3545;
+            text-decoration: line-through;
+        }
+
+        .card-save {
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .promotion-card img {
+            max-width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+        }
+
+        .btn-block {
+            font-size: 0.9rem;
+            padding: 5px;
+        }
+
+        small {
+            display: block;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+    </style>
 </head>
 
 <body>
@@ -52,11 +111,8 @@
                     <small>Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
                     <br>
                     <div class="row">
-                        <div class="col-md-6">
-                            <a href="#" class="btn btn-success btn-block">Edit Offer</a>
-                        </div>
-                        <div class="col-md-6">
-                            <a href="#" class="btn btn-danger btn-block">Delete Offer</a>
+                        <div class="col-md-12">
+                            <a href="#" class="btn btn-success btn-block">Redeem Offer</a>
                         </div>
                     </div>
 
