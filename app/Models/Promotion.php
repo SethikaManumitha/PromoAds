@@ -19,6 +19,7 @@ class Promotion extends Model
         'price',  
         'dis_price',
         'end_date',     
-        'business'
+        'business',
+        'image'
     ];
 }

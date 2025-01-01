@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Business;
-use App\Models\User;    
+use App\Models\User;
 
 class BusinessController extends Controller
 {
@@ -27,19 +27,18 @@ class BusinessController extends Controller
             'description' => $validated['descript'],
             'email' => $validated['email'],
             'phone_number' => $validated['phone_number'],
-            'password' => bcrypt($validated['password']), 
+            'password' => bcrypt($validated['password']),
         ]);
 
         $user = User::create([
-            'name' => $validated['business_name'],  
+            'name' => $validated['business_name'],
             'email' => $validated['email'],
             'phone' => $validated['phone_number'],
             'password' => bcrypt($validated['password']),
-            'role' => 'business', 
+            'role' => 'business',
         ]);
 
         echo "Test";
         return redirect()->route('genQR')->with('success', 'Business registered successfully!');
     }
 }
-

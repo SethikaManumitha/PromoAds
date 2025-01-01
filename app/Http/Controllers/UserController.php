@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ class UserController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials, $request->has('remember'))) {
+        if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $id = $user->id;
             $name = $user->name;
@@ -20,14 +21,13 @@ class UserController extends Controller
 
             session(['user_id' => $id]);
             session(['user_name' => $name]);
-            if($role == "business"){
+            if ($role == "business") {
                 return view('businessDashboard');
-            }elseif ($role == "business") {
+            } elseif ($role == "customer") {
                 return view('customerDashboard');
-            }else{
+            } else {
                 return view('driverDashboard');
             }
-            
         }
 
         return back()->withErrors([
@@ -35,4 +35,3 @@ class UserController extends Controller
         ])->withInput();
     }
 }
-

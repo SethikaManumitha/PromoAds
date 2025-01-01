@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,21 +18,25 @@
             padding-top: 20px;
             color: white;
         }
+
         .sidebar a {
             color: white;
             padding: 10px;
             text-decoration: none;
             display: block;
         }
+
         .sidebar a:hover {
             background-color: #495057;
         }
+
         .content {
             margin-left: 220px;
             padding: 20px;
         }
     </style>
 </head>
+
 <body>
 
     <!-- Navbar -->
@@ -53,8 +58,9 @@
     <div class="sidebar">
         <h5 class="text-center">Menu</h5>
         <a href="{{ route('businessDashboard') }}">Dashboard</a>
-        <a href="#">QR Code</a>
-        <a href="#">Promotions</a>
+        <a href="{{ route('getqr') }}">QR Code</a>
+        <a href="{{ route('addpromo') }}">Add Promotions</a>
+        <a href="{{ route('viewpromo') }}">View Promotions</a>
         <a href="#">Analytics</a>
         <a href="#">Users</a>
         <a href="#">Settings</a>
@@ -64,7 +70,8 @@
     <!-- Content -->
     <div class="content">
 
-        <h2>Add Promotion</h2>
+        <h2 class="text-center">Add <span class="text-success">Promotion</span>
+        </h2>
 
         @if(session('success'))
         <div class="alert alert-success">
@@ -72,7 +79,7 @@
         </div>
         @endif
 
-        <form method="POST" action="{{ route('promo.add') }}">
+        <form method="POST" action="{{ route('promo.add') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="name">Promotion Name</label>
@@ -81,20 +88,20 @@
             <div class="form-group">
                 <label for="category">Category</label>
                 <select class="form-control" id="category" name="category">
-                <option disabled selected>Select a category</option>
-                <option value="automobile">Automobile</option>
-                <option value="beauty_health">Beauty & Health</option>
-                <option value="books_stationery">Books & Stationery</option>
-                <option value="electronics">Electronics</option>
-                <option value="fashion">Fashion</option>
-                <option value="furniture">Furniture</option>
-                <option value="groceries">Groceries</option>
-                <option value="home_appliances">Home Appliances</option>
-                <option value="services">Services</option>
-                <option value="special_offers">Special Offers</option>
-                <option value="sports_outdoors">Sports & Outdoors</option>
-                <option value="toys_games">Toys & Games</option>
-                <option value="travel_luggage">Travel & Luggage</option>
+                    <option disabled selected>Select a category</option>
+                    <option value="automobile">Automobile</option>
+                    <option value="beauty_health">Beauty & Health</option>
+                    <option value="books_stationery">Books & Stationery</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="furniture">Furniture</option>
+                    <option value="groceries">Groceries</option>
+                    <option value="home_appliances">Home Appliances</option>
+                    <option value="services">Services</option>
+                    <option value="special_offers">Special Offers</option>
+                    <option value="sports_outdoors">Sports & Outdoors</option>
+                    <option value="toys_games">Toys & Games</option>
+                    <option value="travel_luggage">Travel & Luggage</option>
 
                 </select>
 
@@ -116,14 +123,22 @@
                 <input type="date" class="form-control" id="end_date" name="end_date" required>
             </div>
 
-            <input type="hidden" class="form-control" id="business" name="business"  value="{!! session('user_name') !!}" placeholder="Enter Business" required>
+            <div class="form-group">
+                <label for="image">Upload Image</label>
+                <input type="file" name="image" class="form-control">
+            </div>
 
-            <button type="submit" class="btn btn-primary">Add Promotion</button>
+            <input type="hidden" class="form-control" id="business" name="business" value="{!! session('user_name') !!}" placeholder="Enter Business" required>
+
+            <button type="submit" class="btn btn-success">Add Promotion</button>
         </form>
+
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
+
 </html>
