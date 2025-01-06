@@ -48,7 +48,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
+                    <a class="nav-link" href="{{ route('admin.profile') }}">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Settings</a>

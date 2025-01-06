@@ -22,15 +22,25 @@ class QRController extends Controller
         return view('qrcode', compact('qrCode'));
     }
 
-    public function showPromo($userId)
+    public function showPromo(Request $request, $userId)
     {
         $business = User::where('id', $userId)->first();
 
         if (!$business) {
             return redirect()->back()->with('error', 'Business not found.');
         }
+
         $businessName = $business->name;
-        $promotions = Promotion::where('business', $businessName)->get();
-        return view('showpromotion', compact('promotions'));
+        $category = $request->query('category');
+
+        if ($category) {
+            $promotions = Promotion::where('business', $businessName)
+                ->where('category', 'like', "%$category%")
+                ->get();
+        } else {
+            $promotions = Promotion::where('business', $businessName)->get();
+        }
+
+        return view('showpromotion', compact('userId', 'promotions'));
     }
 }

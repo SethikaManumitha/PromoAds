@@ -16,9 +16,9 @@ class Promotion extends Model
         'name',
         'category',
         'description',
-        'price',  
+        'price',
         'dis_price',
-        'end_date',     
+        'end_date',
         'business',
         'image'
     ];

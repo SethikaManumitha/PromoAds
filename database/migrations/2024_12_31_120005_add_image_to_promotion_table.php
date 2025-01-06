@@ -15,7 +15,7 @@ class AddImageToPromotionTable extends Migration
     {
         Schema::table('promotion', function (Blueprint $table) {
             // Adding the 'image' field to the 'promotion' table
-            $table->string('image')->nullable()->after('business');  // Position it after the 'business' column
+            $table->string('image')->nullable()->after('business');
         });
     }
 

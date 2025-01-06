@@ -22,7 +22,7 @@ class UserController extends Controller
             session(['user_id' => $id]);
             session(['user_name' => $name]);
             if ($role == "business") {
-                return view('businessDashboard');
+                return view('admin.businessDashboard');
             } elseif ($role == "customer") {
                 return view('customerDashboard');
             } else {

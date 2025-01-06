@@ -8,7 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
     <title>Promo Ads</title>
     <style>
         .promotion-card {
@@ -53,8 +52,8 @@
         }
 
         .promotion-card img {
-            max-width: 100%;
-            max-height: 350px;
+            max-width: 200px;
+            max-height: 150px;
             object-fit: cover;
         }
 
@@ -74,53 +73,91 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">Promo<span style="color:#72cd3b">Ads</span></a>
-            <form class="d-flex w-50 mx-auto">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="txtsearch" id="txtsearch">
-            </form>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-heart icon-heart fa-icon"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart fa-icon icon-cart"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-signIn" href="{{ route('signin') }}"><i class="fas fa-user fa-icon icon-user"></i>Sign In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-signUp" href="{{ route('role') }}"><i class="fas fa-user-plus icon-user"></i>Sign Up</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="row">
-        @foreach ($promotions as $promotion)
-        <div class="col-md-4">
-            <div class="card promotion-card">
-                <img class="card-img-top" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
-                <div class="card-body">
-                    <h5 class="card-title">{{ $promotion->name }}</h5>
-                    <p class="card-text">
-                        <b>Category:</b> {{ ucfirst(str_replace('_', ' ', $promotion->category)) }}<br>
-                        {{ $promotion->description }}
-                    </p>
-                    <span class="card-discount">LKR {{ $promotion->price }}</span>
-                    <span class="card-price">LKR {{ $promotion->dis_price }}</span><br>
-                    <span class="card-save">SAVE: LKR {{ $promotion->price - $promotion->dis_price }}</span>
-                    <small>Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <a href="#" class="btn btn-success btn-block">Redeem Offer</a>
-                        </div>
-                    </div>
-
-                </div>
+            <a class="navbar-brand" href="/">Promo<span style="color:#72cd3b">Ads</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <form class="d-flex w-50 mx-auto">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="txtsearch" id="txtsearch">
+                </form>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-heart icon-heart fa-icon"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-shopping-cart fa-icon icon-cart"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-signIn" href="{{ route('signin') }}"><i class="fas fa-user fa-icon icon-user"></i>Sign In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-signUp" href="{{ route('role') }}"><i class="fas fa-user-plus icon-user"></i>Sign Up</a>
+                    </li>
+                </ul>
             </div>
         </div>
-        @endforeach
+    </nav>
+
+    @php
+    $categories = [
+    ['value' => 'Fresh_produce', 'label' => 'Fresh Produce', 'icon' => 'fas fa-lemon'],
+    ['value' => 'Meat_seafood', 'label' => 'Meat & Seafood', 'icon' => 'fas fa-fish'],
+    ['value' => 'Bakery', 'label' => 'Bakery', 'icon' => 'fas fa-bread-slice'],
+    ['value' => 'Grocery', 'label' => 'Grocery', 'icon' => 'fas fa-shopping-bag'],
+    ['value' => 'Beverages', 'label' => 'Beverages', 'icon' => 'fas fa-cocktail'],
+    ['value' => 'Frozen_foods', 'label' => 'Frozen Foods', 'icon' => 'fas fa-snowflake'],
+    ['value' => 'Canned_goods', 'label' => 'Canned Goods', 'icon' => 'fas fa-archive'],
+    ['value' => 'Health_beauty', 'label' => 'Health & Beauty', 'icon' => 'fas fa-pills'],
+    ['value' => 'Household_items', 'label' => 'Household Items', 'icon' => 'fas fa-tshirt'],
+    ['value' => 'Dairy', 'label' => 'Dairy Products', 'icon' => 'fas fa-cheese'],
+    ];
+    @endphp
+    <div class="category-bar">
+        <div class="container d-flex justify-content-around flex-wrap">
+            @foreach($categories as $category)
+            <div class="category-item">
+                <a href="{{ route('showpromo', ['userId' => $userId, 'category' => $category['value']]) }}">
+                    <i class="{{ $category['icon'] }}"></i>
+                    <span>{{ $category['label'] }}</span>
+                </a>
+            </div>
+            @endforeach
+        </div>
     </div>
+    <div class="container mt-5">
+        <div class="row">
+            @foreach ($promotions as $promotion)
+            <div class="col-md-4 col-sm-6 col-12">
+                <div class="card promotion-card">
+                    <img class="card-img-top" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $promotion->name }}</h5>
+                        <p class="card-text">
+                            <b>Category:</b> {{ ucfirst(str_replace('_', ' ', $promotion->category)) }}<br>
+                            {{ $promotion->description }}
+                        </p>
+                        <span class="card-discount">LKR {{ $promotion->price }}</span>
+                        <span class="card-price">LKR {{ $promotion->dis_price }}</span><br>
+                        <span class="card-save">SAVE: {{ ceil((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}%</span>
+                        <small>Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form action="{{ route('cart.add', $promotion->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-block">Add to Cart</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
+
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

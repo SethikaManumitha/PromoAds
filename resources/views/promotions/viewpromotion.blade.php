@@ -115,7 +115,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <h5 class="text-center">Menu</h5>
-        <a href="{{ route('businessDashboard') }}">Dashboard</a>
+        <a href="{{ route('admin.businessDashboard') }}">Dashboard</a>
         <a href="{{ route('getqr') }}">QR Code</a>
         <a href="{{ route('addpromo') }}">Add Promotions</a>
         <a href="{{ route('viewpromo') }}">View Promotions</a>
@@ -148,10 +148,14 @@
                         <br>
                         <div class="row">
                             <div class="col-md-6">
-                                <a href="#" class="btn btn-success btn-block">Edit Offer</a>
+                                <a href="{{ route('promo.edit', $promotion) }}" class="btn btn-success btn-block">Edit Offer</a>
                             </div>
                             <div class="col-md-6">
-                                <a href="#" class="btn btn-danger btn-block">Delete Offer</a>
+                                <form action="{{ route('promo.destroy', $promotion) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this promotion?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-block">Delete Offer</button>
+                                </form>
                             </div>
                         </div>
 

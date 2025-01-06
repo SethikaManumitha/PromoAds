@@ -10,12 +10,11 @@ class Business extends Model
     use HasFactory;
 
     protected $fillable = [
-        'business_name', 
-        'business_type', 
-        'description', 
-        'email', 
-        'phone_number', 
+        'business_name',
+        'business_type',
+        'description',
+        'email',
+        'phone_number',
         'password',
     ];
 }
-

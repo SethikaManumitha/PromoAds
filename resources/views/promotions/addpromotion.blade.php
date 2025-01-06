@@ -57,7 +57,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <h5 class="text-center">Menu</h5>
-        <a href="{{ route('businessDashboard') }}">Dashboard</a>
+        <a href="{{ route('admin.businessDashboard') }}">Dashboard</a>
         <a href="{{ route('getqr') }}">QR Code</a>
         <a href="{{ route('addpromo') }}">Add Promotions</a>
         <a href="{{ route('viewpromo') }}">View Promotions</a>
@@ -70,8 +70,7 @@
     <!-- Content -->
     <div class="content">
 
-        <h2 class="text-center">Add <span class="text-success">Promotion</span>
-        </h2>
+        <h2 class="text-center">{{ isset($promotion) ? 'Edit ' : 'Add ' }}<span class="text-success">Promotion</span></h2>
 
         @if(session('success'))
         <div class="alert alert-success">
@@ -79,60 +78,71 @@
         </div>
         @endif
 
-        <form method="POST" action="{{ route('promo.add') }}" enctype="multipart/form-data">
+        @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <form method="POST" action="{{ isset($promotion) ? route('promo.update', $promotion->id) : route('promo.add') }}" enctype="multipart/form-data">
             @csrf
+            @if(isset($promotion))
+            @method('PUT')
+            @endif
+
             <div class="form-group">
                 <label for="name">Promotion Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Promotion Name" required>
+                <input type="text" class="form-control" id="name" name="name" value="{{ isset($promotion) ? $promotion->name : '' }}" placeholder="Enter Promotion Name" required>
             </div>
             <div class="form-group">
                 <label for="category">Category</label>
-                <select class="form-control" id="category" name="category">
-                    <option disabled selected>Select a category</option>
-                    <option value="automobile">Automobile</option>
-                    <option value="beauty_health">Beauty & Health</option>
-                    <option value="books_stationery">Books & Stationery</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="fashion">Fashion</option>
-                    <option value="furniture">Furniture</option>
-                    <option value="groceries">Groceries</option>
-                    <option value="home_appliances">Home Appliances</option>
-                    <option value="services">Services</option>
-                    <option value="special_offers">Special Offers</option>
-                    <option value="sports_outdoors">Sports & Outdoors</option>
-                    <option value="toys_games">Toys & Games</option>
-                    <option value="travel_luggage">Travel & Luggage</option>
-
+                <select class="form-control" id="category" name="category" value="{{ isset($promotion) ? $promotion->category : '' }}" required>
+                    <option value="Fresh_produce">Fresh Produce</option>
+                    <option value="Meat_seafood">Meat & Seafood</option>
+                    <option value="Bakery">Bakery</option>
+                    <option value="Grocery">Grocery</option>
+                    <option value="Beverages">Beverages</option>
+                    <option value="Frozen_foods">Frozen Foods</option>
+                    <option value="Canned_goods">Canned Goods</option>
+                    <option value="Health_beauty">Health & Beauty</option>
+                    <option value="Household_items">Household Items</option>
+                    <option value="Dairy">Dairy Products</option>
                 </select>
-
             </div>
+
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter Description"></textarea>
+                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter Description">{{ isset($promotion) ? $promotion->description : '' }}</textarea>
             </div>
             <div class="form-group">
                 <label for="price">Original Price</label>
-                <input type="text" class="form-control" id="price" name="price" placeholder="Enter Price" required>
+                <input type="text" class="form-control" id="price" name="price" value="{{ isset($promotion) ? $promotion->price : '' }}" placeholder="Enter Price" required>
             </div>
             <div class="form-group">
                 <label for="dis_price">Discount Price</label>
-                <input type="text" class="form-control" id="dis_price" name="dis_price" placeholder="Enter Discount Price" required>
+                <input type="text" class="form-control" id="dis_price" name="dis_price" value="{{ isset($promotion) ? $promotion->dis_price : '' }}" placeholder="Enter Discount Price" required>
             </div>
             <div class="form-group">
                 <label for="end_date">End Date</label>
-                <input type="date" class="form-control" id="end_date" name="end_date" required>
+                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ isset($promotion) ? $promotion->end_date : '' }}" required>
             </div>
 
             <div class="form-group">
                 <label for="image">Upload Image</label>
                 <input type="file" name="image" class="form-control">
+                @if(isset($promotion) && $promotion->image)
+                <br>
+                <img src="{{ asset($promotion->image) }}" alt="Current Image" height="100">
+                @endif
             </div>
+            <button type="submit" class="btn btn-success">{{ isset($promotion) ? 'Update Promotion' : 'Add Promotion' }}</button>
+            <input type="hidden" class="form-control" id="business" name="business" value="Lasantha Stores">
 
-            <input type="hidden" class="form-control" id="business" name="business" value="{!! session('user_name') !!}" placeholder="Enter Business" required>
-
-            <button type="submit" class="btn btn-success">Add Promotion</button>
         </form>
-
 
     </div>
 
