@@ -25,97 +25,92 @@
 
         h1 {
             color: #28a745;
-            /* Green color */
             text-align: center;
             margin-bottom: 20px;
-        }
-
-        table {
-            margin-top: 20px;
-        }
-
-        .table th,
-        .table td {
-            vertical-align: middle;
-            text-align: center;
-        }
-
-        .btn-submit {
-            background-color: #28a745;
-            /* Green button color */
-            color: white;
-        }
-
-        .btn-submit:hover {
-            background-color: #218838;
-            /* Darker green */
-            color: white;
         }
 
         .total-amount {
             font-size: 1.25rem;
             font-weight: bold;
+            text-align: right;
+        }
+
+        .btn-submit {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background-color: #218838;
+        }
+
+        .btn-add-items {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-add-items:hover {
+            background-color: #0056b3;
         }
 
         .empty-message {
+            text-align: center;
             font-size: 1.2rem;
             color: #dc3545;
-            /* Red color for empty message */
-            text-align: center;
         }
     </style>
-
 </head>
 
 <body>
-
     <div class="container">
         <div class="cart-container">
             <h1>Your Cart</h1>
 
-            @if (empty($cart) || (is_array($cart) && count($cart) === 0) || ($cart instanceof \Illuminate\Support\Collection && $cart->isEmpty()))
-            <p class="empty-message">Your cart is empty!</p>
-            @else
-            <table class="table table-bordered table-striped">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($cart as $cartItem)
-                    <tr>
-                        <td>{{ $cartItem->promotion->name ?? $cartItem['name'] }}</td>
-                        <td>{{ number_format($cartItem->promotion->price ?? $cartItem['price'], 2) }}</td>
-                        <td>{{ $cartItem->quantity ?? $cartItem['quantity'] }}</td>
-                        <td>{{ number_format(($cartItem->promotion->price ?? $cartItem['price']) * ($cartItem->quantity ?? $cartItem['quantity']), 2) }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            @if(count($cartItems) > 0)
+            <ul class="list-group">
+                @foreach ($cartItems as $item)
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                        <div class="item-details">
+                            <p><strong>Product Name:</strong> {{ $item['promotion']->name }}</p>
+                            <p><strong>Price:</strong> LKR.{{ $item['promotion']->price }}</p>
+                            <p><strong>Quantity:</strong> {{ $item['quantity'] }}</p>
+                            <p><strong>Discounted Price:</strong> LKR.{{ $item['promotion']->dis_price }}</p>
+                        </div>
+                        <div>
+                            <img src="{{ $item['promotion']->image ? asset($item['promotion']->image) : 'https://placehold.co/200x200' }}" alt="{{ $item['promotion']->name }}" style="max-height: 100px; max-width: 100px;">
+                        </div>
+                    </div>
+                </li>
+                @endforeach
+            </ul>
 
-            <hr>
-
+            <!-- Calculate and display the total amount -->
             <div class="total-amount">
-                Total Amount:
-                @php
-                $totalAmount = 0;
-                foreach ($cart as $cartItem) {
-                $totalAmount += ($cartItem->promotion->price ?? $cartItem['price']) * ($cartItem->quantity ?? $cartItem['quantity']);
-                }
-                @endphp
-                ${{ number_format($totalAmount, 2) }}
+                <p><strong>Total Amount: </strong>
+                    LKR.
+                    @php
+                    $total = 0;
+                    foreach ($cartItems as $item) {
+                    $total += $item['promotion']->dis_price * $item['quantity'];
+                    }
+                    echo number_format($total, 2); // Format the total amount
+                    @endphp
+                </p>
             </div>
 
-            <div class="text-center mt-4">
-                <button class="btn btn-submit">Proceed to Checkout</button>
-            </div>
+            @else
+            <p class="empty-message">Your cart is empty!</p>
             @endif
+
         </div>
     </div>
+
+    <script>
+        function removeItem(itemId) {
+            alert(`Remove item with ID: ${itemId}`);
+        }
+    </script>
 
     <!-- Add Bootstrap 4 JS and Popper.js -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

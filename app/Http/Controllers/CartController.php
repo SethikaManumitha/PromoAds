@@ -44,22 +44,37 @@ class CartController extends Controller
                     'name' => $product->name,
                     'price' => $product->price,
                     'quantity' => $request->input('quantity', 1),
+                    'dis_price' => $product->dis_price,
+                    'image' => $product->image
                 ];
             }
 
             session()->put('cart', $cart);
         }
 
-        return response()->json(['message' => 'Product added to cart successfully']);
+        return $this->getCart();
     }
+
 
     public function getCart()
     {
+        $cartItems = [];
+
         if (Auth::check()) {
-            $cart = Cart::where('user_id', Auth::id())->with('promotion')->get();
+            $cartItems = Cart::where('user_id', Auth::id())->with('promotion')->get();
         } else {
             $cart = session()->get('cart', []);
+
+            foreach ($cart as $productId => $item) {
+                $promotion = Promotion::find($productId);
+
+                if ($promotion) {
+                    $item['promotion'] = $promotion;
+                    $cartItems[] = $item;
+                }
+            }
         }
-        return view('cart', compact('cart'));
+
+        return view('cart', compact('cartItems'));
     }
 }

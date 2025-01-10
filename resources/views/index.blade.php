@@ -7,41 +7,23 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <title>Promo Ads</title>
-    <style>
-        .promotion-card {
-            height: 350px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .promotion-card img {
-            height: 200px;
-            object-fit: cover;
-            width: 100%;
-        }
-
-        .card-body {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            flex-grow: 1;
-        }
-    </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">Promo<span style="color:#72cd3b">Ads</span></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <a class="navbar-brand" href="/" id="appText">Promo<span style="color:#72cd3b">Ads</span></a>
+
+            <!-- Navbar Items for Larger Screens -->
             <div class="collapse navbar-collapse" id="navbarNav">
-                <form class="d-flex w-50 mx-auto">
+                <form class="d-flex w-50 mx-auto d-none d-lg-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="txtsearch" id="txtsearch">
                 </form>
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto d-none d-lg-flex align-items-center">
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-heart icon-heart fa-icon"></i></a>
                     </li>
@@ -49,76 +31,83 @@
                         <a class="nav-link" href="#"><i class="fas fa-shopping-cart fa-icon icon-cart"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-signIn" href="{{ route('signin') }}"><i class="fas fa-user fa-icon icon-user"></i>Sign In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-signUp" href="{{ route('role') }}"><i class="fas fa-user-plus icon-user"></i>Sign Up</a>
+                        <a class="btn btn-signIn mx-2" href="{{ route('signin') }}">
+                            <i class="fas fa-user fa-icon icon-user"></i> Log In
+                        </a>
                     </li>
                 </ul>
             </div>
+
+            <!-- Navbar Items for Mobile -->
+            <div class="d-flex d-lg-none align-items-center">
+                <button class="btn btn-link d-lg-none" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a class="nav-link" href="#"><i class="fas fa-search icon-search fa-icon"></i></a>
+                <a class="nav-link" href="#"><i class="fas fa-shopping-cart fa-icon icon-cart"></i></a>
+                <a class="btn btn-signIn" href="{{ route('signin') }}">
+                    <i class="fas fa-user fa-icon icon-user"></i>
+                </a>
+
+            </div>
+
+        </div>
+
         </div>
     </nav>
 
-    <!-- Category Bar -->
-    <div class="category-bar">
-        <div class="container d-flex justify-content-around flex-wrap">
-            <div class="category-item">
-                <i class="fas fa-car"></i>
-                <span>Automobile</span>
+    @php
+    $categories = [
+    ['label' => 'Supermarket', 'icon' => 'fas fa-apple-alt'],
+    ['label' => 'Textile', 'icon' => 'fas fa-tshirt'],
+    ['label' => 'Travel', 'icon' => 'fas fa-suitcase'],
+    ['label' => 'Automobile', 'icon' => 'fas fa-car'],
+    ['label' => 'Book Shop', 'icon' => 'fas fa-book'],
+    ['label' => 'Electronics', 'icon' => 'fas fa-tv'],
+    ['label' => 'Furniture', 'icon' => 'fas fa-couch'],
+    ['label' => 'Appliances', 'icon' => 'fas fa-blender'],
+    ['label' => 'Services', 'icon' => 'fas fa-tools'],
+    ['label' => 'Sports', 'icon' => 'fas fa-basketball-ball'],
+    ['label' => 'Toys', 'icon' => 'fas fa-gamepad'],
+    ];
+    @endphp
+
+    <div class="categories desktop">
+        @foreach($categories as $category)
+        <div class="category-item-desktop">
+            <i class="{{ $category['icon'] }}"></i>
+            <span>{{ $category['label'] }}</span>
+        </div>
+        @endforeach
+    </div>
+
+    <!-- Offcanvas Menu -->
+    <div id="sideMenu" class="offcanvas">
+        <div class="offcanvas-header">
+            <h5>Menu</h5>
+            <button id="menuClose" class="btn btn-close">&times;</button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Category Items -->
+            <div class="category-bar">
+                <div class="d-flex justify-content-start flex-column">
+
+                    @foreach($categories as $category)
+                    <div class="category-item">
+                        <i class="{{ $category['icon'] }}"></i>
+                        <span>{{ $category['label'] }}</span>
+                    </div>
+                    @endforeach
+
+                </div>
             </div>
-            <div class="category-item">
-                <i class="fas fa-heart"></i>
-                <span>Beauty & Health</span>
-            </div>
-            <div class="category-item">
-                <i class="fas fa-book"></i>
-                <span>Books & Stationery</span>
-            </div>
-            <div class="category-item">
-                <i class="fas fa-tv"></i>
-                <span>Electronics</span>
-            </div>
-            <div class="category-item">
-                <i class="fas fa-tshirt"></i>
-                <span>Fashion</span>
-            </div>
-            <div class="category-item">
-                <i class="fas fa-couch"></i>
-                <span>Furniture</span>
-            </div>
-            <div class="category-item">
-                <i class="fas fa-apple-alt"></i>
-                <span>Groceries</span>
-            </div>
-            <div class="category-item">
-                <i class="fas fa-blender"></i>
-                <span>Appliances</span>
-            </div>
-            <div class="category-item">
-                <i class="fas fa-tools"></i>
-                <span>Services</span>
-            </div>
-            <div class="category-item">
-                <i class="fas fa-star"></i>
-                <span>Special Offers</span>
-            </div>
-            <div class="category-item">
-                <i class="fas fa-basketball-ball"></i>
-                <span>Sports</span>
-            </div>
-            <div class="category-item">
-                <i class="fas fa-gamepad"></i>
-                <span>Toys</span>
-            </div>
-            <div class="category-item">
-                <i class="fas fa-suitcase"></i>
-                <span>Travel</span>
-            </div>
+
         </div>
     </div>
 
-    <!-- Promotions Section -->
+    <!-- Main Content -->
     <div class="container mt-5">
+        <!-- Promotions Section -->
         <div class="row">
             @foreach($business as $biz)
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
@@ -143,6 +132,27 @@
             @endforeach
         </div>
     </div>
+
+    <!-- JavaScript for Offcanvas -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sideMenu = document.getElementById('sideMenu');
+        const menuClose = document.getElementById('menuClose');
+
+        menuToggle.addEventListener('click', () => {
+            sideMenu.classList.add('show');
+        });
+
+        menuClose.addEventListener('click', () => {
+            sideMenu.classList.remove('show');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!sideMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                sideMenu.classList.remove('show');
+            }
+        });
+    </script>
 
     <!-- Bootstrap JS & dependencies -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

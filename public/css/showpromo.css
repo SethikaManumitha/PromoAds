@@ -1,0 +1,97 @@
+/* style.css */
+.navbar {
+    background-color: #d6cfcf;
+    padding: 1rem;
+}
+
+#txtsearch {
+    border-radius: 25px;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.btn-signIn {
+    background-color: #72cd3b;
+    border: none;
+    border-radius: 25px;
+    color: white;
+}
+
+.btn-signIn:hover {
+    background-color: #aaa;
+    color: white;
+}
+
+.icon-heart:hover {
+    color: red;
+}
+
+.icon-cart:hover {
+    color: #72cd3b;
+}
+
+.icon-user {
+    margin-right: 10px;
+}
+
+.nav-item {
+    margin-right: 15px;
+}
+
+.btn-signUp {
+    background-color: black;
+    color: white;
+    border-radius: 25px;
+}
+
+.btn-signUp:hover {
+    background-color: #ccc;
+    color: white;
+}
+
+.category-bar {
+    background-color: #f8f9fa;
+    /* Light background */
+    padding: 10px 0;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.9rem;
+}
+
+.category-bar .container {
+    display: flex;
+    justify-content: space-around;
+    /* Distribute items evenly */
+    align-items: center;
+    flex-wrap: wrap;
+    /* Allow wrapping if necessary */
+    padding: 0;
+}
+
+.category-item {
+    flex: 1;
+    /* Ensure each item takes equal space */
+    max-width: 100px;
+    /* Optional: Adjust max width for items */
+    text-align: center;
+}
+
+.category-item i {
+    font-size: 1.5rem;
+    color: #72cd3b;
+    margin-bottom: 5px;
+}
+
+.category-item span {
+    display: block;
+    font-size: 0.8rem;
+    color: #333;
+}
+
+.category-bar .category-item:hover i {
+    color: #007bff;
+    /* Hover effect for icons */
+}
