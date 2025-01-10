@@ -111,6 +111,14 @@
                     <option value="Health_beauty">Health & Beauty</option>
                     <option value="Household_items">Household Items</option>
                     <option value="Dairy">Dairy Products</option>
+                    <option value="_">_________________</option>
+
+                    <option value="Women">Women</option>
+                    <option value="Men">Men</option>
+                    <option value="Kids">Kids</option>
+                    <option value="Baby">Baby</option>
+                    <option value="Toys">Toys</option>
+
                 </select>
             </div>
 
@@ -125,6 +133,10 @@
             <div class="form-group">
                 <label for="dis_price">Discount Price</label>
                 <input type="text" class="form-control" id="dis_price" name="dis_price" value="{{ isset($promotion) ? $promotion->dis_price : '' }}" placeholder="Enter Discount Price" required>
+            </div>
+            <div class="form-group">
+                <label for="dis_price">Loyalty Price</label>
+                <input type="text" class="form-control" id="loy_price" name="loy_price" value="{{ isset($promotion) ? $promotion->loy_price : '' }}" placeholder="Enter Loyalty Price" required>
             </div>
             <div class="form-group">
                 <label for="end_date">End Date</label>

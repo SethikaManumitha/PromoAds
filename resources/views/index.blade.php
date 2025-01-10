@@ -125,7 +125,7 @@
                 <div class="card promotion-card">
                     <img class="card-img-top" src="{{ $biz->user && $biz->user->profile ? $biz->user->profile : 'https://via.placeholder.com/120' }}" alt="Promotion Image">
                     <div class="card-body">
-                        <h4>{{ $biz->user->name }}</h4>
+                        <h5>{{ $biz->user->name }}</h5>
                         <div class="rating">
                             @for($i = 0; $i < 5; $i++)
                                 <i class="fas fa-star text-warning"></i>

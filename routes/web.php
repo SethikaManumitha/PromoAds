@@ -71,6 +71,5 @@ Route::prefix('promotions')->group(function () {
 // QR Code Routes
 Route::get('/getqr', [QRController::class, 'getQRCode'])->name('getqr');
 Route::get('/showpromo/{userId}', [QRController::class, 'showPromo'])->name('showpromo');
-
 Route::post('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'getCart'])->name('cart.index');

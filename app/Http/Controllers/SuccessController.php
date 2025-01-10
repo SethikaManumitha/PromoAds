@@ -21,6 +21,6 @@ class SuccessController extends Controller
 
         $qrCodeData = $url . "/showpromo/{$userId}";
         $qrCode = QrCode::size(200)->generate($qrCodeData);
-        return view('success', compact('qrCode'));
+        return view('signup.success', compact('qrCode'));
     }
 }

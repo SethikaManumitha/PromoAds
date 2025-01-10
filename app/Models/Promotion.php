@@ -18,6 +18,7 @@ class Promotion extends Model
         'description',
         'price',
         'dis_price',
+        'loy_price',
         'end_date',
         'business',
         'image'
