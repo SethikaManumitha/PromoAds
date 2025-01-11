@@ -85,7 +85,7 @@
                         <a class="nav-link" href="#"><i class="fas fa-heart icon-heart fa-icon"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart fa-icon icon-cart"></i></a>
+                        <a class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-shopping-cart fa-icon icon-cart"></i></a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-signIn mx-2" href="{{ route('signin') }}">
@@ -101,7 +101,7 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <a class="nav-link" href="#"><i class="fas fa-search icon-search fa-icon"></i></a>
-                <a class="nav-link" href="#"><i class="fas fa-shopping-cart fa-icon icon-cart"></i></a>
+                <a class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-shopping-cart fa-icon icon-cart"></i></a>
                 <a class="btn btn-signIn" href="{{ route('signin') }}">
                     <i class="fas fa-user fa-icon icon-user"></i>
                 </a>

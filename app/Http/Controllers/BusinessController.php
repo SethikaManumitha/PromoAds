@@ -86,7 +86,7 @@ class BusinessController extends Controller
             'descript' => 'nullable|string',
             'email' => 'required|email|max:255',
             'phone_number' => 'required|string|max:10',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:8',
         ]);
 
         // Save the data in the database

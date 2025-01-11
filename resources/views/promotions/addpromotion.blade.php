@@ -34,6 +34,22 @@
             margin-left: 220px;
             padding: 20px;
         }
+
+        /* Hide sidebar on small screens and move contents to navbar */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .navbar-collapse {
+                flex-grow: 1;
+                justify-content: space-between;
+            }
+        }
     </style>
 </head>
 
@@ -47,15 +63,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('admin.businessDashboard') }}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('getqr') }}">QR Code</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('addpromo') }}">Add Promotions</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('viewpromo') }}">View Promotions</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Analytics</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Logout</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Log Out</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar d-none d-md-block">
         <h5 class="text-center">Menu</h5>
         <a href="{{ route('admin.businessDashboard') }}">Dashboard</a>
         <a href="{{ route('getqr') }}">QR Code</a>
@@ -69,7 +90,6 @@
 
     <!-- Content -->
     <div class="content">
-
         <h2 class="text-center">{{ isset($promotion) ? 'Edit ' : 'Add ' }}<span class="text-success">Promotion</span></h2>
 
         @if(session('success'))

@@ -17,6 +17,7 @@
             background-color: #343a40;
             padding-top: 20px;
             color: white;
+            display: none;
         }
 
         .sidebar a {
@@ -33,6 +34,22 @@
         .content {
             margin-left: 220px;
             padding: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .sidebar {
+                display: block;
+            }
+
+            .content {
+                margin-left: 220px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .content {
+                margin-left: 0;
+            }
         }
     </style>
 </head>
@@ -56,12 +73,29 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Logout</a>
                 </li>
+
+                <!-- Sidebar Links in Dropdown for Mobile -->
+                <li class="nav-item dropdown d-block d-md-none">
+                    <a class="nav-link dropdown-toggle" href="#" id="menuDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Menu
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="menuDropdown">
+                        <a class="dropdown-item" href="#">Dashboard</a>
+                        <a class="dropdown-item" href="{{ route('getqr') }}">QR Code</a>
+                        <a class="dropdown-item" href="{{ route('addpromo') }}">Add Promotions</a>
+                        <a class="dropdown-item" href="{{ route('viewpromo') }}">View Promotions</a>
+                        <a class="dropdown-item" href="#">Analytics</a>
+                        <a class="dropdown-item" href="#">Users</a>
+                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" href="{{ route('login') }}">Log Out</a>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar d-none d-md-block">
         <h5 class="text-center">Menu</h5>
         <a href="#">Dashboard</a>
         <a href="{{ route('getqr') }}">QR Code</a>

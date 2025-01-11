@@ -10,7 +10,7 @@
     <style>
         .sidebar {
             height: 100vh;
-            width: 200px;
+            width: 250px;
             position: fixed;
             top: 0;
             left: 0;
@@ -31,8 +31,40 @@
         }
 
         .content {
-            margin-left: 220px;
+            margin-left: 270px;
             padding: 20px;
+        }
+
+        /* Hide sidebar on smaller screens, show in navbar */
+        @media (max-width: 991px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .navbar-nav {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .navbar-nav .nav-item {
+                text-align: left;
+            }
+        }
+
+        /* For larger screens, sidebar remains visible */
+        @media (min-width: 992px) {
+            .sidebar {
+                display: block;
+            }
+
+            .navbar-nav .nav-item {
+                display: none;
+            }
         }
 
         .promotion-card {
@@ -108,6 +140,15 @@
                 <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Logout</a></li>
+                <!-- Sidebar Links for Small Screens -->
+                <li class="nav-item"><a class="nav-link" href="{{ route('admin.businessDashboard') }}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('getqr') }}">QR Code</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('addpromo') }}">Add Promotions</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('viewpromo') }}">View Promotions</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Analytics</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Log Out</a></li>
             </ul>
         </div>
     </nav>
@@ -127,7 +168,6 @@
 
     <!-- Content -->
     <div class="content">
-
         <h2 class="text-center">Active <span class="text-success">Promotions</span></h2>
 
         <div class="row">
@@ -169,6 +209,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 </body>
 
 </html>

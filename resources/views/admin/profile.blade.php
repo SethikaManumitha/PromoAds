@@ -34,6 +34,16 @@
             margin-left: 220px;
             padding: 20px;
         }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+        }
     </style>
 </head>
 
@@ -56,12 +66,25 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Logout</a>
                 </li>
+                <li class="nav-item dropdown d-lg-none">
+                    <a class="nav-link dropdown-toggle" href="#" id="sidebarMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</a>
+                    <div class="dropdown-menu" aria-labelledby="sidebarMenu">
+                        <a class="dropdown-item" href="#">Dashboard</a>
+                        <a class="dropdown-item" href="{{ route('getqr') }}">QR Code</a>
+                        <a class="dropdown-item" href="{{ route('addpromo') }}">Add Promotions</a>
+                        <a class="dropdown-item" href="{{ route('viewpromo') }}">View Promotions</a>
+                        <a class="dropdown-item" href="#">Analytics</a>
+                        <a class="dropdown-item" href="#">Users</a>
+                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" href="{{ route('login') }}">Log Out</a>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar d-none d-lg-block">
         <h5 class="text-center">Menu</h5>
         <a href="#">Dashboard</a>
         <a href="{{ route('getqr') }}">QR Code</a>

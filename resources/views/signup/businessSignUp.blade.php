@@ -11,59 +11,74 @@
 </head>
 
 <body>
-
     <div class="form-container">
         <h2 class="text-center">Sign Up</h2>
+
         <form action="{{ route('business.store') }}" method="POST">
             @csrf
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="business_name">Business Name</label>
-                    <input type="text" class="form-control" id="business_name" name="business_name" placeholder="Enter your business name" required>
+                    <input type="text" class="form-control" id="business_name" name="business_name"
+                        value="{{ old('business_name') }}"
+                        placeholder="Enter your business name" required>
+                    @error('business_name')
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="business_type">Business Type</label>
                     <select class="form-control" id="business_type" name="business_type" required>
-                        <option value="" disabled selected>Select your business type</option>
-                        <option value="automobile">Automobile</option>
-                        <option value="beauty_health">Beauty & Health</option>
-                        <option value="books_stationery">Books & Stationery</option>
-                        <option value="Dairy">Dairy</option>
-                        <option value="electronics"'>Electronics</option>
-                        <option value="fashion">Fashion</option>
-                        <option value="furniture">Furniture</option>
-                        <option value="groceries">Groceries</option>
-                        <option value="home_appliances">Home Appliances</option>
-                        <option value="services">Services</option>
-                        <option value="special_offers">Special Offers</option>
-                        <option value="sports_outdoors">Sports & Outdoors</option>
-                        <option value="toys_games">Toys & Games</option>
-                        <option value="travel_luggage">Travel & Luggage</option>
+                        <option value="" disabled {{ old('business_type') == '' ? 'selected' : '' }}>Select your business type</option>
+                        <option value="automobile" {{ old('business_type') == 'automobile' ? 'selected' : '' }}>Automobile</option>
+                        <option value="beauty_health" {{ old('business_type') == 'beauty_health' ? 'selected' : '' }}>Beauty & Health</option>
+                        <!-- Add other options here, ensure you apply old() -->
                     </select>
+                    @error('business_type')
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="descript">Description</label>
-                    <textarea class="form-control" id="descript" name="descript" placeholder="Enter a description"></textarea>
+                    <textarea class="form-control" id="descript" name="descript"
+                        placeholder="Enter a description">{{ old('descript') }}</textarea>
+                    @error('descript')
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="email" class="form-control" id="email" name="email"
+                        value="{{ old('email') }}"
+                        placeholder="Enter your email" required>
+                    @error('email')
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
                 <div class="form-group col-md-6">
                     <label for="phone_number">Phone Number</label>
-                    <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Enter your phone number" required>
+                    <input type="text" class="form-control" id="phone_number" name="phone_number"
+                        value="{{ old('phone_number') }}"
+                        placeholder="Enter your phone number" required>
+                    @error('phone_number')
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                    <input type="password" class="form-control" id="password" name="password"
+                        placeholder="Enter your password" required>
+                    @error('password')
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
             </div>
             <button type="submit" class="btn btn-success btn-block mt-3">Sign Up</button>
@@ -75,7 +90,6 @@
             <a href="{{ route('signin') }}" class="text-success">Sign In</a>
         </p>
     </div>
-
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

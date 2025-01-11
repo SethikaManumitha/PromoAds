@@ -103,6 +103,14 @@
             <p class="empty-message">Your cart is empty!</p>
             @endif
 
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-info" style="width: 100%;" onclick="window.history.back()">Add More Items</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-success" style="width: 100%;">Process Payment</button>
+                </div>
+            </div>
         </div>
     </div>
 
