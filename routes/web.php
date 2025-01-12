@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\SuccessController;
@@ -10,8 +11,7 @@ use App\Http\Controllers\QRController;
 use App\Http\Controllers\CartController;
 
 // Default route
-Route::get('/', [BusinessController::class, 'getBusiness']);
-
+Route::get('/', [MainController::class, 'index']);
 
 // Authentication and Role Routes
 Route::get('/signin', function () {

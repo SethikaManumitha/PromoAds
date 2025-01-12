@@ -128,7 +128,7 @@
     ['value' => 'Dairy', 'label' => 'Dairy Products', 'icon' => 'fas fa-cheese'],
     ];
     @endphp
-    <div class="category-bar">
+    <!-- <div class="category-bar">
         <div class="container d-flex justify-content-around flex-wrap">
             @foreach($categories as $category)
             <div class="category-item">
@@ -139,7 +139,7 @@
             </div>
             @endforeach
         </div>
-    </div>
+    </div> -->
     <div class="container mt-5">
         <div class="row">
             @foreach ($promotions as $promotion)

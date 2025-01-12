@@ -20,7 +20,6 @@ class PromoController extends Controller
         return view('promotions.viewpromotion', compact('promotions'));
     }
 
-
     // Add promotion
     public function addPromo(Request $request)
     {

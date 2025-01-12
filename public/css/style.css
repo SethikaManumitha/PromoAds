@@ -150,7 +150,7 @@
 }
 
 .promotion-card {
-    height: 350px;
+    height: auto;
     display: flex;
     flex-direction: column;
 }
@@ -240,3 +240,10 @@
         display: none;
     }
 }
+
+.card-save {
+    color: #fc5411;
+    font-weight: bold;
+    font-size: 20px;
+}
+

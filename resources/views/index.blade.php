@@ -56,6 +56,8 @@
         </div>
     </nav>
 
+
+
     @php
     $categories = [
     ['label' => 'Supermarket', 'icon' => 'fas fa-apple-alt'],
@@ -105,8 +107,63 @@
         </div>
     </div>
 
+
+
+    <section class="pt-5 pb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <h3 class="mb-3">Special Offers in <span style="color:#72cd3b">Hikkaduwa</span></h3>
+                </div>
+                <div class="col-6 text-right">
+                    <a class="btn btn-success mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">
+                        <i class="fa fa-arrow-left"></i>
+                    </a>
+                    <a class="btn btn-success mb-3" href="#carouselExampleIndicators2" role="button" data-slide="next">
+                        <i class="fa fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="col-12">
+                    <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            @foreach($promotions->chunk(3) as $chunk)
+                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                <div class="row">
+                                    @foreach($chunk as $promotion)
+                                    <div class="col-md-4 col-sm-6 col-12">
+                                        <div class="card promotion-card">
+                                            <img class="card-img-top" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ $promotion->name }}</h5>
+                                                <span class="card-save">Discount: {{ ceil((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}%</span>
+                                                <small>Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
+                                                <h6>{{ $promotion->business }}</h6>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Main Content -->
     <div class="container mt-5">
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="mb-3">Shops in <span style="color:#72cd3b">Hikkaduwa</span> </h3>
+
+            </div>
+        </div>
         <!-- Promotions Section -->
         <div class="row">
             @foreach($business as $biz)
@@ -114,7 +171,9 @@
                 <div class="card promotion-card">
                     <img class="card-img-top" src="{{ $biz->user && $biz->user->profile ? $biz->user->profile : 'https://via.placeholder.com/120' }}" alt="Promotion Image">
                     <div class="card-body">
-                        <h5>{{ $biz->user->name }}</h5>
+                        <h5 class="card-title">{{ $biz->user->name }}</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
                         <div class="rating">
                             @for($i = 0; $i < 5; $i++)
                                 <i class="fas fa-star text-warning"></i>
