@@ -31,10 +31,17 @@
                 <div class="form-group col-md-12">
                     <label for="business_type">Business Type</label>
                     <select class="form-control" id="business_type" name="business_type" required>
-                        <option value="" disabled {{ old('business_type') == '' ? 'selected' : '' }}>Select your business type</option>
-                        <option value="automobile" {{ old('business_type') == 'automobile' ? 'selected' : '' }}>Automobile</option>
-                        <option value="beauty_health" {{ old('business_type') == 'beauty_health' ? 'selected' : '' }}>Beauty & Health</option>
-                        <!-- Add other options here, ensure you apply old() -->
+                        <option value="Groceries">Groceries</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Fashion_accessories">Fashion</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Furniture">Furniture</option>
+                        <option value="Home_appliances">Home Appliances</option>
+                        <option value="Toys_gifts">Toys & Gifts</option>
+                        <option value="Taxi">Taxi</option>
+                        <option value="Real_estate">Real Estate</option>
+                        <option value="Books_stationary">Books & Stationary</option>
+                        <option value="Automobile">Automobile</option>
                     </select>
                     @error('business_type')
                     <small class="text-danger">{{ $message }}</small>

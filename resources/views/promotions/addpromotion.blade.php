@@ -121,24 +121,17 @@
             <div class="form-group">
                 <label for="category">Category</label>
                 <select class="form-control" id="category" name="category" value="{{ isset($promotion) ? $promotion->category : '' }}" required>
-                    <option value="Fresh_produce">Fresh Produce</option>
-                    <option value="Meat_seafood">Meat & Seafood</option>
-                    <option value="Bakery">Bakery</option>
-                    <option value="Grocery">Grocery</option>
-                    <option value="Beverages">Beverages</option>
-                    <option value="Frozen_foods">Frozen Foods</option>
-                    <option value="Canned_goods">Canned Goods</option>
-                    <option value="Health_beauty">Health & Beauty</option>
-                    <option value="Household_items">Household Items</option>
-                    <option value="Dairy">Dairy Products</option>
-                    <option value="_">_________________</option>
-
-                    <option value="Women">Women</option>
-                    <option value="Men">Men</option>
-                    <option value="Kids">Kids</option>
-                    <option value="Baby">Baby</option>
-                    <option value="Toys">Toys</option>
-
+                    <option value="Groceries">Groceries</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Fashion_accessories">Fashion</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Home_appliances">Home Appliances</option>
+                    <option value="Toys_gifts">Toys & Gifts</option>
+                    <option value="Taxi">Taxi</option>
+                    <option value="Real_estate">Real Estate</option>
+                    <option value="Books_stationary">Books & Stationary</option>
+                    <option value="Automobile">Automobile</option>
                 </select>
             </div>
 

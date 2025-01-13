@@ -56,32 +56,38 @@
         </div>
     </nav>
 
-
-
     @php
     $categories = [
-    ['label' => 'Supermarket', 'icon' => 'fas fa-apple-alt'],
-    ['label' => 'Textile', 'icon' => 'fas fa-tshirt'],
-    ['label' => 'Travel', 'icon' => 'fas fa-suitcase'],
-    ['label' => 'Automobile', 'icon' => 'fas fa-car'],
-    ['label' => 'Book Shop', 'icon' => 'fas fa-book'],
-    ['label' => 'Electronics', 'icon' => 'fas fa-tv'],
-    ['label' => 'Furniture', 'icon' => 'fas fa-couch'],
-    ['label' => 'Appliances', 'icon' => 'fas fa-blender'],
-    ['label' => 'Services', 'icon' => 'fas fa-tools'],
-    ['label' => 'Sports', 'icon' => 'fas fa-basketball-ball'],
-    ['label' => 'Toys', 'icon' => 'fas fa-gamepad'],
+    ['value' => 'Groceries', 'label' => 'Groceries', 'icon' => 'fas fa-apple-alt'],
+    ['value' => 'Clothing', 'label' => 'Clothing', 'icon' => 'fas fa-tshirt'],
+    ['value' => 'Fashion_accessories', 'label' => 'Fashion', 'icon' => 'fas fa-glasses'],
+    ['value' => 'Electronics', 'label' => 'Electronics', 'icon' => 'fas fa-tv'],
+    ['value' => 'Furniture', 'label' => 'Furniture', 'icon' => 'fas fa-couch'],
+    ['value' => 'Home_appliances', 'label' => 'Home Appliances', 'icon' => 'fas fa-blender'],
+    ['value' => 'Toys_gifts', 'label' => 'Toys & Gifts', 'icon' => 'fas fa-gamepad'],
+    ['value' => 'Taxi', 'label' => 'Taxi', 'icon' => 'fas fa-taxi'],
+    ['value' => 'Real_estate', 'label' => 'Real Estate', 'icon' => 'fas fa-building'],
+    ['value' => 'Books_stationary', 'label' => 'Books & Stationary', 'icon' => 'fas fa-book'],
+    ['value' => 'Automobile', 'label' => 'Automobile', 'icon' => 'fas fa-cogs'],
+
     ];
     @endphp
+
+
 
     <div class="categories desktop">
         @foreach($categories as $category)
         <div class="category-item-desktop">
-            <i class="{{ $category['icon'] }}"></i>
-            <span>{{ $category['label'] }}</span>
+            <a href="#" class="category-toggle">
+                <i class="{{ $category['icon'] }}"></i>
+                <span>{{ $category['label'] }}</span>
+            </a>
+
         </div>
         @endforeach
     </div>
+
+
 
     <!-- Offcanvas Menu -->
     <div id="sideMenu" class="offcanvas">
@@ -109,61 +115,36 @@
 
 
 
-    <section class="pt-5 pb-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-6">
-                    <h3 class="mb-3">Special Offers in <span style="color:#72cd3b">Hikkaduwa</span></h3>
-                </div>
-                <div class="col-6 text-right">
-                    <a class="btn btn-success mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">
-                        <i class="fa fa-arrow-left"></i>
-                    </a>
-                    <a class="btn btn-success mb-3" href="#carouselExampleIndicators2" role="button" data-slide="next">
-                        <i class="fa fa-arrow-right"></i>
-                    </a>
-                </div>
-                <div class="col-12">
-                    <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            @foreach($promotions->chunk(3) as $chunk)
-                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                <div class="row">
-                                    @foreach($chunk as $promotion)
-                                    <div class="col-md-4 col-sm-6 col-12">
-                                        <div class="card promotion-card">
-                                            <img class="card-img-top" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{ $promotion->name }}</h5>
-                                                <span class="card-save">Discount: {{ ceil((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}%</span>
-                                                <small>Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
-                                                <h6>{{ $promotion->business }}</h6>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-
+    <div class="container mt-5">
+        <!-- Promotions Section -->
+        <h3>Trending offers in <span style="color:#72cd3b">Hikkaduwa</span></h3>
+        <br>
+        <div class="row">
+            @foreach ($promotions as $promotion)
+            <div class="col-6 col-md-3 col-sm-6 mb-4">
+                <div class="card promotion-card">
+                    <img class="card-img-top" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" style="max-height: 200px; max-width:100%" alt="Promotion Image">
+                    <div style="padding-left: 10px;padding-top: 10px;">
+                        <h6 class="card-title">{{ $promotion->name }}</h6>
+                        <span class="card-discount">LKR {{ $promotion->price }}</span>
+                        <span class="card-price">LKR {{ $promotion->dis_price }}</span><br>
+                        <span class="card-save">SAVE: {{ ceil((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}%</span><br>
+                        <small>Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
+                        <br>
+                        <span>By {{ $promotion->business }}</span>
+                        <br>
                     </div>
                 </div>
             </div>
+            @endforeach
         </div>
-    </section>
+    </div>
+
 
     <!-- Main Content -->
     <div class="container mt-5">
-
-
-        <div class="row">
-            <div class="col-md-6">
-                <h3 class="mb-3">Shops in <span style="color:#72cd3b">Hikkaduwa</span> </h3>
-
-            </div>
-        </div>
+        <h3>Shops in <span style="color:#72cd3b">Hikkaduwa</span></h3>
+        <br>
         <!-- Promotions Section -->
         <div class="row">
             @foreach($business as $biz)
@@ -171,15 +152,8 @@
                 <div class="card promotion-card">
                     <img class="card-img-top" src="{{ $biz->user && $biz->user->profile ? $biz->user->profile : 'https://via.placeholder.com/120' }}" alt="Promotion Image">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $biz->user->name }}</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                        <div class="rating">
-                            @for($i = 0; $i < 5; $i++)
-                                <i class="fas fa-star text-warning"></i>
-                                @endfor
-                        </div>
-
+                        <h5>{{ $biz->user->name }}</h5>
+                        <p>{{ $biz->description }}</p>
                         <div class="row">
                             <div class="col-md-12">
                                 <a href="{{ route('showpromo', ['userId' => $biz->user->id]) }}" class="btn btn-success btn-block">Shop Now</a>
@@ -191,6 +165,8 @@
             @endforeach
         </div>
     </div>
+
+
 
     <!-- JavaScript for Offcanvas -->
     <script>

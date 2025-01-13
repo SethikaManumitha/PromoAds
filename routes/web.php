@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MainController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\SuccessController;
@@ -9,9 +8,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\QRController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\MainController;
 
 // Default route
 Route::get('/', [MainController::class, 'index']);
+
 
 // Authentication and Role Routes
 Route::get('/signin', function () {

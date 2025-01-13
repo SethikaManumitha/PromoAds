@@ -20,6 +20,7 @@ class PromoController extends Controller
         return view('promotions.viewpromotion', compact('promotions'));
     }
 
+
     // Add promotion
     public function addPromo(Request $request)
     {
@@ -30,6 +31,7 @@ class PromoController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'dis_price' => 'required|numeric|min:0',
+            'loy_price' => 'required|numeric|min:0',
             'end_date' => 'required|date',
             'business' => 'required|string|max:255',
             'image' => 'required|mimes:png,jpg,jpeg,webp'
@@ -53,6 +55,7 @@ class PromoController extends Controller
             'description' => $validated['description'],
             'price' => $validated['price'],
             'dis_price' => $validated['dis_price'],
+            'loy_price' => $validated['loy_price'],
             'end_date' => $validated['end_date'],
             'business' => $validated['business'],
             'image' => $path . $filename

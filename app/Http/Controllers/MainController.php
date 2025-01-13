@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Business;
-use App\Models\Promotion;
 use App\Models\User;
+use App\Models\Promotion;
 
 class MainController extends Controller
 {
@@ -17,6 +17,19 @@ class MainController extends Controller
         foreach ($business as $biz) {
             $biz->user = User::where('email', $biz->email)->first();
         }
+
+        $promotions = Promotion::all();
+        return view('index', compact('business', 'promotions'));
+    }
+
+    public function getIndexByCategory()
+    {
+        $business = Business::where();
+
+        foreach ($business as $biz) {
+            $biz->user = User::where('email', $biz->email)->first();
+        }
+
         $promotions = Promotion::all();
         return view('index', compact('business', 'promotions'));
     }

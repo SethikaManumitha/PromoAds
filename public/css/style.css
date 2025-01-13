@@ -150,9 +150,10 @@
 }
 
 .promotion-card {
-    height: auto;
+    height: 370px;
     display: flex;
     flex-direction: column;
+    margin-bottom: 15px;
 }
 
 .promotion-card img {
@@ -241,9 +242,25 @@
     }
 }
 
-.card-save {
-    color: #fc5411;
+
+.card {
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-price {
     font-weight: bold;
-    font-size: 20px;
+    color: #28a745;
+}
+
+.card-discount {
+    color: #dc3545;
+    text-decoration: line-through;
+}
+
+
+.card-save {
+    color: #ffc107;
+    font-weight: bold;
 }
 

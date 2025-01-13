@@ -54,7 +54,7 @@
         .promotion-card img {
             max-width: 200px;
             max-height: 150px;
-            object-fit: cover;
+
         }
 
         .btn-block {
@@ -128,18 +128,20 @@
     ['value' => 'Dairy', 'label' => 'Dairy Products', 'icon' => 'fas fa-cheese'],
     ];
     @endphp
-    <!-- <div class="category-bar">
-        <div class="container d-flex justify-content-around flex-wrap">
-            @foreach($categories as $category)
-            <div class="category-item">
-                <a href="{{ route('showpromo', ['userId' => $userId, 'category' => $category['value']]) }}">
-                    <i class="{{ $category['icon'] }}"></i>
-                    <span>{{ $category['label'] }}</span>
-                </a>
-            </div>
-            @endforeach
-        </div>
-    </div> -->
+
+
+    <!--<div class="category-bar">-->
+    <!--    <div class="container d-flex justify-content-around flex-wrap">-->
+    <!--        @foreach($categories as $category)-->
+    <!--        <div class="category-item">-->
+    <!--            <a href="{{ route('showpromo', ['userId' => $userId, 'category' => $category['value']]) }}">-->
+    <!--                <i class="{{ $category['icon'] }}"></i>-->
+    <!--                <span>{{ $category['label'] }}</span>-->
+    <!--            </a>-->
+    <!--        </div>-->
+    <!--        @endforeach-->
+    <!--    </div>-->
+    <!--</div>-->
     <div class="container mt-5">
         <div class="row">
             @foreach ($promotions as $promotion)
@@ -148,10 +150,7 @@
                     <img class="card-img-top" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
                     <div class="card-body">
                         <h5 class="card-title">{{ $promotion->name }}</h5>
-                        <p class="card-text">
-                            <b>Category:</b> {{ ucfirst(str_replace('_', ' ', $promotion->category)) }}<br>
-                            {{ $promotion->description }}
-                        </p>
+
                         <span class="card-discount">LKR {{ $promotion->price }}</span>
                         <span class="card-price">LKR {{ $promotion->dis_price }}</span><br>
                         <span class="card-save">SAVE: {{ ceil((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}%</span>
