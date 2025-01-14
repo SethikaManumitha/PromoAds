@@ -18,19 +18,7 @@ class MainController extends Controller
             $biz->user = User::where('email', $biz->email)->first();
         }
 
-        $promotions = Promotion::all();
-        return view('index', compact('business', 'promotions'));
-    }
-
-    public function getIndexByCategory()
-    {
-        $business = Business::where();
-
-        foreach ($business as $biz) {
-            $biz->user = User::where('email', $biz->email)->first();
-        }
-
-        $promotions = Promotion::all();
+        $promotions = Promotion::with('business')->get();
         return view('index', compact('business', 'promotions'));
     }
 }

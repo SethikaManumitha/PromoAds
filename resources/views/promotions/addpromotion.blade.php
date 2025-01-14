@@ -164,8 +164,8 @@
                 <img src="{{ asset($promotion->image) }}" alt="Current Image" height="100">
                 @endif
             </div>
+            <input type="hidden" class="form-control" id="business" name="business" value="{{ session('business_id') }}">
             <button type="submit" class="btn btn-success">{{ isset($promotion) ? 'Update Promotion' : 'Add Promotion' }}</button>
-            <input type="hidden" class="form-control" id="business" name="business" value="Lasantha Stores">
 
         </form>
 

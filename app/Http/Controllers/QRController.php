@@ -12,7 +12,7 @@ class QRController extends Controller
     // Get QR code
     public function getQRCode()
     {
-        $userId = session('user_id');
+        $userId = session('business_id');
         $url = env('APP_URL');
 
         $qrCodeData = $url . "/showpromo/{$userId}";
@@ -24,21 +24,14 @@ class QRController extends Controller
 
     public function showPromo(Request $request, $userId)
     {
-        $business = User::where('id', $userId)->first();
 
-        if (!$business) {
-            return redirect()->back()->with('error', 'Business not found.');
-        }
-
-        $businessName = $business->name;
         $category = $request->query('category');
-
         if ($category) {
-            $promotions = Promotion::where('business', $businessName)
+            $promotions = Promotion::where('business_id', $userId)
                 ->where('category', 'like', "%$category%")
                 ->get();
         } else {
-            $promotions = Promotion::where('business', $businessName)->get();
+            $promotions = Promotion::where('business_id', $userId)->get();
         }
 
         return view('showpromotion', compact('userId', 'promotions'));

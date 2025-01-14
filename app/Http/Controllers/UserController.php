@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Models\Business;
 
 class UserController extends Controller
 {
@@ -21,7 +21,10 @@ class UserController extends Controller
 
             session(['user_id' => $id]);
             session(['user_name' => $name]);
+
             if ($role == "business") {
+                $business = Business::where('business_name', $name)->first();
+                session(['business_id' => $business->id]);
                 return view('admin.businessDashboard');
             } elseif ($role == "customer") {
                 return view('customerDashboard');

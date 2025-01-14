@@ -117,21 +117,36 @@
 
     <div class="container mt-5">
         <!-- Promotions Section -->
-        <h3>Trending offers in <span style="color:#72cd3b">Hikkaduwa</span></h3>
+        <h4>Special offers in <span style="color:#72cd3b">Hikkaduwa</span></h4>
         <br>
         <div class="row">
             @foreach ($promotions as $promotion)
-            <div class="col-6 col-md-3 col-sm-6 mb-4">
-                <div class="card promotion-card">
-                    <img class="card-img-top" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" style="max-height: 200px; max-width:100%" alt="Promotion Image">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img class="card-img-top promoimg" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
                     <div style="padding-left: 10px;padding-top: 10px;">
                         <h6 class="card-title">{{ $promotion->name }}</h6>
+
+
+                        @if ($promotion->price == 1)
+                        <h5><span class="card-save">
+                                SAVE: {{ round((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}%
+                            </span></h5>
+                        @elseif ($promotion->dis_price == $promotion->price)
+                        <h5><span class="card-price">LKR {{ $promotion->price }}</span></h5>
+                        @else
                         <span class="card-discount">LKR {{ $promotion->price }}</span>
                         <span class="card-price">LKR {{ $promotion->dis_price }}</span><br>
-                        <span class="card-save">SAVE: {{ ceil((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}%</span><br>
+                        <span class="card-save">
+                            SAVE: {{ round((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}%
+                        </span><br>
+                        @endif
+                        <p>{{$promotion->business->business_name ?? 'Business not found'}}</p>
+
+
+
                         <small>Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
                         <br>
-                        <span>By {{ $promotion->business }}</span>
                         <br>
                     </div>
                 </div>
@@ -143,21 +158,20 @@
 
     <!-- Main Content -->
     <div class="container mt-5">
-        <h3>Shops in <span style="color:#72cd3b">Hikkaduwa</span></h3>
+        <h4>Shops in <span style="color:#72cd3b">Hikkaduwa</span></h4>
         <br>
         <!-- Promotions Section -->
         <div class="row">
             @foreach($business as $biz)
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="card promotion-card">
+                <div class="card promotion-card h-100 d-flex flex-column">
                     <img class="card-img-top" src="{{ $biz->user && $biz->user->profile ? $biz->user->profile : 'https://via.placeholder.com/120' }}" alt="Promotion Image">
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <h5>{{ $biz->user->name }}</h5>
-                        <p>{{ $biz->description }}</p>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a href="{{ route('showpromo', ['userId' => $biz->user->id]) }}" class="btn btn-success btn-block">Shop Now</a>
-                            </div>
+                        <small>{{ $biz->description }}</small>
+                        <!-- Spacer to push content above the button -->
+                        <div class="mt-auto">
+                            <a href="{{ route('showpromo', ['userId' => $biz->id]) }}" class="btn btn-success btn-block">Shop Now</a>
                         </div>
                     </div>
                 </div>
@@ -165,6 +179,7 @@
             @endforeach
         </div>
     </div>
+
 
 
 

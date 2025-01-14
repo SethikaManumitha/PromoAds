@@ -151,8 +151,6 @@
 
 .promotion-card {
     height: 370px;
-    display: flex;
-    flex-direction: column;
     margin-bottom: 15px;
 }
 
@@ -162,12 +160,12 @@
     width: 100%;
 }
 
-.card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 1;
+.promoimg{
+    max-width: 200px;
+    max-height: 150px;
 }
+
+
 
 .categories {
     display: none;

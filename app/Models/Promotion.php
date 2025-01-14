@@ -20,7 +20,13 @@ class Promotion extends Model
         'dis_price',
         'loy_price',
         'end_date',
-        'business',
+        'business_id',
         'image'
     ];
+
+
+    public function business()
+    {
+        return $this->belongsTo(Business::class, 'business_id');
+    }
 }

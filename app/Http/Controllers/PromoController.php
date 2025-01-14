@@ -16,7 +16,7 @@ class PromoController extends Controller
     // Get promotions
     public function getPromo()
     {
-        $promotions = Promotion::all();
+        $promotions = Promotion::where('business_id', session('business_id'))->get();
         return view('promotions.viewpromotion', compact('promotions'));
     }
 
@@ -57,7 +57,7 @@ class PromoController extends Controller
             'dis_price' => $validated['dis_price'],
             'loy_price' => $validated['loy_price'],
             'end_date' => $validated['end_date'],
-            'business' => $validated['business'],
+            'business_id' => $validated['business'],
             'image' => $path . $filename
         ]);
 
@@ -121,7 +121,7 @@ class PromoController extends Controller
             'dis_price' => $validated['dis_price'],
             'loy_price' => $validated['loy_price'],
             'end_date' => $validated['end_date'],
-            'business' => $validated['business'],
+            'business_id' => $validated['business'],
             'image' => $promotion->image ?? $path . $filename
         ]);
 
