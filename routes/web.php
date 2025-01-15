@@ -9,9 +9,10 @@ use App\Http\Controllers\PromoController;
 use App\Http\Controllers\QRController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\CustomerController;
 
 // Default route
-Route::get('/', [MainController::class, 'index']);
+Route::get('/', [MainController::class, 'index'])->name('index');
 
 
 // Authentication and Role Routes
@@ -48,8 +49,16 @@ Route::prefix('signup')->group(function () {
     Route::get('/businessSignUp', function () {
         return view('signup.businessSignUp');
     })->name('businessSignUp');
+
+    Route::get('/customerSignUp', function () {
+        return view('signup.customerSignUp');
+    })->name('customerSignUp');
+
     Route::post('/business/store', [BusinessController::class, 'store'])->name('business.store');
     Route::get('/business/success', [SuccessController::class, 'generateQRCode'])->name('genQR');
+
+    Route::post('/customer/insert', [CustomerController::class, 'insertCustomer'])->name('customer.insert');
+    //Route::get('/customer/insert', [CustomerController::class, 'showSignUpForm']);
 });
 
 
@@ -74,5 +83,6 @@ Route::get('/getqr', [QRController::class, 'getQRCode'])->name('getqr');
 Route::get('/showpromo/{userId}', [QRController::class, 'showPromo'])->name('showpromo');
 Route::post('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
-
 Route::get('/cart', [CartController::class, 'getCart'])->name('cart.index');
+Route::post('/cart/update/{productId}', [CartController::class, 'updateCartQuantity'])->name('cart.update');
+Route::get('/download-cart-pdf', [CartController::class, 'downloadCartPDF'])->name('downloadCartPDF');

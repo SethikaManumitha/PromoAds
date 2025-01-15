@@ -56,6 +56,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
         const continueBtn = document.getElementById('continueBtn');
+        let selectedRole = null;
 
         function selectRole(card) {
             document.querySelectorAll('.role-card').forEach((card) => {
@@ -64,14 +65,22 @@
 
             card.classList.add('active');
             continueBtn.disabled = false;
-            const roleText = card.querySelector('.role-label').id;
-            continueBtn.textContent = `Continue as a ${roleText}`;
+            selectedRole = card.querySelector('.role-label').id;
+
+            continueBtn.textContent = `Continue as a ${selectedRole}`;
         }
 
         continueBtn.addEventListener('click', () => {
-            window.location.href = "{{ route('businessSignUp') }}";
+            if (selectedRole === 'Customer') {
+                window.location.href = "{{ route('customerSignUp') }}";
+            } else if (selectedRole === 'Business') {
+                window.location.href = "{{ route('businessSignUp') }}";
+            } else if (selectedRole === 'Driver') {
+                window.location.href = "{{ route('businessSignUp') }}";
+            }
         });
     </script>
+
 
 
 </body>

@@ -24,7 +24,7 @@
             @csrf
             <div class="form-group">
                 <label for="email">Email/Phone Number</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email or phone number" required>
+                <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email or phone number" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>

@@ -27,7 +27,7 @@ class UserController extends Controller
                 session(['business_id' => $business->id]);
                 return view('admin.businessDashboard');
             } elseif ($role == "customer") {
-                return view('customerDashboard');
+                return redirect()->route('index');
             } else {
                 return view('driverDashboard');
             }
