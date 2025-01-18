@@ -10,9 +10,14 @@ use App\Models\Promotion;
 class MainController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        $business = Business::all();
+        $business_type = $request->query('business_type');
+        if ($business_type) {
+            $business = Business::where('business_type', $business_type)->get();
+        } else {
+            $business = Business::all();
+        }
 
         foreach ($business as $biz) {
             $biz->user = User::where('email', $biz->email)->first();

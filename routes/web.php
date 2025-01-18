@@ -56,7 +56,6 @@ Route::prefix('signup')->group(function () {
 
     Route::post('/business/store', [BusinessController::class, 'store'])->name('business.store');
     Route::get('/business/success', [SuccessController::class, 'generateQRCode'])->name('genQR');
-
     Route::post('/customer/insert', [CustomerController::class, 'insertCustomer'])->name('customer.insert');
     //Route::get('/customer/insert', [CustomerController::class, 'showSignUpForm']);
 });
@@ -69,18 +68,24 @@ Route::get('/login', function () {
 Route::post('/login', [UserController::class, 'authenticate'])->name('login.post');
 
 Route::prefix('promotions')->group(function () {
-    Route::get('/viewpromo', [PromoController::class, 'getPromo'])->name('viewpromo');
+    Route::get('/viewpromo', [PromoController::class, 'getAllPromo'])->name('viewpromo');
     Route::get('/addpromo', [PromoController::class, 'showForm'])->name('addpromo');
     Route::get('/promo/add', [PromoController::class, 'showForm'])->name('promo.add');
     Route::post('/promo/add', [PromoController::class, 'addPromo'])->name('promo.add');
     Route::get('/editpromo/{promotion}', [PromoController::class, 'edit'])->name('promo.edit');
     Route::put('/updatepromo/{promotion}', [PromoController::class, 'update'])->name('promo.update');
     Route::delete('/promotions/{promotion}', [PromoController::class, 'destroy'])->name('promo.destroy');
+    Route::post('/getpromotions/{promotion_id}', [PromoController::class, 'getPromo'])->name('promotions.view');
+    Route::get('/getpromotions/{promotion_id}', [PromoController::class, 'getPromo'])->name('promotions.view');
 });
 
 // QR Code Routes
 Route::get('/getqr', [QRController::class, 'getQRCode'])->name('getqr');
 Route::get('/showpromo/{userId}', [QRController::class, 'showPromo'])->name('showpromo');
+
+
+Route::post('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
+
 Route::post('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'getCart'])->name('cart.index');

@@ -78,11 +78,11 @@
     <div class="categories desktop">
         @foreach($categories as $category)
         <div class="category-item-desktop">
-            <a href="#" class="category-toggle">
+            <!-- Added an anchor link for smooth scroll -->
+            <a href="{{ route('index') }}?business_type={{ $category['value'] }}#business-section" class="category-toggle" style="text-decoration: none;">
                 <i class="{{ $category['icon'] }}"></i>
                 <span>{{ $category['label'] }}</span>
             </a>
-
         </div>
         @endforeach
     </div>
@@ -99,20 +99,18 @@
             <!-- Category Items -->
             <div class="category-bar">
                 <div class="d-flex justify-content-start flex-column">
-
                     @foreach($categories as $category)
                     <div class="category-item">
-                        <i class="{{ $category['icon'] }}"></i>
-                        <span>{{ $category['label'] }}</span>
+                        <a href="{{ route('index') }}?business_type={{ $category['value'] }}" class="category-toggle" style="text-decoration: none;">
+                            <i class="{{ $category['icon'] }}"></i>
+                            <span>{{ $category['label'] }}</span>
+                        </a>
                     </div>
                     @endforeach
-
                 </div>
             </div>
-
         </div>
     </div>
-
 
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <!-- Carousel Indicators -->
@@ -154,7 +152,7 @@
         </a>
     </div>
 
-    <div class="container mt-5">
+    <div class="container mt-5" id="business-section">
         <h2>Shops in <span style="color:#72cd3b">Hikkaduwa</span></h2>
         <br>
         <!-- Promotions Section -->
@@ -164,24 +162,13 @@
                 <div class="card promotion-card h-100 d-flex flex-column">
                     <img class="card-img-top" src="{{ $biz->user && $biz->user->profile ? $biz->user->profile : 'https://via.placeholder.com/120' }}" alt="Promotion Image">
                     <div class="card-body d-flex flex-column">
-                        <h5>
-                            {{ $biz->user->name }}
-
-                        </h5>
+                        <h5>{{ $biz->user->name }}</h5>
                         <small>{{ Str::limit($biz->description, 100, '...') }}</small>
-                        <!-- Spacer to push content above the button -->
                         <div class="mt-auto">
                             <form action="{{ route('showpromo', ['userId' => $biz->id]) }}" method="GET">
-                                <button
-                                    type="submit"
-                                    class="btn btn-success btn-block"
-                                    @if (!$loop->first)
-                                    disabled
-                                    title="This shop is locked"
-                                    @endif>
-                                    @if (!$loop->first) <!-- Lock icon for disabled buttons -->
-                                    <i class="fas fa-lock"></i>
-                                    @endif
+                                <button type="submit" class="btn btn-success btn-block"
+                                    @if (!$loop->first) disabled title="This shop is locked" @endif>
+                                    @if (!$loop->first) <i class="fas fa-lock"></i> @endif
                                     Shop Now
                                 </button>
                             </form>
@@ -192,6 +179,7 @@
             @endforeach
         </div>
     </div>
+
 
 
 
@@ -216,10 +204,9 @@
                         </div>
                         <small class="text-muted">Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
                         <div class="mt-auto">
-                            <form action="{{ route('cart.add', $promotion->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-success btn-block">Add to Cart</button>
-                            </form>
+                            <!--  -->
+                            <a href="{{ route('promotions.view', $promotion->id) }}" class="btn btn-success btn-block">View Promotion</a>
+
                         </div>
                     </div>
                 </div>

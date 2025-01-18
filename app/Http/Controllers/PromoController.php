@@ -14,12 +14,22 @@ class PromoController extends Controller
     }
 
     // Get promotions
-    public function getPromo()
+    public function getAllPromo()
     {
         $promotions = Promotion::where('business_id', session('business_id'))->get();
         return view('promotions.viewpromotion', compact('promotions'));
     }
 
+    public function getPromo($promotion_id)
+    {
+        $promotion = Promotion::where('id', $promotion_id)->first();
+
+        if (!$promotion) {
+            return redirect()->back()->with('error', 'Promotion not found or access denied.');
+        } else {
+            return view('promotions.viewpromouser', compact('promotion'));
+        }
+    }
 
     // Add promotion
     public function addPromo(Request $request)

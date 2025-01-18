@@ -119,6 +119,44 @@
     </div>
 
 
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            @php $indicatorIndex = 0; @endphp
+            @foreach ($promotions as $promotion)
+            @php
+            $save = round((($promotion->price - $promotion->dis_price) / $promotion->price) * 100);
+            @endphp
+            @if ($save >= 90)
+            <li data-target="#carouselExampleIndicators" data-slide-to="{{ $indicatorIndex }}" class="{{ $indicatorIndex === 0 ? 'active' : '' }}"></li>
+            @php $indicatorIndex++; @endphp
+            @endif
+            @endforeach
+        </ol>
+        <div class="carousel-inner">
+            @php $itemIndex = 0; @endphp
+            @foreach ($promotions as $promotion)
+            @php
+            $save = round((($promotion->price - $promotion->dis_price) / $promotion->price) * 100);
+            @endphp
+            @if ($save >= 90)
+            <div class="carousel-item {{ $itemIndex === 0 ? 'active' : '' }}">
+                <img class="d-block w-100" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
+            </div>
+            @php $itemIndex++; @endphp
+            @endif
+            @endforeach
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+
 
     <div class="container mt-5">
         <h2><span class="text-success">{{ $business[0]['business_name'] }}</span> Show Room</h2>
@@ -147,9 +185,13 @@
                         <br>
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="{{ route('cart.add', $promotion->id) }}" method="POST">
+                                <!-- <form action="{{ route('cart.add', $promotion->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-success btn-block">Add to Cart</button>
+                                </form> -->
+                                <form action="{{ route('promotions.view', ['promotion_id' => $promotion->id]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-block">View Deal</button>
                                 </form>
                             </div>
                         </div>

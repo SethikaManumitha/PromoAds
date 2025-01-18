@@ -18,18 +18,27 @@ class UserController extends Controller
             $id = $user->id;
             $name = $user->name;
             $role = $user->role;
+            $status = $user->status;
 
             session(['user_id' => $id]);
             session(['user_name' => $name]);
 
-            if ($role == "business") {
-                $business = Business::where('business_name', $name)->first();
-                session(['business_id' => $business->id]);
-                return view('admin.businessDashboard');
-            } elseif ($role == "customer") {
-                return redirect()->route('index');
-            } else {
-                return view('driverDashboard');
+            if ($status == "1") {
+                switch ($role) {
+                    case "business":
+                        $business = Business::where('business_name', $name)->first();
+                        session(['business_id' => $business->id]);
+                        return view('admin.businessDashboard');
+
+                    case "customer":
+                        return redirect()->route('index');
+
+                    case "driver":
+                        return view('driverDashboard');
+
+                    default:
+                        abort(403, "Unauthorized action.");
+                }
             }
         }
 

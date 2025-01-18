@@ -90,7 +90,7 @@ class BusinessController extends Controller
         ]);
 
         // Save the data in the database
-        Business::create([
+        $business = Business::create([
             'business_name' => $validated['business_name'],
             'business_type' => $validated['business_type'],
             'description' => $validated['descript'],
@@ -99,12 +99,13 @@ class BusinessController extends Controller
             'password' => bcrypt($validated['password']),
         ]);
 
-        $user = User::create([
+        User::create([
             'name' => $validated['business_name'],
             'email' => $validated['email'],
             'phone' => $validated['phone_number'],
             'password' => bcrypt($validated['password']),
             'role' => 'business',
+            'status' => '0'
         ]);
 
         return redirect()->route('genQR')->with('success', 'Business registered successfully!');
