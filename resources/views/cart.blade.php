@@ -82,7 +82,6 @@
                         <h6 class="mb-1"><strong>{{ Str::limit($item['promotion']->name, 30) }}</strong></h6>
                         <p class="mb-0 text-muted">Unit Price: <span class="price">LKR.{{$item['promotion']->price}}.00</span> LKR.{{ number_format($item['promotion']->dis_price, 2) }}</p>
                         <p class="mb-0 text-muted">Total Price: LKR.{{ number_format($item['promotion']->dis_price * $item['quantity'], 2) }}</p>
-                        <p>Business: {{$item['promotion']->business_id}}</p>
                     </div>
                     <div class="d-flex align-items-center ms-auto">
                         <form action="{{ route('cart.update', $item['promotion']->id) }}" method="POST" class="me-2">
@@ -116,7 +115,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <a href="{{ route('downloadCartPDF') }}" class="btn btn-primary">Download PDF</a>
+                    <a href="{{ route('downloadCartPDF') }}" class="btn btn-success w-100">Download PDF</a>
                 </div>
             </div>
             @else

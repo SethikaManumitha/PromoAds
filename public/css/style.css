@@ -150,8 +150,9 @@
 }
 
 .promotion-card {
-    height: 370px;
-    margin-bottom: 15px;
+    height: auto; /* Reduce overall height by making it dynamic */
+    display: flex;
+    flex-direction: column;
 }
 
 .promotion-card img {
@@ -248,12 +249,46 @@
 
 .card-price {
     font-weight: bold;
+    font-size: 1.1rem;
     color: #28a745;
+}
+
+.card-body small {
+    font-size: 0.8rem; /* Smaller font for expiry details */
+}
+
+.card-img-top {
+    object-fit: cover; /* Ensure image fills the space proportionally */
+    height: 150px; /* Reduce image height for smaller cards */
+    width: 100%; /* Ensure the image spans the card’s width */
+}
+
+.btn-block {
+    font-size: 0.9rem; /* Slightly smaller button text */
+}
+
+.prices {
+    display: flex;
+    align-items: center; /* Align the text vertically in the same line */
+    font-size: 0.95rem; /* Adjust font size for prices */
+}
+
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.card-body .mt-auto {
+    margin-top: auto; /* Push the button to the bottom of the card body */
 }
 
 .card-discount {
     color: #dc3545;
     text-decoration: line-through;
+    margin-right: 0.5rem; /* Add spacing between discount and price */
+    font-size: 0.9rem;
 }
 
 
@@ -262,3 +297,7 @@
     font-weight: bold;
 }
 
+.carousel-item img {
+    width: 100%; 
+    height: 600px; 
+}

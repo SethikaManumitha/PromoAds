@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Promotion;
-use App\Models\User;
+use App\Models\Business;
 
 class QRController extends Controller
 {
@@ -30,10 +30,12 @@ class QRController extends Controller
             $promotions = Promotion::where('business_id', $userId)
                 ->where('category', 'like', "%$category%")
                 ->get();
+            $business = Business::where('id', $userId)->get();
         } else {
             $promotions = Promotion::where('business_id', $userId)->get();
+            $business = Business::where('id', $userId)->get();
         }
 
-        return view('showpromotion', compact('userId', 'promotions'));
+        return view('showpromotion', compact('userId', 'promotions', 'business'));
     }
 }

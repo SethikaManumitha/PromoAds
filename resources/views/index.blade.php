@@ -114,51 +114,48 @@
     </div>
 
 
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <!-- Carousel Indicators -->
+        <ol class="carousel-indicators">
+            @foreach ($promotions as $index => $promotion)
+            @php
+            $save = round((($promotion->price - $promotion->dis_price) / $promotion->price) * 100);
+            @endphp
 
-    <div class="container mt-5">
-        <!-- Promotions Section -->
-        <h4>Special offers in <span style="color:#72cd3b">Hikkaduwa</span></h4>
-        <br>
-        <div class="row">
-            @foreach ($promotions as $promotion)
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img class="card-img-top promoimg" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
-                    <div style="padding-left: 10px;padding-top: 10px;">
-                        <h6 class="card-title">{{ $promotion->name }}</h6>
+            @if ($save >= 90)
+            <li data-target="#carouselExampleIndicators" data-slide-to="{{ $index }}" class="{{ $loop->first ? 'active' : '' }}"></li>
+            @endif
+            @endforeach
+        </ol>
 
+        <!-- Carousel Inner -->
+        <div class="carousel-inner">
+            @foreach ($promotions as $index => $promotion)
+            @php
+            $save = round((($promotion->price - $promotion->dis_price) / $promotion->price) * 100);
+            @endphp
 
-                        @if ($promotion->price == 1)
-                        <h5><span class="card-save">
-                                SAVE: {{ round((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}%
-                            </span></h5>
-                        @elseif ($promotion->dis_price == $promotion->price)
-                        <h5><span class="card-price">LKR {{ $promotion->price }}</span></h5>
-                        @else
-                        <span class="card-discount">LKR {{ $promotion->price }}</span>
-                        <span class="card-price">LKR {{ $promotion->dis_price }}</span><br>
-                        <span class="card-save">
-                            SAVE: {{ round((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}%
-                        </span><br>
-                        @endif
-                        <p>{{$promotion->business->business_name ?? 'Business not found'}}</p>
-
-
-
-                        <small>Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
-                        <br>
-                        <br>
-                    </div>
-                </div>
+            @if ($save >= 90)
+            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                <img class="d-block w-100" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
             </div>
+            @endif
             @endforeach
         </div>
+
+        <!-- Carousel Controls -->
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
 
-
-    <!-- Main Content -->
     <div class="container mt-5">
-        <h4>Shops in <span style="color:#72cd3b">Hikkaduwa</span></h4>
+        <h2>Shops in <span style="color:#72cd3b">Hikkaduwa</span></h2>
         <br>
         <!-- Promotions Section -->
         <div class="row">
@@ -167,11 +164,27 @@
                 <div class="card promotion-card h-100 d-flex flex-column">
                     <img class="card-img-top" src="{{ $biz->user && $biz->user->profile ? $biz->user->profile : 'https://via.placeholder.com/120' }}" alt="Promotion Image">
                     <div class="card-body d-flex flex-column">
-                        <h5>{{ $biz->user->name }}</h5>
-                        <small>{{ $biz->description }}</small>
+                        <h5>
+                            {{ $biz->user->name }}
+
+                        </h5>
+                        <small>{{ Str::limit($biz->description, 100, '...') }}</small>
                         <!-- Spacer to push content above the button -->
                         <div class="mt-auto">
-                            <a href="{{ route('showpromo', ['userId' => $biz->id]) }}" class="btn btn-success btn-block">Shop Now</a>
+                            <form action="{{ route('showpromo', ['userId' => $biz->id]) }}" method="GET">
+                                <button
+                                    type="submit"
+                                    class="btn btn-success btn-block"
+                                    @if (!$loop->first)
+                                    disabled
+                                    title="This shop is locked"
+                                    @endif>
+                                    @if (!$loop->first) <!-- Lock icon for disabled buttons -->
+                                    <i class="fas fa-lock"></i>
+                                    @endif
+                                    Shop Now
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -181,6 +194,40 @@
     </div>
 
 
+
+    <div class="container mt-5">
+        <h2>Recommended <span class="text-success">Offers</span></h2>
+        <br>
+        <div class="row">
+            @foreach ($promotions as $promotion)
+            @if ($promotion->price != 1)
+            <div class="col-md-3 col-sm-6 col-6">
+                <div class="card promotion-card">
+                    <img class="card-img-top" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
+                    <div class="card-body d-flex flex-column">
+                        <p class="card-title mb-2">{{ $promotion->name }}</p>
+                        <div class="prices mb-2">
+                            @if ($promotion->dis_price == $promotion->price)
+                            <span class="card-price">LKR {{ $promotion->price }}</span>
+                            @else
+                            <span class="card-discount text-muted"><s>LKR {{ $promotion->price }}</s></span>
+                            <span class="card-price text-success ml-2">LKR {{ $promotion->dis_price }}</span>
+                            @endif
+                        </div>
+                        <small class="text-muted">Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
+                        <div class="mt-auto">
+                            <form action="{{ route('cart.add', $promotion->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-block">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @endforeach
+        </div>
+    </div>
 
 
     <!-- JavaScript for Offcanvas -->

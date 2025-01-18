@@ -13,6 +13,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <title>Promo Ads</title>
+    <style>
+        .category-bar a {
+            font-size: 1rem;
+            color: #72cd3b;
+            margin-bottom: 10px;
+            margin-right: 5px;
+            text-decoration: none;
+        }
+
+        .category-bar a:hover {
+            color: rgb(187, 206, 195);
+        }
+    </style>
 </head>
 
 <body>
@@ -73,8 +86,7 @@
     ];
     @endphp
 
-
-    <div class="category-bar categories desktop">
+    <!-- <div class="category-bar categories desktop">
         <div class="container d-flex justify-content-around flex-wrap">
             @foreach($categories as $category)
             <a href="{{ route('showpromo', ['userId' => $userId, 'category' => $category['value']]) }}">
@@ -83,8 +95,7 @@
             </a>
             @endforeach
         </div>
-    </div>
-
+    </div> -->
     <div id="sideMenu" class="offcanvas">
         <div class="offcanvas-header">
             <h5>Menu</h5>
@@ -94,19 +105,7 @@
             <!-- Category Items -->
             <div class="category-bar">
                 <div class="d-flex justify-content-start flex-column">
-                    <style>
-                        .category-bar a {
-                            font-size: 1rem;
-                            color: #72cd3b;
-                            margin-bottom: 10px;
-                            margin-right: 5px;
-                            text-decoration: none;
-                        }
 
-                        .category-bar a:hover {
-                            color: rgb(187, 206, 195);
-                        }
-                    </style>
 
                     @foreach($categories as $category)
                     <a href="{{ route('showpromo', ['userId' => $userId, 'category' => $category['value']]) }}">
@@ -116,12 +115,14 @@
                     @endforeach
                 </div>
             </div>
-
-
         </div>
     </div>
 
+
+
     <div class="container mt-5">
+        <h2><span class="text-success">{{ $business[0]['business_name'] }}</span> Show Room</h2>
+
         <div class="row">
             @foreach ($promotions as $promotion)
             @if ($promotion->price != 1)

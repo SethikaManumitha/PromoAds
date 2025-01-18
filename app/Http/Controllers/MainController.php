@@ -18,7 +18,13 @@ class MainController extends Controller
             $biz->user = User::where('email', $biz->email)->first();
         }
 
-        $promotions = Promotion::with('business')->get();
+        $promotions = Promotion::with('business')
+            ->get()
+            ->map(function ($promotion) {
+                $promotion->discount_rate = (($promotion->price - $promotion->dis_price) / $promotion->price) * 100;
+                return $promotion;
+            })
+            ->sortByDesc('discount_rate');
         return view('index', compact('business', 'promotions'));
     }
 }
