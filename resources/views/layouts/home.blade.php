@@ -6,12 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
-    <title>Promo Ads</title>
+    <title>@yield('title', 'Promo Ads')</title>
+    @yield('page-css')
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GT8C633H8J"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-GT8C633H8J');
+    </script>
 </head>
 
 <body>
@@ -56,72 +68,32 @@
 
         </div>
     </nav>
-    <div class="container my-5">
-        <!-- Product Details Section -->
-        <div class="row">
-            <!-- Product Image Section -->
-            <div class="col-md-4 text-center">
-                <img class="img-fluid" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
-            </div>
 
-            <!-- Product Description Section -->
-            <div class="col-md-8">
-                <h3>{{ $promotion->name }}</h3>
-                <p><strong>Price:</strong> LKR {{ $promotion->price }}</p>
-                <p>{{ $promotion->description }}</p>
-                <p><strong>Category:</strong> {{ $promotion->category }}</p>
-            </div>
-        </div>
 
-        <!-- Action Buttons Section -->
-        <div class="row mt-4">
-            <div class="col-md-6" style="margin-bottom:20px">
-                <!-- Share Button -->
-                <button class="btn btn-primary w-100" id="whatsappShare">
-                    <i class="fas fa-share-alt"></i> Share With Whatsapp
-                </button>
-            </div>
-            <div class="col-md-6">
-                <form action="{{ route('cart.add', $promotion->id) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-success btn-block w-100"><i class="fas fa-cart-plus"></i> Add to Cart</button>
-                </form>
-            </div>
-        </div>
-    </div>
+    @yield('content')
+
+    <!-- JavaScript for Offcanvas -->
     <script>
-        document.getElementById('whatsappShare').addEventListener('click', function() {
-            var productID = "{{ $promotion->id }}";
-            var productName = "{{ $promotion->name }}";
-            var productDescription = "{{ $promotion->description }}";
-            var originalPrice = "{{ $promotion->price }}";
-            var discountedPrice = "{{ $promotion->dis_price }}";
-            var amountSaved = originalPrice - discountedPrice;
-            var endDate = "{{ $promotion->end_date }}";
-            var imageUrl = "https://promoads.lk/promotions/getpromotions/" + productID;
-            var businessName = "{{ $business->business_name }}";
+        const menuToggle = document.getElementById('menuToggle');
+        const sideMenu = document.getElementById('sideMenu');
+        const menuClose = document.getElementById('menuClose');
 
-            // Compose WhatsApp message
-            var message = encodeURIComponent(
-                "🌟 Limited-Time Offer from *" + businessName + "* 🌟\n\n" +
-                "🔥 *" + productName + "* 🔥\n" +
-                "💰 Price: ~LKR " + originalPrice + "~ LKR " + discountedPrice + "\n" +
-                "🛒 You Save: LKR " + amountSaved + "!\n\n" +
-                "📅 Hurry! Offer valid until: " + endDate + "\n\n" +
-                "👉 Check it out here: " + imageUrl + "\n\n" +
-                "*Don't miss this amazing deal!*"
-            );
+        menuToggle.addEventListener('click', () => {
+            sideMenu.classList.add('show');
+        });
 
+        menuClose.addEventListener('click', () => {
+            sideMenu.classList.remove('show');
+        });
 
-            // WhatsApp share URL
-            var whatsappURL = "https://api.whatsapp.com/send?text=" + message;
-
-            // Open WhatsApp to send the message
-            window.open(whatsappURL, '_blank');
+        document.addEventListener('click', (event) => {
+            if (!sideMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                sideMenu.classList.remove('show');
+            }
         });
     </script>
 
-    <!-- Bootstrap JS and dependencies -->
+    <!-- Bootstrap JS & dependencies -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

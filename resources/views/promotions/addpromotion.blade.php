@@ -1,179 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.dashboard')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <title>Promotion</title>
-    <style>
-        .sidebar {
-            height: 100vh;
-            width: 200px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #343a40;
-            padding-top: 20px;
-            color: white;
-        }
+@section('content')
+<div class="content">
+    <h2 class="text-center">{{ isset($promotion) ? 'Edit ' : 'Add ' }}<span class="text-success">Promotion</span></h2>
 
-        .sidebar a {
-            color: white;
-            padding: 10px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .sidebar a:hover {
-            background-color: #495057;
-        }
-
-        .content {
-            margin-left: 220px;
-            padding: 20px;
-        }
-
-        /* Hide sidebar on small screens and move contents to navbar */
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-
-            .content {
-                margin-left: 0;
-            }
-
-            .navbar-collapse {
-                flex-grow: 1;
-                justify-content: space-between;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Business Dashboard</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ route('admin.businessDashboard') }}">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('getqr') }}">QR Code</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('addpromo') }}">Add Promotions</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('viewpromo') }}">View Promotions</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Analytics</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Log Out</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Sidebar -->
-    <div class="sidebar d-none d-md-block">
-        <h5 class="text-center">Menu</h5>
-        <a href="{{ route('admin.businessDashboard') }}">Dashboard</a>
-        <a href="{{ route('getqr') }}">QR Code</a>
-        <a href="{{ route('addpromo') }}">Add Promotions</a>
-        <a href="{{ route('viewpromo') }}">View Promotions</a>
-        <a href="#">Analytics</a>
-        <a href="#">Users</a>
-        <a href="#">Settings</a>
-        <a href="{{ route('login') }}">Log Out</a>
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
     </div>
+    @endif
 
-    <!-- Content -->
-    <div class="content">
-        <h2 class="text-center">{{ isset($promotion) ? 'Edit ' : 'Add ' }}<span class="text-success">Promotion</span></h2>
+    @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
-        @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+    <form method="POST" action="{{ isset($promotion) ? route('promo.update', $promotion->id) : route('promo.add') }}" enctype="multipart/form-data">
+        @csrf
+        @if(isset($promotion))
+        @method('PUT')
         @endif
 
-        @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+        <div class="form-group">
+            <label for="name">Promotion Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ isset($promotion) ? $promotion->name : '' }}" placeholder="Enter Promotion Name" required>
         </div>
-        @endif
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select class="form-control" id="category" name="category" value="{{ isset($promotion) ? $promotion->category : '' }}" required>
+                <option value="Groceries">Groceries</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Fashion_accessories">Fashion</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Home_appliances">Home Appliances</option>
+                <option value="Toys_gifts">Toys & Gifts</option>
+                <option value="Taxi">Taxi</option>
+                <option value="Real_estate">Real Estate</option>
+                <option value="Books_stationary">Books & Stationary</option>
+                <option value="Automobile">Automobile</option>
+            </select>
+        </div>
 
-        <form method="POST" action="{{ isset($promotion) ? route('promo.update', $promotion->id) : route('promo.add') }}" enctype="multipart/form-data">
-            @csrf
-            @if(isset($promotion))
-            @method('PUT')
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter Description">{{ isset($promotion) ? $promotion->description : '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="price">Original Price</label>
+            <input type="text" class="form-control" id="price" name="price" value="{{ isset($promotion) ? $promotion->price : '' }}" placeholder="Enter Price" required>
+        </div>
+        <div class="form-group">
+            <label for="dis_price">Discount Price</label>
+            <input type="text" class="form-control" id="dis_price" name="dis_price" value="{{ isset($promotion) ? $promotion->dis_price : '' }}" placeholder="Enter Discount Price" required>
+        </div>
+        <div class="form-group">
+            <label for="dis_price">Loyalty Price</label>
+            <input type="text" class="form-control" id="loy_price" name="loy_price" value="{{ isset($promotion) ? $promotion->loy_price : '' }}" placeholder="Enter Loyalty Price" required>
+        </div>
+        <div class="form-group">
+            <label for="end_date">End Date</label>
+            <input type="date" class="form-control" id="end_date" name="end_date" value="{{ isset($promotion) ? $promotion->end_date : '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Upload Image</label>
+            <input type="file" name="image" class="form-control">
+            @if(isset($promotion) && $promotion->image)
+            <br>
+            <img src="{{ asset($promotion->image) }}" alt="Current Image" height="100">
             @endif
+        </div>
+        <input type="hidden" class="form-control" id="business" name="business" value="{{ session('business_id') }}">
+        <button type="submit" class="btn btn-success">{{ isset($promotion) ? 'Update Promotion' : 'Add Promotion' }}</button>
 
-            <div class="form-group">
-                <label for="name">Promotion Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ isset($promotion) ? $promotion->name : '' }}" placeholder="Enter Promotion Name" required>
-            </div>
-            <div class="form-group">
-                <label for="category">Category</label>
-                <select class="form-control" id="category" name="category" value="{{ isset($promotion) ? $promotion->category : '' }}" required>
-                    <option value="Groceries">Groceries</option>
-                    <option value="Clothing">Clothing</option>
-                    <option value="Fashion_accessories">Fashion</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Furniture">Furniture</option>
-                    <option value="Home_appliances">Home Appliances</option>
-                    <option value="Toys_gifts">Toys & Gifts</option>
-                    <option value="Taxi">Taxi</option>
-                    <option value="Real_estate">Real Estate</option>
-                    <option value="Books_stationary">Books & Stationary</option>
-                    <option value="Automobile">Automobile</option>
-                </select>
-            </div>
+    </form>
 
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter Description">{{ isset($promotion) ? $promotion->description : '' }}</textarea>
-            </div>
-            <div class="form-group">
-                <label for="price">Original Price</label>
-                <input type="text" class="form-control" id="price" name="price" value="{{ isset($promotion) ? $promotion->price : '' }}" placeholder="Enter Price" required>
-            </div>
-            <div class="form-group">
-                <label for="dis_price">Discount Price</label>
-                <input type="text" class="form-control" id="dis_price" name="dis_price" value="{{ isset($promotion) ? $promotion->dis_price : '' }}" placeholder="Enter Discount Price" required>
-            </div>
-            <div class="form-group">
-                <label for="dis_price">Loyalty Price</label>
-                <input type="text" class="form-control" id="loy_price" name="loy_price" value="{{ isset($promotion) ? $promotion->loy_price : '' }}" placeholder="Enter Loyalty Price" required>
-            </div>
-            <div class="form-group">
-                <label for="end_date">End Date</label>
-                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ isset($promotion) ? $promotion->end_date : '' }}" required>
-            </div>
-
-            <div class="form-group">
-                <label for="image">Upload Image</label>
-                <input type="file" name="image" class="form-control">
-                @if(isset($promotion) && $promotion->image)
-                <br>
-                <img src="{{ asset($promotion->image) }}" alt="Current Image" height="100">
-                @endif
-            </div>
-            <input type="hidden" class="form-control" id="business" name="business" value="{{ session('business_id') }}">
-            <button type="submit" class="btn btn-success">{{ isset($promotion) ? 'Update Promotion' : 'Add Promotion' }}</button>
-
-        </form>
-
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-</body>
-
-</html>
+</div>
+@endsection

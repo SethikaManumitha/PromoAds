@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Promotion;
+use App\Models\Business;
+
 
 class PromoController extends Controller
 {
@@ -27,7 +29,8 @@ class PromoController extends Controller
         if (!$promotion) {
             return redirect()->back()->with('error', 'Promotion not found or access denied.');
         } else {
-            return view('promotions.viewpromouser', compact('promotion'));
+            $business = Business::where('id', $promotion->business_id)->first();
+            return view('promotions.viewpromouser', compact('promotion', 'business'));
         }
     }
 
