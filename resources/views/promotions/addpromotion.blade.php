@@ -35,14 +35,19 @@
             <select class="form-control" id="category" name="category" value="{{ isset($promotion) ? $promotion->category : '' }}" required>
                 <option value="Groceries">Groceries</option>
                 <option value="Clothing">Clothing</option>
-                <option value="Fashion_accessories">Fashion</option>
+                <option value="Fashion_accessories">Fashion & Accessories</option>
+                <option value="Cosmetic">Cosmetic</option>
                 <option value="Electronics">Electronics</option>
                 <option value="Furniture">Furniture</option>
                 <option value="Home_appliances">Home Appliances</option>
                 <option value="Toys_gifts">Toys & Gifts</option>
                 <option value="Taxi">Taxi</option>
                 <option value="Real_estate">Real Estate</option>
+                <option value="Travel">Travel</option>
+                <option value="Hotels_villa">Hotel & Villa</option>
+                <option value="Cakes">Cakes</option>
                 <option value="Books_stationary">Books & Stationary</option>
+                <option value="Restaurant">Restaurant</option>
                 <option value="Automobile">Automobile</option>
             </select>
         </div>

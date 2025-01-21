@@ -12,15 +12,15 @@
 $categories = [
 ['value' => 'Groceries', 'label' => 'Groceries', 'icon' => 'fas fa-apple-alt'],
 ['value' => 'Clothing', 'label' => 'Clothing', 'icon' => 'fas fa-tshirt'],
-['value' => 'Fashion_accessories', 'label' => 'Fashion', 'icon' => 'fas fa-glasses'],
+['value' => 'Cosmetic', 'label' => 'Cosmetic', 'icon' => 'fas fa-paint-brush'],
 ['value' => 'Electronics', 'label' => 'Electronics', 'icon' => 'fas fa-tv'],
 ['value' => 'Furniture', 'label' => 'Furniture', 'icon' => 'fas fa-couch'],
-['value' => 'Home_appliances', 'label' => 'Home Appliances', 'icon' => 'fas fa-blender'],
-['value' => 'Toys_gifts', 'label' => 'Toys & Gifts', 'icon' => 'fas fa-gamepad'],
+['value' => 'Restaurant', 'label' => 'Restaurant', 'icon' => 'fas fa-utensils'],
+['value' => 'Cakes', 'label' => 'Cakes', 'icon' => 'fas fa-birthday-cake'],
 ['value' => 'Taxi', 'label' => 'Taxi', 'icon' => 'fas fa-taxi'],
-['value' => 'Real_estate', 'label' => 'Real Estate', 'icon' => 'fas fa-building'],
+['value' => 'Travel', 'label' => 'Travel', 'icon' => 'fas fa-plane'],
+['value' => 'Hotels_villa', 'label' => 'Hotel & Villa', 'icon' => 'fas fa-building'],
 ['value' => 'Books_stationary', 'label' => 'Books & Stationary', 'icon' => 'fas fa-book'],
-['value' => 'Automobile', 'label' => 'Automobile', 'icon' => 'fas fa-cogs'],
 
 ];
 @endphp

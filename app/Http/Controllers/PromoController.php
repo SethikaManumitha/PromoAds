@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Promotion;
 use App\Models\Business;
+use App\Models\Feedback;
+
 
 
 class PromoController extends Controller
@@ -30,9 +32,15 @@ class PromoController extends Controller
             return redirect()->back()->with('error', 'Promotion not found or access denied.');
         } else {
             $business = Business::where('id', $promotion->business_id)->first();
-            return view('promotions.viewpromouser', compact('promotion', 'business'));
+
+            $feedbacks = Feedback::where('promotion_id', $promotion_id)->get();
+
+            $averageRating = $feedbacks->avg('rating');
+
+            return view('promotions.viewpromouser', compact('promotion', 'business', 'feedbacks', 'averageRating'));
         }
     }
+
 
     // Add promotion
     public function addPromo(Request $request)

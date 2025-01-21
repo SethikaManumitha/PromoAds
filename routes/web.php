@@ -10,6 +10,8 @@ use App\Http\Controllers\QRController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FeedbackController;
+
 
 // Default route
 Route::get('/', [MainController::class, 'index'])->name('index');
@@ -77,8 +79,8 @@ Route::prefix('promotions')->group(function () {
     Route::delete('/promotions/{promotion}', [PromoController::class, 'destroy'])->name('promo.destroy');
     Route::post('/getpromotions/{promotion_id}', [PromoController::class, 'getPromo'])->name('promotions.view');
     Route::get('/getpromotions/{promotion_id}', [PromoController::class, 'getPromo'])->name('promotions.view');
+    Route::post('/feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
 });
-
 // QR Code Routes
 Route::get('/getqr', [QRController::class, 'getQRCode'])->name('getqr');
 Route::get('/showpromo/{userId}', [QRController::class, 'showPromo'])->name('showpromo');
