@@ -76,7 +76,7 @@
             } else if (selectedRole === 'Business') {
                 window.location.href = "{{ route('businessSignUp') }}";
             } else if (selectedRole === 'Driver') {
-                window.location.href = "{{ route('businessSignUp') }}";
+                window.location.href = "{{ route('driverSignUp') }}";
             }
         });
     </script>

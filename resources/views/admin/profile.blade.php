@@ -35,8 +35,8 @@
 
                             <!-- Email -->
                             <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" value="{{ old('email',$user->email) }}" placeholder="Enter your email">
+                                <label for="email">Email/Phone Number</label>
+                                <input type="text" class="form-control" id="email" name="email" value="{{ old('email',$user->email) }}" placeholder="Enter your email">
                             </div>
 
                             <!-- Save Button -->
@@ -61,5 +61,4 @@
         }
     }
 </script>
-
 @endsection

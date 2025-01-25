@@ -21,6 +21,14 @@ class SuccessController extends Controller
 
         $qrCodeData = $url . "/showpromo/{$userId}";
         $qrCode = QrCode::size(200)->generate($qrCodeData);
-        return view('admin.businessCreated', compact('qrCode', 'user'));
+
+        if ($user->role === 'business') {
+            return view('admin.businessCreated', compact('qrCode', 'user'));
+        } elseif ($user->role === 'driver') {
+            return view('admin.driverCreated', compact('user'));
+        }
+
+        // Redirect if role is not recognized
+        return redirect()->back()->with('error', 'User role not recognized.');
     }
 }

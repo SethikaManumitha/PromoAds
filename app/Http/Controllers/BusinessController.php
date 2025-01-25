@@ -22,6 +22,7 @@ class BusinessController extends Controller
         return view('admin.profile', compact('user'));
     }
 
+
     public function getBusiness()
     {
         $business = Business::all();
@@ -42,7 +43,6 @@ class BusinessController extends Controller
 
         $user = Auth::user();
 
-        // Ensure the user is an instance of the User model
         if (!$user instanceof User) {
             return redirect()->route('login')->with('error', 'User is not valid.');
         }
@@ -73,6 +73,36 @@ class BusinessController extends Controller
         $user->save();
 
         return redirect()->route('admin.profile')->with('success', 'Profile updated successfully!');
+    }
+
+
+    public function changeBusinessProfile(Request $request, $id)
+    {
+        // Validate input
+        $validated = $request->validate([
+            'profile_picture' => 'required|mimes:png,jpg,jpeg,webp|max:2048',
+        ]);
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+
+        $file = $request->file('profile_picture');
+        $extension = $file->getClientOriginalExtension();
+        $path = 'uploads/profile/';
+        $filename = time() . "_" . $user->id . "." . $extension;
+        $file->move(public_path($path), $filename);
+
+        if ($user->profile && file_exists(public_path($user->profile))) {
+            unlink(public_path($user->profile));
+        }
+
+        $user->profile = $path . $filename;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile picture updated successfully!');
     }
 
 

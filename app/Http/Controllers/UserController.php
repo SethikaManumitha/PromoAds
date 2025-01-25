@@ -7,6 +7,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Business;
+use App\Models\Driver;
+use App\Models\User;
+
+
 
 class UserController extends Controller
 {
@@ -34,7 +38,13 @@ class UserController extends Controller
                         return redirect()->route('index');
 
                     case "driver":
-                        return view('driverDashboard');
+                        $driver = Driver::where('name', $name)->first();
+                        session(['nic' => $driver->NIC]);
+                        return view('admin.driverDashboard');
+
+                    case "admin":
+                        $users = User::all();
+                        return view('admin.adminDashboard', compact('users'));
 
                     default:
                         abort(403, "Unauthorized action.");

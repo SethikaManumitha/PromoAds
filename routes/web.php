@@ -11,6 +11,11 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ServiceController;
+
+
 
 
 // Default route
@@ -44,6 +49,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/profile', [BusinessController::class, 'showProfile'])->name('admin.profile');
     Route::post('/profile', [BusinessController::class, 'updateProfile'])->name('admin.updateProfile');
     Route::get('/businessDashboard', [BusinessController::class, 'showDashboard'])->name('admin.businessDashboard');
+    Route::post('/change-business-profile/{id}', [BusinessController::class, 'changeBusinessProfile'])->name('admin.changeBusinessProfile');
 });
 
 
@@ -56,7 +62,12 @@ Route::prefix('signup')->group(function () {
         return view('signup.customerSignUp');
     })->name('customerSignUp');
 
+    Route::get('/driverSignUp', function () {
+        return view('signup.driverSignUp');
+    })->name('driverSignUp');
+
     Route::post('/business/store', [BusinessController::class, 'store'])->name('business.store');
+    Route::post('/driver/store', [DriverController::class, 'store'])->name('driver.store');
     Route::get('/business/success', [SuccessController::class, 'generateQRCode'])->name('genQR');
     Route::post('/customer/insert', [CustomerController::class, 'insertCustomer'])->name('customer.insert');
     //Route::get('/customer/insert', [CustomerController::class, 'showSignUpForm']);
@@ -67,7 +78,11 @@ Route::prefix('signup')->group(function () {
 Route::get('/login', function () {
     return view('signin');
 })->name('login');
+
+
 Route::post('/login', [UserController::class, 'authenticate'])->name('login.post');
+
+
 
 Route::prefix('promotions')->group(function () {
     Route::get('/viewpromo', [PromoController::class, 'getAllPromo'])->name('viewpromo');
@@ -81,6 +96,16 @@ Route::prefix('promotions')->group(function () {
     Route::get('/getpromotions/{promotion_id}', [PromoController::class, 'getPromo'])->name('promotions.view');
     Route::post('/feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
 });
+
+Route::prefix('services')->group(function () {
+    Route::get('/viewpromo', [ServiceController::class, 'getAllService'])->name('viewservice');
+    Route::get('/addservice', [ServiceController::class, 'showService'])->name('addservice');
+    Route::get('/add', [ServiceController::class, 'showService'])->name('service.add');
+    Route::post('/add', [ServiceController::class, 'addService'])->name('service.add');
+    Route::get('/editservice/{promotion}', [ServiceController::class, 'edit'])->name('service.edit');
+    Route::put('/updateservice/{promotion}', [ServiceController::class, 'update'])->name('service.update');
+    Route::delete('/service/{promotion}', [ServiceController::class, 'destroy'])->name('service.destroy');
+});
 // QR Code Routes
 Route::get('/getqr', [QRController::class, 'getQRCode'])->name('getqr');
 Route::get('/showpromo/{userId}', [QRController::class, 'showPromo'])->name('showpromo');
@@ -93,3 +118,14 @@ Route::get('/cart/add/{productId}', [CartController::class, 'addToCart'])->name(
 Route::get('/cart', [CartController::class, 'getCart'])->name('cart.index');
 Route::post('/cart/update/{productId}', [CartController::class, 'updateCartQuantity'])->name('cart.update');
 Route::get('/download-cart-pdf', [CartController::class, 'downloadCartPDF'])->name('downloadCartPDF');
+
+
+Route::get('/admin/88906GH', [AdminController::class, 'index'])->name('getAdmin');
+Route::post('/edit-user/{id}', [AdminController::class, 'editUser'])->name('editUser');
+Route::get('/admin/createBusiness', function () {
+    return view('admin.createBusiness');
+})->name('createBusiness');
+
+Route::get('/admin/createDriver', function () {
+    return view('admin.createDriver');
+})->name('createDriver');
