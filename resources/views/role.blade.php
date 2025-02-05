@@ -24,7 +24,9 @@
                         <div class="role-icon">
                             <i class="fas fa-user"></i>
                         </div>
-                        <div class="role-label" id="Customer">I am a client looking for services or products.</div>
+                        <div class="role-label" id="Customer">
+                            I am a client looking for services or products.
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -32,7 +34,9 @@
                         <div class="role-icon">
                             <i class="fas fa-briefcase"></i>
                         </div>
-                        <div class="role-label" id="Business">I am a business offering services or products.</div>
+                        <div class="role-label" id="Business">
+                            I am a business offering services or products.
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -40,7 +44,9 @@
                         <div class="role-icon">
                             <i class="fas fa-truck"></i>
                         </div>
-                        <div class="role-label" id="Driver">I am a driver ready to fulfill delivery or transportation tasks.</div>
+                        <div class="role-label" id="Driver">
+                            I am a driver ready to fulfill delivery or transportation tasks.
+                        </div>
                     </div>
                 </div>
             </div>

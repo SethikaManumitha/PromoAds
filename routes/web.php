@@ -14,6 +14,10 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\NotificationController;
+
+
+use App\Http\Middleware\TrackPromoViews;
 
 
 
@@ -129,3 +133,11 @@ Route::get('/admin/createBusiness', function () {
 Route::get('/admin/createDriver', function () {
     return view('admin.createDriver');
 })->name('createDriver');
+
+Route::post('/notifications/send/{userId}', [NotificationController::class, 'send'])->name('notifications.send');
+Route::get('/notifications', [NotificationController::class, 'getUserNotifications'])->name('notifications.index');
+
+
+Route::get('/showpromo/{userId}', [QRController::class, 'showPromo'])
+    ->name('showpromo')
+    ->middleware(TrackPromoViews::class);

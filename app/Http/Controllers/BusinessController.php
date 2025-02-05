@@ -6,14 +6,80 @@ use Illuminate\Http\Request;
 use App\Models\Business;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
+use Illuminate\Support\Facades\DB;
+use Spatie\Analytics\Facades\Analytics;
+use Spatie\Analytics\Period as AnalyticsPeriod;
 
 class BusinessController extends Controller
 {
 
+
+    public function getBusinessData($businessId)
+    {
+        $totalViews = DB::table('promo_views')
+            ->where('business_id', $businessId)
+            ->sum('views');
+
+        $uniqueVisitorsCount = DB::table('promo_views')
+            ->where('business_id', $businessId)
+            ->distinct('visitor_id')
+            ->count('visitor_id');
+
+        $carts = Cart::with(['promotion.business', 'user'])
+            ->whereHas('promotion', function ($query) use ($businessId) {
+                $query->where('business_id', $businessId);
+            })
+            ->get();
+
+        $analyticsData = Analytics::fetchVisitorsAndPageViews(AnalyticsPeriod::days(7));
+        // Calculate Engagement Rate
+        if ($uniqueVisitorsCount > 0) {
+            $engagementRate = ($totalViews / $uniqueVisitorsCount) * 100;
+        } else {
+            $engagementRate = 0;
+        }
+
+        $groupedCarts = $carts->groupBy('user_id')->map(function ($group) {
+            return $group->groupBy('promotion_id')->map(function ($promotionGroup) {
+                return [
+                    'promotion' => $promotionGroup->first()->promotion,
+                    'total_quantity' => $promotionGroup->sum('quantity'),
+                    'user' => $promotionGroup->first()->user, // Include user details
+                ];
+            });
+        });
+
+        return [
+            'totalViews' => $totalViews,
+            'uniqueVisitorsCount' => $uniqueVisitorsCount,
+            'engagementRate' => $engagementRate,
+            'groupedCarts' => $groupedCarts,
+        ];
+    }
+
+
+    // Show Business Dashboard
     public function showDashboard()
     {
-        return view('admin.businessDashboard');
+        $businessId = session('business_id');
+
+        if ($businessId) {
+            // Call the getBusinessData method to fetch the required data
+            $businessData = $this->getBusinessData($businessId);
+
+            return view('admin.businessDashboard', [
+                'uniqueVisitorsCount' => $businessData['uniqueVisitorsCount'],
+                'totalViews' => $businessData['totalViews'],
+                'engagementRate' => $businessData['engagementRate'],
+                'groupedCarts' => $businessData['groupedCarts'],
+            ]);
+        } else {
+            return redirect()->route('login')->withErrors('Business not found in session.');
+        }
     }
+
+
 
 
     public function showProfile()
@@ -21,6 +87,7 @@ class BusinessController extends Controller
         $user = Auth::user();
         return view('admin.profile', compact('user'));
     }
+
 
 
     public function getBusiness()

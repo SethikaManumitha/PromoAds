@@ -22,3 +22,4 @@ yarn-error.log
 /.vscode
 /.zed
 /public/upload/
+/storage/app/analytics/service-account-credentials.json

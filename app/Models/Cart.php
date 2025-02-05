@@ -12,4 +12,9 @@ class Cart extends Model
     {
         return $this->belongsTo(Promotion::class, 'product_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

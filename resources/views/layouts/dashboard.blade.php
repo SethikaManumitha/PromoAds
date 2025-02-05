@@ -97,7 +97,7 @@
     <!-- Sidebar -->
     <div class="sidebar d-none d-md-block">
         <h5 class="text-center">Menu</h5>
-        <a href="#">Dashboard</a>
+        <a href="{{route('admin.businessDashboard') }}">Dashboard</a>
         <a href="{{ route('getqr') }}">QR Code</a>
         <a href="{{ route('addpromo') }}">Add Promotions</a>
         <a href="{{ route('viewpromo') }}">View Promotions</a>

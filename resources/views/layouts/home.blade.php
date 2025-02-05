@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <title>@yield('title', 'Promo Ads')</title>
+    @yield('additional-head')
     @yield('page-css')
 
     <!-- Google tag (gtag.js) -->
@@ -24,47 +25,47 @@
 
         gtag('config', 'G-GT8C633H8J');
     </script>
+
+    <!-- Custom CSS for Solid Navbar -->
+    <style>
+        .solid-navbar {
+            background-color: #e9ecef !important;
+            /* Change to any solid color you prefer */
+            transition: background-color 0.3s ease-in-out;
+        }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: rgb(255, 255, 255); box-shadow: none;">
         <div class="container">
-            <a class="navbar-brand" href="/" id="appText">Promo<span style="color:#72cd3b">Ads</span></a>
+            <div class="d-flex d-lg-none align-items-center">
+                <button class="btn btn-link d-lg-none" style="font-size: 1.5rem; color: #28a745;" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="/" id="appText">Promo<span style="color:rgb(25, 135, 84)">Ads</span></a>
+            </div>
+
+            <!-- Navbar Brand for Desktop and larger screens -->
+            <a class="navbar-brand d-none d-lg-block" href="/" id="appText">Promo<span style="color:rgb(25, 135, 84)">Ads</span></a>
 
             <!-- Navbar Items for Larger Screens -->
             <div class="collapse navbar-collapse" id="navbarNav">
-                <form class="d-flex w-50 mx-auto d-none d-lg-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="txtsearch" id="txtsearch">
-                </form>
                 <ul class="navbar-nav ml-auto d-none d-lg-flex align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-heart icon-heart fa-icon"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-shopping-cart fa-icon icon-cart"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-signIn mx-2" href="{{ route('signin') }}">
-                            <i class="fas fa-user fa-icon icon-user"></i> Log In
+                        <a class="btn btn-success mx-2" href="signup/businessSignUp">
+                            <i class="bi bi-briefcase"></i>
+                            Register Your Business
                         </a>
                     </li>
+
+                    <a class="btn btn-success mx-2" href="{{ route('signin') }}">
+                        <i class="fas fa-user fa-icon icon-user"></i> Log In
+                    </a>
                 </ul>
             </div>
 
-            <!-- Navbar Items for Mobile -->
-            <div class="d-flex d-lg-none align-items-center">
-                <button class="btn btn-link d-lg-none" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <a class="nav-link" href="#"><i class="fas fa-search icon-search fa-icon"></i></a>
-                <a class="nav-link" href="{{ route('cart.index') }}"><i class="fas fa-shopping-cart fa-icon icon-cart"></i></a>
-                <a class="btn btn-signIn" href="{{ route('signin') }}">
-                    <i class="fas fa-user fa-icon icon-user"></i>
-                </a>
 
-            </div>
-
-        </div>
 
         </div>
     </nav>
@@ -97,6 +98,18 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- Scroll Event to Toggle Navbar Background Color -->
+    <script>
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('solid-navbar');
+            } else {
+                navbar.classList.remove('solid-navbar');
+            }
+        });
+    </script>
 </body>
 
 </html>

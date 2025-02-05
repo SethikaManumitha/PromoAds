@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Serivce;
-use App\Models\User;
-use Vonage\Client\Exception\Server;
 use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller

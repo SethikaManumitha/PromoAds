@@ -40,7 +40,7 @@ body {
     top: -25px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #72cd3b;
+    background-color: #28a745;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -74,6 +74,6 @@ body {
 }
 
 .continue-btn:hover {
-    background-color: #72cd3b;
+    background-color: #28a745;
 
 }

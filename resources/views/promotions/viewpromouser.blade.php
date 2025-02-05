@@ -1,4 +1,11 @@
 @extends('layouts.home')
+@section('additional-head')
+<meta property="og:title" content="{{ $promotion->name }}">
+<meta property="og:description" content="Don't miss out on this amazing deal to save {{ round((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}% with us. Visit now!!">
+<meta property="og:image" content="{{ asset($promotion->image) }}">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:type" content="website">
+@endsection
 
 @section('page-css')
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -44,16 +51,23 @@
 
     <!-- Action Buttons Section -->
     <div class="row mt-4">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-4 mb-3">
             <!-- WhatsApp Share Button -->
-            <button class="btn btn-info w-100" id="whatsappShare">
-                <i class="fas fa-share-alt"></i> Share on WhatsApp
+            <button class="btn btn-success w-100" id="whatsappShare">
+                <i class="fab fa-whatsapp"></i> Share on WhatsApp
             </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4 mb-3">
+            <!-- Facebook Share Button -->
+            <a class="btn btn-info w-100" id="facebookShare" href="#" target="_blank">
+                <i class="fab fa-facebook"></i> Share on Facebook
+            </a>
+        </div>
+
+        <div class="col-md-4">
             <form action="{{ route('cart.add', $promotion->id) }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-success w-100">
+                <button type="submit" class="btn btn-danger w-100">
                     <i class="fas fa-cart-plus"></i> Add to Cart
                 </button>
             </form>
@@ -136,6 +150,14 @@
 </div>
 
 <script>
+    document.title = `${'{{ $promotion->name }}'} - Don't Miss the Offer!`;
+    // Get the current webpage URL
+    const currentUrl = window.location.href;
+
+    const facebookSharerUrl = `https://www.facebook.com/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+    document.getElementById("facebookShare").href = facebookSharerUrl;
+
+
     document.getElementById('whatsappShare').addEventListener('click', function() {
         const productID = "{{ $promotion->id }}";
         const productName = "{{ $promotion->name }}";
