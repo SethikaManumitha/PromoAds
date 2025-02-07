@@ -1,386 +1,490 @@
-@extends('layouts.home')
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <title>{{ $business->business_name }}</title>
+    <link rel="stylesheet" href="{{asset('css/showroom.css')}}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en', // Set your page language
+                includedLanguages: 'en,si,ta,ru,es,fr,de,it', // Set available languages
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <style>
+        .banner {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: url("{{ asset($business->business_type == 'Retail' ? 'images/slider-bg.jpeg' : 'images/' . $business->business_type . '.jpg') }}") center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 50px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <a class="navbar-brand text-dark" href="#">{{ $business->business_name }}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#featured-product">Featured Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#all-products">All Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Contact Us</a>
+                </li>
+            </ul>
+
+            <!-- Language Translator Dropdown -->
 
 
-@section('page-css')
-<link rel="stylesheet" href="{{ asset('css/style.css') }}">
-@endsection
+            <!-- Cart Icon -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#" data-toggle="tooltip" data-placement="bottom" title="View Cart">
+                        <i class="fas fa-shopping-cart" style="font-size: 20px;"></i>
+                    </a>
+                </li>
+            </ul>
+            <form class="form-inline">
+                <div id="google_translate_element"></div>
+            </form>
+        </div>
+    </nav>
 
-@section('content')
-<style>
-    .banner {
-        position: relative;
-        background: rgb(24, 77, 52);
-        background: linear-gradient(90deg, rgba(24, 77, 52, 1) 7%, rgba(25, 135, 84, 1) 51%, rgba(86, 181, 137, 1) 90%);
-        height: 500px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: white;
-    }
 
-    .banner::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.3);
-    }
 
-    .banner-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    .search-box {
-        max-width: 500px;
-        width: 100%;
-    }
-
-    .search-box .form-control {
-        padding: 12px 20px;
-        border: none;
-        outline: none;
-    }
-
-    .search-box .btn-search {
-        background-color: #28a745;
-        /* Green button */
-        color: white;
-        padding: 10px 20px;
-        border: none;
-    }
-
-    .search-box .btn-search:hover {
-        background-color: #218838;
-        /* Darker green */
-    }
-
-    .carousel {
-        margin: 30px auto 60px;
-        padding: 0;
-    }
-
-    .carousel .carousel-item {
-        text-align: center;
-        overflow: hidden;
-    }
-
-    .carousel .carousel-item h4 {
-        font-family: 'Varela Round', sans-serif;
-    }
-
-    .carousel .carousel-item img {
-        max-width: 100%;
-        display: inline-block;
-    }
-
-    .carousel .carousel-item .btn {
-        border-radius: 0;
-        font-size: 12px;
-        text-transform: uppercase;
-        font-weight: bold;
-        border: none;
-        background: #a177ff;
-        padding: 6px 15px;
-        margin-top: 5px;
-    }
-
-    .carousel .carousel-item .btn:hover {
-        background: #8c5bff;
-    }
-
-    .carousel .carousel-item .btn i {
-        font-size: 14px;
-        font-weight: bold;
-        margin-left: 5px;
-    }
-
-    .carousel .thumb-wrapper {
-        margin: 5px;
-        text-align: left;
-        background: #fff;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .carousel .thumb-content {
-        padding: 15px;
-        font-size: 13px;
-    }
-
-    .carousel-control-prev,
-    .carousel-control-next {
-        height: 44px;
-        width: 44px;
-        background: none;
-        margin: auto 0;
-        border-radius: 50%;
-        border: 3px solid rgba(0, 0, 0, 0.8);
-    }
-
-    .carousel-control-prev i,
-    .carousel-control-next i {
-        font-size: 36px;
-        position: absolute;
-        top: 50%;
-        display: inline-block;
-        margin: -19px 0 0 0;
-        z-index: 5;
-        left: 0;
-        right: 0;
-        color: rgba(0, 0, 0, 0.8);
-        text-shadow: none;
-        font-weight: bold;
-    }
-
-    .carousel-control-prev i {
-        margin-left: -3px;
-    }
-
-    .carousel-control-next i {
-        margin-right: -3px;
-    }
-
-    .carousel-indicators {
-        bottom: -50px;
-    }
-
-    .carousel-indicators li,
-    .carousel-indicators li.active {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        margin: 4px;
-        border: none;
-    }
-
-    .carousel-indicators li {
-        background: #ababab;
-    }
-
-    .carousel-indicators li.active {
-        background: #555;
-    }
-</style>
-
-<div class="banner">
-    <div class="banner-content">
-        <h1>Welcome to {{ $business[0]['business_name'] }}</h1>
-
-        <!-- Search Box -->
-        <div class="search-box mt-3 mx-auto">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search Offers">
-                <button class="btn btn-search">
-                    <i class="bi bi-search"></i>
-                </button>
-            </div>
+    <!-- Banner Section -->
+    <div class="banner">
+        <div class="banner-content">
+            <h1>Welcome to {{ $business->business_name }}</h1>
+            <p>{{$business->description }}</p>
+            <a href="#featured-product" class="shop-now">Shop Now</a>
         </div>
     </div>
-</div>
+    <section class="sect-cateogry" style="display:none">
+        <button class="btn">Category</button>
+        <button class="btn">Category</button>
+        <button class="btn">Category</button>
+        <button class="btn">Category</button>
+    </section>
 
+    <section class="section-products" id="featured-product">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="header">
+                        <h3>Featured Product</h3>
+                        <h2>Popular Products</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach ($promotions->where('category','Special') as $key => $promotion)
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div id="product-{{ $key + 1 }}" class="single-product">
+                        <div class="part-1" style="background: url('{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}') no-repeat center; background-size: contain; transition: all 0.3s;">
+                            @php
+                            // Calculate the discount percentage
+                            $discountPercentage = round((($promotion['price'] - $promotion['dis_price']) / $promotion['price']) * 100);
+                            @endphp
 
-<div class="container-xl">
-    <div class="row">
-        <div class="col-md-10 mx-auto">
-            <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
-                <!-- Carousel indicators -->
-                <ol class="carousel-indicators">
-                    @foreach (array_chunk($promotions->toArray(), 3) as $index => $chunk)
-                    <li data-target="#myCarousel" data-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}"></li>
-                    @endforeach
-                </ol>
+                            @if ($discountPercentage > 15)
+                            <span class="discount">{{ $discountPercentage }}% off</span>
+                            @endif
+                            <ul>
+                                <li>
+                                    <a href="javascript:void(0);" class="cart-image" data-image="{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}"
+                                        data-id="{{ $promotion['id'] }}"
+                                        data-title="{{ $promotion['name'] }}"
+                                        data-price="{{ $promotion['dis_price'] }}"
+                                        data-category="{{ $promotion['category'] }}">
+                                        <i class="fas fa-shopping-cart" style="font-size: 20px;"></i>
 
-                <!-- Wrapper for carousel items -->
-                <div class="carousel-inner">
-                    @foreach (array_chunk($promotions->toArray(), 3) as $index => $chunk)
-                    <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                        <div class="row">
-                            @foreach ($chunk as $promotion)
-                            <div class="col-sm-4">
-                                <div class="thumb-wrapper">
-                                    <div class="img-box">
-                                        <img src="{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}" class="img-fluid" alt="{{ $promotion['name'] }}">
-                                    </div>
-                                    <div class="thumb-content">
-                                        <h4>{{ $promotion['name'] }}</h4>
-                                        <p>Offer valid until {{ date('F d, Y', strtotime($promotion['end_date'])) }}</p>
-                                        @if ($promotion['dis_price'] == $promotion['price'])
-                                        <h5><span class="card-price">LKR {{ $promotion['price'] }}</span></h5>
-                                        @else
-                                        <span class="card-discount text-danger">LKR {{ $promotion['price'] }}</span>
-                                        <span class="card-price font-weight-bold">LKR {{ $promotion['dis_price'] }}</span>
-                                        <span class="card-save text-success">
-                                            SAVE: {{ round((($promotion['price'] - $promotion['dis_price']) / $promotion['price']) * 100) }}%
-                                        </span>
-                                        @endif
-                                        <form action="{{ route('promotions.view', ['promotion_id' => $promotion['id']]) }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn btn-primary">View Deal</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="https://wa.me/" target="_blank">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://facebook.com/" target="_blank">
+                                        <i class="fab fa-facebook"></i>
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                        <div class="part-2">
+                            <h3 class="product-title">{{ $promotion['name'] }}</h3>
+                            <h4 class="product-old-price">LKR {{ $promotion['price'] }}</h4>
+                            <h4 class="product-price">LKR {{ $promotion['dis_price'] }}</h4>
                         </div>
                     </div>
-                    @endforeach
                 </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
 
-                <!-- Carousel controls -->
-                <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
-                    <i class="fa fa-angle-left"></i>
+
+    <div class="about-section" id="about">
+        <div class="about-image">
+            <img src="{{asset($user->profile)}}" alt="About Us">
+        </div>
+        <div class="about-content">
+            <h2>ABOUT US</h2>
+            <p>{{$business->description }}</p>
+            <button class="read-more">Read More</button>
+        </div>
+    </div>
+
+    <section class="section-products" id="all-products">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="header">
+                        <h2>All Products</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+
+                @foreach ($promotions->where('category','!=','Special') as $key => $promotion)
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div id="product-{{ $key + 1 }}" class="single-product">
+                        <div class="part-1" style="background: url('{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}') no-repeat center; background-size: contain; transition: all 0.3s;">
+                            @php
+                            // Calculate the discount percentage
+                            $discountPercentage = round((($promotion['price'] - $promotion['dis_price']) / $promotion['price']) * 100);
+                            @endphp
+
+                            @if ($discountPercentage > 15)
+                            <span class="discount">{{ $discountPercentage }}% off</span>
+                            @endif
+                            <!-- <span class="new">new</span> -->
+                            <ul>
+                                <li>
+                                    <a href="javascript:void(0);" class="cart-image" data-image="{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}"
+                                        data-id="{{ $promotion['id'] }}"
+                                        data-title="{{ $promotion['name'] }}"
+                                        data-price="{{ $promotion['dis_price'] }}"
+                                        data-category="{{ $promotion['category'] }}">
+                                        <i class="fas fa-shopping-cart" style="font-size: 20px;"></i>
+                                    </a>
+                                </li>
+
+
+
+                                <li>
+                                    <a href="https://wa.me/" target="_blank">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://facebook.com/" target="_blank">
+                                        <i class="fab fa-facebook"></i>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="part-2">
+                            <h3 class="product-title">{{ $promotion['name'] }}</h3>
+                            <h4 class="product-old-price">LKR {{ $promotion['price'] }}</h4>
+                            <h4 class="product-price">LKR {{ $promotion['dis_price'] }}</h4>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    <!-- About Us Section -->
+
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; {{$business->business_name }}. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://wa.me/yourwhatsapplink" class="text-white mx-3" target="_blank" title="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
                 </a>
-                <a class="carousel-control-next" href="#myCarousel" data-slide="next">
-                    <i class="fa fa-angle-right"></i>
+                <a href="mailto:youremail@example.com" class="text-white mx-3" title="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://facebook.com/yourfacebooklink" class="text-white mx-3" target="_blank" title="Facebook">
+                    <i class="fab fa-facebook"></i>
                 </a>
             </div>
+            <p class="mt-2">
+                Created by <a href="https://promoads.lk" class="text-white font-weight-bold" target="_blank">Promoads.lk</a>
+            </p>
         </div>
-    </div>
-</div>
+    </footer>
 
-<div class="container">
-    <div class="row" style="border-left: 5px solid #28a745;padding-left:50px;margin:20px;background-color:#f3faef;">
-        <h2>About Us</h2>
-        <p>{{ $business[0]['description'] }}</p>
-    </div>
-</div>
+    <style>
+        .modal-content {
+            padding: 20px;
+            border-radius: 10px;
+        }
 
-<div class="container-fluid mt-5">
+        .modal-image-container img {
+            width: 100%;
+            max-height: 300px;
+            /* Adjust as needed */
+            object-fit: contain;
+            /* Ensures the aspect ratio is maintained */
+            border-radius: 10px;
+        }
 
-    <div class="row justify-content-center text-center">
-        <h2 style="position: relative; display: inline-block; border-bottom: 4px solid #28a745; padding-bottom: 5px;">
-            Our Offers
-        </h2>
-    </div>
-    <br>
-    <div class="row p-4" style="background-color: #f8f9fa;">
-        @foreach ($promotions as $promotion)
-        @if ($promotion->price != 1)
-        <div class="col-md-4 col-sm-6 col-12 mb-4">
-            <div class="card promotion-card shadow-lg">
-                <!-- Image Container -->
-                <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
-                    <img class="img-fluid" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/250x150' }}"
-                        alt="Promotion Image"
-                        style="max-height: 100%; max-width: 100%; object-fit: contain;">
-                </div>
 
-                <div class="card-body text-center">
-                    <h5 class="card-title">{{ $promotion->name }}</h5>
-                    @if ($promotion->dis_price == $promotion->price)
-                    <h5><span class="card-price">LKR {{ $promotion->price }}</span></h5>
-                    @else
-                    <span class="card-discount text-danger">LKR {{ $promotion->price }}</span>
-                    <span class="card-price font-weight-bold">LKR {{ $promotion->dis_price }}</span>
-                    <span class="card-save text-success">
-                        SAVE: {{ round((($promotion->price - $promotion->dis_price) / $promotion->price) * 100) }}%
-                    </span>
-                    @endif
-                    <small class="text-muted">Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
-                    <br>
-                    <div class="row mt-2">
-                        <div class="col-md-12">
-                            <form action="{{ route('promotions.view', ['promotion_id' => $promotion->id]) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-success btn-block">View Deal</button>
-                            </form>
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: none;
+        }
+
+        .modal-body {
+            text-align: left;
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-description {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .color-options {
+            list-style: none;
+            padding: 0;
+            color: #555;
+        }
+
+        .color-options li {
+            margin-bottom: 5px;
+        }
+
+        .qty-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            font-size: 18px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+
+        .qty-input {
+            width: 50px;
+            text-align: center;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn-orange {
+            background-color: #ff7f50;
+            color: white;
+            font-weight: bold;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .btn-orange:hover {
+            background-color: black;
+        }
+    </style>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-image-container">
+                        <img src="" alt="Cart Image" id="cartModalImage" class="img-fluid">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="modal-title" id="cartModalLabel">Running Shoes For Men</h3>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <h1> <span aria-hidden="true">&times;</span></h1>
+                            </button>
                         </div>
                     </div>
+                    <h2 class="price">$99</h2>
+                    <p class="modal-description">
+                        Buy good shoes and a good mattress, because when you're not in one, you're in the other. With four pairs of shoes, I can travel the world.
+                    </p>
+                    <!-- <ul class="color-options">
+                        <li><b>Color:</b> Red, White, Black</li>
+                        <li><b>Style:</b> SM3018-100</li>
+                    </ul> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-4 qty-container">
+                            <button class="qty-btn" onclick="decreaseQty()">-</button>
+                            <input type="text" class="qty-input" id="qty" value="1">
+                            <button class="qty-btn" onclick="increaseQty()">+</button>
+                        </div>
+                        <div class="col-md-4">
+                            <a style="text-decoration: none;color:white" href="{{route('cart.index')}}" class="btn btn-orange">View Cart</a>
+                        </div>
+                        <div class="col-md-4">
+                            <a id="addToCartBtn" style="text-decoration: none;color:white" href="#" class="btn btn-orange">Add to Cart</a>
+                        </div>
+
+
+                    </div>
+
                 </div>
             </div>
         </div>
-        @endif
-        @endforeach
-        <div class="container my-5">
-            <div class="row justify-content-center">
-                <!-- Register Your Hotel Card -->
-                <div class="col-md-12">
-                    <div class="card text-center shadow-sm border-0 p-4">
-                        <div class="card-body">
-                            <div class="mb-12">
-                                <i class="bi bi-house-door" style="font-size: 2rem; color: #17a2b8;"></i>
-                            </div>
-                            <h5>Become a Loyalty Customer in {{ $business[0]['business_name'] }} </h5>
-                            <p class="text-muted">Welcome! We offer more discounts than others, so become a special customer and enjoy exclusive savings with us!<br>
-                                Register now to get started!</p>
-                            <a href="../signup/customerSignUp" class="btn btn-primary">Register</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <style>
-            /* Footer Styles */
-            .footer {
-                background-color: #000;
-                /* Black background */
-                color: #fff;
-                text-align: center;
-                padding: 30px 0;
-                margin-top: 50px;
-                width: 100%;
-            }
-
-            .footer a {
-                color: #28a745;
-                /* Green color for icons */
-                margin: 0 15px;
-                font-size: 24px;
-                transition: 0.3s;
-            }
-
-            .footer a:hover {
-                color: #ffffff;
-                /* White on hover */
-            }
-
-            .footer .contact-details {
-                font-size: 16px;
-                margin-top: 10px;
-            }
-
-            .footer .social-icons {
-                margin-top: 10px;
-            }
-
-            .footer .copyright {
-                margin-top: 15px;
-                font-size: 14px;
-                opacity: 0.8;
-            }
-        </style>
-
-        <!-- Footer -->
-
-
-        <!-- FontAwesome for icons -->
-    </div>
-</div>
-
-<div class="footer">
-    <div class="social-icons">
-        <a href="https://web.facebook.com/profile.php?id=61571632296002" target="_blank"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://wa.me/0763487858" target="_blank"><i class="fab fa-whatsapp"></i></a>
     </div>
 
-    <div class="contact-details">
-        <p>📞 Contact: {{ $business[0]['phone_number'] }} | ✉ Email: {{ $business[0]['email'] }}</p>
-    </div>
 
-    <div class="copyright">
-        <p>&copy; {{ date('Y') }} PromoAds. All rights reserved.</p>
-    </div>
-</div>
+    <script>
+        document.querySelectorAll('.cart-image').forEach(function(element) {
+            element.addEventListener('click', function() {
+                const imageUrl = this.getAttribute('data-image');
+                const title = this.getAttribute('data-title');
+                const price = this.getAttribute('data-price');
+                const category = this.getAttribute('data-category');
+                const id = this.getAttribute('data-id');
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+                // Set modal image and text dynamically
+                document.getElementById('cartModalImage').src = imageUrl;
+                document.getElementById('cartModalLabel').textContent = title;
+                document.querySelector('.price').textContent = 'LKR.' + price;
+                document.querySelector('.modal-description').textContent = category;
+
+                // Update the Add to Cart link dynamically with the product ID
+                const addToCartLink = document.getElementById('addToCartBtn');
+                addToCartLink.setAttribute('href', "/cart/add/" + id); // Update the URL using JavaScript
+
+                // Show modal
+                $('#cartModal').modal('show');
+            });
+        });
+
+        // Add an event listener for the "Add to Cart" button to trigger the navigation
+        document.getElementById('addToCartBtn').addEventListener('click', function() {
+            // Get the dynamically set href from the button
+            const addToCartLink = document.getElementById('addToCartBtn');
+
+            // Redirect to the Add to Cart URL
+            window.location.href = addToCartLink.getAttribute('href');
+        });
+
+        // Clear image sources when modals are closed
+        $('#cartModal').on('hidden.bs.modal', function() {
+            this.querySelector('img').src = ''; // Clear the image source
+        });
+    </script>
 
 
-@endsection
+
+    <script>
+        document.querySelectorAll('.cart-image').forEach(function(element) {
+            element.addEventListener('click', function() {
+                const imageUrl = this.getAttribute('data-image');
+                const title = this.getAttribute('data-title');
+                const price = this.getAttribute('data-price');
+                const category = this.getAttribute('data-category');
+                const id = this.getAttribute('data-id');
+
+                // Set modal image and text dynamically
+                document.getElementById('cartModalImage').src = imageUrl;
+                document.getElementById('cartModalLabel').textContent = title;
+                document.querySelector('.price').textContent = 'LKR.' + price;
+                document.querySelector('.modal-description').textContent = category;
+
+                // Update the Add to Cart link dynamically with the product ID
+                const addToCartLink = document.getElementById('addToCartBtn');
+                // Set the URL dynamically
+                addToCartLink.setAttribute('href', "/cart/add/" + id); // Update the URL using JavaScript
+
+                // Show modal
+                $('#cartModal').modal('show');
+            });
+        });
+
+        // Clear image sources when modals are closed
+        $('#cartModal').on('hidden.bs.modal', function() {
+            this.querySelector('img').src = ''; // Clear the image source
+        });
+    </script>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70, // Adjust for navbar height
+                            behavior: "smooth"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
+</html>

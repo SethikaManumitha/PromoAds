@@ -9,349 +9,402 @@
 
 
 
+
+@php
+$categories = [
+['value' => 'Retail', 'label' => 'Retail & Supermarkets', 'icon' => 'fas fa-store'],
+['value' => 'Hotels', 'label' => 'Hotels & Villas', 'icon' => 'fas fa-hotel'],
+['value' => 'Food', 'label' => 'Food & Beverages', 'icon' => 'fas fa-utensils'],
+['value' => 'Clothing', 'label' => 'Textile & Costume', 'icon' => 'fas fa-tshirt'],
+['value' => 'Herbal_Spice', 'label' => 'Herbal & Spices', 'icon' => 'fas fa-leaf'],
+['value' => 'Home', 'label' => 'Electronics & Furniture', 'icon' => 'fas fa-couch'],
+['value' => 'Automobile', 'label' => 'Automobile & Transport', 'icon' => 'fas fa-car'],
+
+['value' => 'Construction', 'label' => 'Construction & Hardware', 'icon' => 'fas fa-hammer'],
+['value' => 'Stationery', 'label' => 'Books & Stationery', 'icon' => 'fas fa-book'],
+['value' => 'Gardening', 'label' => 'Gardening & Landscaping', 'icon' => 'fas fa-tree'],
+
+['value' => 'Handicrafts', 'label' => 'Handicrafts & Local Art', 'icon' => 'fas fa-hand-paper'],
+['value' => 'Mobile', 'label' => 'Computers & Phones', 'icon' => 'fas fa-mobile-alt'],
+
+
+
+
+];
+@endphp
+
+
+<div class="banner d-flex align-items-center justify-content-center text-center position-relative"
+    style="height: 500px; background: url('{{ asset('images/img1.jpeg') }}') center/cover no-repeat;">
+
+    <!-- Greenish Overlay -->
+    <div style="position: absolute; 
+                top: 0; 
+                left: 0; 
+                width: 100%; 
+                height: 100%; 
+                background: rgba(0, 120,0, 0.2); /* Greenish overlay */
+                z-index: 1;"></div>
+
+    <!-- Glassmorphism Effect -->
+    <div class="banner-content p-4 position-relative"
+        style="background: rgba(255, 255, 255, 0.4);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-radius: 15px;
+                padding: 20px;
+                width: 90%;
+                max-width: 600px;
+                z-index: 2;">
+
+        <p class="text-dark">Find the best services and products tailored just for you</p>
+
+        <!-- Search Box -->
+        <div class="search-box mt-3 mx-auto" style="max-width: 650px;">
+            <div class="input-group">
+                <input type="text" class="form-control rounded-start" placeholder="Search for business"
+                    style="border: none; padding: 12px; font-size: 16px;">
+
+                <!-- Location Dropdown -->
+                <div class="input-group-prepend">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="locationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 12px 15px; border: none; transition: 0.3s;">
+                        <i class="fas fa-map-marker-alt"></i> <span id="selectedLocation">Hikkaduwa</span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="locationDropdown">
+                        <div class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">Galle</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" onclick="setLocation('Hikkaduwa')">Hikkaduwa</a>
+                                <a class="dropdown-item" href="#" onclick="setLocation('Ambalangoda')">Ambalangoda</a>
+                                <a class="dropdown-item" href="#" onclick="setLocation('Baddegama')">Baddegama</a>
+                                <a class="dropdown-item" href="#" onclick="setLocation('Galle')">Galle</a>
+
+                            </div>
+                            <a class="dropdown-item" href="#" onclick="setLocation('Ambalangoda')">Ambalangoda</a>
+                            <a class="dropdown-item" href="#" onclick="setLocation('Baddegama')">Baddegama</a>
+                            <a class="dropdown-item" href="#" onclick="setLocation('Aluthgama')">Aluthgama</a>
+                        </div>
+
+                    </div>
+                </div>
+                <style>
+                    /* Style for dropdown submenu */
+                    .dropdown-submenu {
+                        position: relative;
+                    }
+
+                    .dropdown-submenu .dropdown-menu {
+                        top: 0;
+                        left: 100%;
+                        margin-top: -5px;
+                        display: none;
+                        position: absolute;
+                    }
+
+                    .dropdown-submenu:hover .dropdown-menu {
+                        display: block;
+                    }
+
+                    .dropdown-item.dropdown-toggle::after {
+
+                        font-family: 'FontAwesome';
+                        padding-left: 2px;
+                    }
+                </style>
+                <script>
+                    function setLocation(location) {
+                        // Update the text of the button with the selected location
+                        document.getElementById('selectedLocation').textContent = location;
+                    }
+                </script>
+
+
+                <button class="btn btn-success rounded-end" style="padding: 12px 15px; border: none; transition: 0.3s;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<div class="categories p-3 d-flex flex-wrap justify-content-center align-items-center shadow-lg"
+    style="background: rgba(240, 239, 237, 0.2); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            max-width: 100%; /* Limit max width for better alignment */
+            margin: auto;">
+
+    <div class="row w-100 justify-content-center">
+        @foreach($categories as $category)
+        <!-- Mobile: col-4 (3 items per row), Desktop: col-lg-1 (8 items per row) -->
+        <div class="col-4 col-md-4 col-lg-1 d-flex justify-content-center mb-3">
+            <div class="category-item text-center"
+                style="padding: 5px; border-radius: 15px; 
+                            background: rgba(255, 255, 255, 0.15); 
+                            backdrop-filter: blur(8px);
+                            -webkit-backdrop-filter: blur(8px);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            transition: all 0.3s ease-in-out;
+                            cursor: pointer;
+                            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                            width: 120px; /* Control button width */
+                            height: 120px;">
+
+                <!-- Category Link -->
+                <a href="{{ route('index') }}?business_type={{ $category['value'] }}#business-section"
+                    class="category-toggle d-flex flex-column align-items-center text-dark"
+                    style="text-decoration: none; font-weight: 500;">
+
+                    <!-- Icon Wrapper -->
+                    <div class="icon-circle">
+                        <i class="{{ $category['icon'] }} text-success" style="font-size: 30px;"></i>
+                    </div>
+
+                    <span class="fw-bold mt-1" style="font-size: 14px;">{{ $category['label'] }}</span> <!-- Reduced margin -->
+                </a>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
+
 <style>
-    .banner {
-        position: relative;
-        background: rgb(24, 77, 52);
-        background: linear-gradient(90deg, rgba(24, 77, 52, 1) 7%, rgba(25, 135, 84, 1) 51%, rgba(86, 181, 137, 1) 90%);
-        height: 600px;
+    .icon-circle {
+        width: 60px;
+        /* Adjusted size */
+        height: 60px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        text-align: center;
-        color: white;
+        transition: all 0.3s ease-in-out;
     }
 
-    .banner::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.3);
+    .category-item {
+        transition: all 0.3s ease-in-out;
     }
 
-    .banner-content {
-        position: relative;
-        z-index: 1;
+    .category-item:hover {
+        transform: translateY(-5px) scale(1.08);
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+        background: rgba(255, 255, 255, 0.3);
+        /* Change background color on hover */
     }
 
-    .search-box {
-        max-width: 500px;
-        width: 100%;
+    .category-item:hover .icon-circle {
+        background: rgba(0, 255, 0, 0.6);
+        /* Change the icon circle color on hover */
+        transform: scale(1.15);
     }
 
-    .search-box .form-control {
-        padding: 12px 20px;
-        border: none;
-        outline: none;
-    }
-
-    .search-box .btn-search {
-        background-color: #28a745;
-        /* Green button */
-        color: white;
-        padding: 10px 20px;
-        border: none;
-    }
-
-    .search-box .btn-search:hover {
-        background-color: #218838;
-        /* Darker green */
+    .category-item:hover .category-toggle {
+        color: #ffffff;
+        /* Change text color on hover */
     }
 </style>
 
 
-<div class="banner">
-    <div class="banner-content">
-        <h1>Welcome to PromoAds</h1>
-        <p>Find the best services and products tailored just for you</p>
 
-        <!-- Search Box -->
-        <div class="search-box mt-3 mx-auto">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search by Location">
-                <button class="btn btn-search">
-                    <i class="bi bi-search"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
+
+
+
+<div class="container mt-5 p-4 text-white rounded shadow-sm" id="business-section"
+    style="background: rgba(144, 238, 144, 0.2); /* Light green with transparency */
+            backdrop-filter: blur(15px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(15px); /* Safari support */
+            border-radius: 15px;
+            border: 1px solid rgba(144, 238, 144, 0.3);">
+
+    <h3 class="text-center fw-bold" style="color: black;">Most Popular Places in Hikkaduwa</h3>
+    <br>
+
+    <!-- Promotions Section -->
+    <div class="row">
+        @foreach($business as $biz)
+        @if ($biz->user->status == 1)
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card promotion-card h-100 d-flex flex-column align-items-center text-center shadow-sm"
+                style="border-radius: 15px; overflow: hidden; background: rgba(255, 255, 255, 0.1); 
+                        backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); transition: transform 0.3s ease-in-out; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px;">
+
+                <img class="card-img-top mt-3 rounded-circle"
+                    src="{{ $biz->user && $biz->user->profile ? $biz->user->profile : 'https://via.placeholder.com/120' }}"
+                    alt="Promotion Image"
+                    style="width: 100px; height: 100px; object-fit: cover; border: 3px solid white;">
+
+                <div class="card-body d-flex flex-column text-dark">
+                    <h5 class="fw-bold">{{ $biz->user->name }}</h5>
+                    <small class="text-muted">{{ Str::limit($biz->description, 100, '...') }}</small>
+
+                    <div class="mt-auto">
+                        <form action="{{ route('showpromo', ['userId' => $biz->id]) }}" method="GET">
+                            <button type="submit" class="btn btn-success fw-bold shadow-sm px-4 py-2 rounded-pill"
+                                @if ($biz->user->status == 2)
+                                disabled title="This shop is locked"
+                                style="background: gray; border: none;"
+                                @endif>
+                                @if ($biz->user->status == 2)
+                                <i class="fas fa-lock"></i>
+                                @endif
+                                Visit Now
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+        @endforeach
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="container my-5">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center g-4">
 
         <!-- Register Your Business Card -->
-        <div class="col-md-4">
-            <div class="card text-center shadow-sm border-0 p-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="card text-center border-0 shadow-lg p-4 position-relative"
+                style="background: rgba(255, 255, 255, 0.6); 
+                        backdrop-filter: blur(12px); 
+                        -webkit-backdrop-filter: blur(12px); 
+                        border-radius: 15px; 
+                        transition: transform 0.3s ease;">
                 <div class="card-body">
                     <div class="mb-3">
-                        <i class="bi bi-briefcase" style="font-size: 2rem; color: #28a745;"></i>
+                        <i class="bi bi-briefcase" style="font-size: 3rem; color: #28a745;"></i>
                     </div>
-                    <h5 class="fw-bold">Register Your Business</h5>
-                    <p class="text-muted">Take your business to the next level by showcasing your products to a larger audience. With our platform, you can reach more customers, boost visibility, and increase sales. </p>
-                    <a href="signup/businessSignUp" class="btn btn-success">Register</a>
+                    <h5 class="fw-bold text-dark">Register Your Business</h5>
+                    <p class="text-muted">Take your business to the next level by showcasing your products to a larger audience. Gain visibility, reach more customers, and boost your sales.</p>
+                    <a href="signup/businessSignUp" class="btn btn-success fw-bold shadow-sm">Register</a>
                 </div>
             </div>
         </div>
 
         <!-- Be a Member Card -->
-        <div class="col-md-4">
-            <div class="card text-center shadow-sm border-0 p-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="card text-center border-0 shadow-lg p-4 position-relative"
+                style="background: rgba(255, 255, 255, 0.6); 
+                        backdrop-filter: blur(12px); 
+                        -webkit-backdrop-filter: blur(12px); 
+                        border-radius: 15px; 
+                        transition: transform 0.3s ease;">
                 <div class="card-body">
                     <div class="mb-3">
-                        <i class="bi bi-person-circle" style="font-size: 2rem; color: #007bff;"></i>
+                        <i class="bi bi-person-circle" style="font-size: 3rem; color: #007bff;"></i>
                     </div>
-                    <h5 class="fw-bold">Become a Loyalti Customer</h5>
-                    <p class="text-muted">Explore a wide range of services and products that cater to your needs. From exceptional deals to trusted providers, discover everything you're looking for in one place!</p>
-                    <a href="signup/customerSignUp" class="btn btn-primary">Register</a>
+                    <h5 class="fw-bold text-dark">Become a Loyalty Customer</h5>
+                    <p class="text-muted">Discover exclusive deals and trusted providers. Enjoy a seamless shopping experience with the best services in one place.</p>
+                    <a href="signup/customerSignUp" class="btn btn-primary fw-bold shadow-sm">Register</a>
                 </div>
             </div>
         </div>
-
-
 
         <!-- Register Your Taxi Card -->
-        <div class="col-md-4">
-            <div class="card text-center shadow-sm border-0 p-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="card text-center border-0 shadow-lg p-4 position-relative"
+                style="background: rgba(255, 255, 255, 0.6); 
+                        backdrop-filter: blur(12px); 
+                        -webkit-backdrop-filter: blur(12px); 
+                        border-radius: 15px; 
+                        transition: transform 0.3s ease;">
                 <div class="card-body">
                     <div class="mb-3">
-                        <i class="bi bi-truck" style="font-size: 2rem; color: #ffc107;"></i>
+                        <i class="bi bi-truck" style="font-size: 3rem; color: #ffc107;"></i>
                     </div>
-                    <h5 class="fw-bold">Register Your Taxi</h5>
-                    <p class="text-muted">Join our network of trusted taxis and provide fast, reliable service to customers. Sign up today and help people get to their destinations with ease!</p>
-                    <a href="signup/driverSignUp" class="btn btn-warning">Register</a>
+                    <h5 class="fw-bold text-dark">Register Your Taxi</h5>
+                    <p class="text-muted">Join our network of trusted taxis and provide fast, reliable service. Sign up today and help people reach their destinations with ease.</p>
+                    <a href="signup/driverSignUp" class="btn btn-warning fw-bold shadow-sm">Register</a>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-
-<div class="container mt-5 p-4 bg-success text-white rounded" id="business-section">
-    <h3>Most Popular Shops<span style="color:#fff;"></span></h3>
-    <br>
-    <!-- Promotions Section -->
-    <div class="row">
-        @foreach($business as $biz)
-        @if ($biz->user->status == 1 && $biz->user->role == 'business') <!-- Only show the promotion if the status is not 0 -->
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card promotion-card h-100 d-flex flex-column">
-                <img class="card-img-top" src="{{ $biz->user && $biz->user->profile ? $biz->user->profile : 'https://via.placeholder.com/120' }}" alt="Promotion Image">
-                <div class="card-body d-flex flex-column text-dark">
-                    <h5>{{ $biz->user->name }}</h5>
-                    <small>{{ Str::limit($biz->description, 100, '...') }}</small>
-                    <div class="mt-auto">
-                        <form action="{{ route('showpromo', ['userId' => $biz->id]) }}" method="GET">
-                            <button type="submit" class="btn btn-light btn-block text-success fw-bold"
-                                @if ($biz->user->status == 2)
-                                disabled title="This shop is locked"
-                                @endif>
-                                @if ($biz->user->status == 2)
-                                <i class="fas fa-lock"></i>
-                                @endif
-                                Shop Now
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        @endif
-        @endforeach
-    </div>
-    <center> <a href="#" class="btn btn-warning text-dark fw-bold" style="font-size: 18px; padding: 12px 24px;">View All Shops</a>
-    </center>
-</div>
-
-
-
-
-
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <!-- Register Your Hotel Card -->
-        <div class="col-md-12">
-            <div class="card text-center shadow-sm border-0 p-4">
-                <div class="card-body">
-                    <div class="mb-12">
-                        <i class="bi bi-house-door" style="font-size: 2rem; color: #17a2b8;"></i>
-                    </div>
-                    <h5 class="fw-bold">Register Your Hotel</h5>
-                    <p class="text-muted">We offer a platform for hotel owners and managers to showcase their properties to a wider audience. Join us today to list your hotel and attract more guests!</p>
-                    <a href="signup/businessSignUp" class="btn btn-info text-white">Register</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-<div class="container mt-5 p-4 bg-success text-white rounded" id="business-section">
-    <h3>Most Popular Hotels <span style="color:#fff;"></span> </h3>
-
-    <br>
-    <!-- Promotions Section -->
-    <div class="row">
-        @foreach($business as $biz)
-        @if ($biz->user->status == 1 && $biz->user->role == 'hotel') <!-- Only show the promotion if the status is not 0 -->
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card promotion-card h-100 d-flex flex-column">
-                <img class="card-img-top" src="{{ $biz->user && $biz->user->profile ? $biz->user->profile : 'https://via.placeholder.com/120' }}" alt="Promotion Image">
-                <div class="card-body d-flex flex-column text-dark">
-                    <h5>{{ $biz->user->name }}</h5>
-                    <small>{{ Str::limit($biz->description, 100, '...') }}</small>
-                    <div class="mt-auto">
-                        <form action="{{ route('showpromo', ['userId' => $biz->id]) }}" method="GET">
-                            <button type="submit" class="btn btn-light btn-block text-success fw-bold"
-                                @if ($biz->user->status == 2)
-                                disabled title="This shop is locked"
-                                @endif>
-                                @if ($biz->user->status == 2)
-                                <i class="fas fa-lock"></i>
-                                @endif
-                                Book Now
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-        @endforeach
-    </div>
-    <center> <a href="#" class="btn btn-warning text-dark fw-bold" style="font-size: 18px; padding: 12px 24px;">View All Hotels</a>
-    </center>
-
-</div>
-
-
-<div class="container mt-5 p-4" style="background-color: #e0e0e0; color: #333;">
-
-    <h3>Special <span class="text-success"> Offers</span></h3>
-    <br>
-    <div class="row">
-        @foreach ($promotions as $promotion)
-        @if ($promotion->category == 'Special')
-        <div class="col-md-3 col-sm-12 col-12">
-            <div class="card promotion-card" style="background-color: #f1f1f1;">
-                <img class="card-img-top" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
-                <div class="card-body d-flex flex-column">
-                    <p class="card-title mb-2">{{ $promotion->name }}</p>
-                    <div class="prices mb-2">
-                        @if ($promotion->dis_price == $promotion->price)
-                        <span class="card-price">LKR {{ $promotion->price }}</span>
-                        @else
-                        <span class="card-discount text-muted"><s>LKR {{ $promotion->price }}</s></span>
-                        <span class="card-price text-success ml-2">LKR {{ $promotion->dis_price }}</span>
-                        @endif
-                    </div>
-                    <small class="text-muted">Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
-                    <div class="mt-auto">
-                        <a href="{{ route('promotions.view', $promotion->id) }}" class="btn btn-success btn-block">View Promotion</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-        @endforeach
-    </div>
-    <br>
-    <center> <a href="#" class="btn btn-warning text-dark fw-bold" style="font-size: 18px; padding: 12px 24px;">View Big Deals</a>
-</div>
-
-
-<div class="container mt-5 p-4 bg-success text-white rounded" id="business-section">
-    <h3>Coming Soon!</h3>
-    <br>
-    <!-- Promotions Section -->
-    <div class="row">
-        @foreach($business as $biz)
-        @if ($biz->user->status == 2 && $biz->user->role == 'business')
-        <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-4"> <!-- Adjusted col to 2 for 6 items in a row on large screens -->
-            <div class="card promotion-card h-100 d-flex flex-column">
-                <img class="card-img-top" src="{{ $biz->user && $biz->user->profile ? $biz->user->profile : 'https://via.placeholder.com/120' }}" alt="Promotion Image">
-                <div class="card-body d-flex flex-column text-dark">
-                    <small>{{ $biz->user->name }}</small>
-                </div>
-            </div>
-        </div>
-        @endif
-        @endforeach
     </div>
 </div>
 
 <style>
-    /* Footer Styles */
-    .footer {
-        background-color: #000;
-        /* Black background */
-        color: #fff;
-        text-align: center;
-        padding: 30px 0;
-        margin-top: 50px;
-    }
-
-    .footer a {
-        color: #28a745;
-        /* Green color for icons */
-        margin: 0 15px;
-        font-size: 24px;
-        transition: 0.3s;
-    }
-
-    .footer a:hover {
-        color: #ffffff;
-        /* White on hover */
-    }
-
-    .footer .contact-details {
-        font-size: 16px;
-        margin-top: 10px;
-    }
-
-    .footer .social-icons {
-        margin-top: 10px;
-    }
-
-    .footer .copyright {
-        margin-top: 15px;
-        font-size: 14px;
-        opacity: 0.8;
+    /* Hover effect for interactive feel */
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
     }
 </style>
 
+
+
+
 <!-- Footer -->
-<div class="footer">
-    <div class="social-icons">
-        <a href="https://web.facebook.com/profile.php?id=61571632296002" target="_blank"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://wa.me/0763487858" target="_blank"><i class="fab fa-whatsapp"></i></a>
-    </div>
+<div class="footer py-4" style="background: rgba(0, 0, 0); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; text-align: center;">
+    <div class="container">
+        <!-- Social Icons -->
+        <div class="social-icons mb-3">
+            <a href="https://web.facebook.com/profile.php?id=61571632296002" target="_blank" class="mx-3 text-white">
+                <i class="fab fa-facebook-f" style="font-size: 1.5rem;"></i>
+            </a>
+            <a href="https://wa.me/0763487858" target="_blank" class="mx-3 text-white">
+                <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i>
+            </a>
+        </div>
 
-    <div class="contact-details">
-        <p>📞 Contact: +94 76 691 7207 | ✉ Email: sethika7@gmail.com</p>
-    </div>
+        <!-- Contact Details -->
+        <div class="contact-details mb-3">
+            <p>📞 Contact: <a href="tel:+94766917207" class="text-white fw-bold">+94 76 691 7207</a> | ✉ Email: <a href="mailto:sethika7@gmail.com" class="text-white fw-bold">info@promoads.lk</a></p>
+        </div>
 
-    <div class="copyright">
-        <p>&copy; {{ date('Y') }} PromoAds. All rights reserved.</p>
+        <!-- Copyright -->
+        <div class="copyright">
+            <p class="mb-0">&copy; {{ date('Y') }} PromoAds. All rights reserved.</p>
+        </div>
     </div>
 </div>
 
 <!-- FontAwesome for icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<style>
+    /* Hover effect for social icons */
+    .social-icons a:hover {
+        transform: scale(1.2);
+        transition: transform 0.3s ease;
+        color: #32CD32;
+        /* Light green hover effect */
+    }
+
+    /* Contact link hover effect */
+    .contact-details a:hover {
+        color: #32CD32;
+        /* Light green hover effect */
+        transition: color 0.3s ease;
+    }
+</style>
+
+
 
 @endsection

@@ -49,6 +49,8 @@
                 <option value="Books_stationary">Books & Stationary</option>
                 <option value="Restaurant">Restaurant</option>
                 <option value="Automobile">Automobile</option>
+                <option value="Special">Special</option>
+
             </select>
         </div>
 
