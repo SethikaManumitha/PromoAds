@@ -11,6 +11,12 @@
     <title>{{ $business->business_name }}</title>
     <link rel="stylesheet" href="{{asset('css/showroom.css')}}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- MDBootstrap JS (if using MDBootstrap) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
@@ -97,8 +103,8 @@
             <div class="row justify-content-center text-center">
                 <div class="col-md-8 col-lg-6">
                     <div class="header">
-                        <h3>Featured Product</h3>
-                        <h2>Popular Products</h2>
+                        <h3>Featured Deals</h3>
+                        <h2>Special Offers</h2>
                     </div>
                 </div>
             </div>
@@ -229,7 +235,188 @@
     </section>
     <!-- About Us Section -->
 
+    <style>
+        .offer-section {
+            position: relative;
+            width: 100%;
+            margin: auto;
+        }
 
+        .offer-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            max-height: 650px;
+        }
+
+
+        .offer-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Black overlay with 50% opacity */
+            z-index: 1;
+            /* Ensure it appears above the image but below the text */
+        }
+
+        .offer-content {
+            position: absolute;
+            top: 20%;
+            left: 10%;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            z-index: 2;
+            /* Make sure the text appears above the overlay */
+        }
+
+        .offer-content h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .offer-content .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #f3a683;
+            background-color: transparent;
+            border: 2px solid #f3a683;
+            border-radius: 0;
+            width: 200px;
+            text-decoration: none;
+            transition: 0.3s ease;
+        }
+
+        .offer-content .btn:hover {
+            background-color: #f3a683;
+            color: white;
+        }
+    </style>
+
+    <div class="offer-section">
+        <img src="{{asset('images/loyalty.jpeg')}}" alt="Jewelry Offer">
+        <div class="offer-content">
+            <h1>Become a Loaylty Customer</h1>
+            <p style="color:#ddd">
+                Become a valued member and enjoy exclusive rewards, special discounts, and early access to our latest collections.
+            </p>
+            <p style="color:#ddd">Elevate your shopping experience with perks designed just for you. Sign up today and start enjoying the benefits!</p>
+            <a href="#" class="btn">Register Now</a>
+        </div>
+    </div>
+    <!-- Carousel wrapper -->
+
+    <!-- Feedback Section -->
+
+    <!-- Add Feedback Form Section -->
+    <div class=" container mt-5">
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @elseif(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
+
+        @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <div class="border p-3 rounded shadow-sm">
+            <h5>Add Your Review</h5>
+            <form action="{{ route('feedback.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="promotion_id" value="{{ $business->id }}">
+                <div class="form-group">
+                    <label for="rating">Rating</label>
+                    <select name="rating" id="rating" class="form-control" required>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Your Review</label>
+                    <textarea name="comment" id="comment" class="form-control" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h4>Customer Reviews</h4>
+
+        @if($feedbacks->isEmpty())
+        <p>No reviews yet. Be the first to leave a review!</p>
+        @else
+        <!-- Display Existing Reviews -->
+        <div class="reviews-list">
+            @foreach ($feedbacks as $feedback)
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $feedback->user ? $feedback->user->name : 'Anonymous' }}</h5>
+                    <div class="rating mb-2">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <i class="fas fa-star {{ $i <= $feedback->rating ? 'text-warning' : 'text-muted' }}"></i>
+                            @endfor
+                    </div>
+                    <p class="card-text">{{ $feedback->comment }}</p>
+
+                    <p class="text-muted">{{ $feedback->created_at->diffForHumans() }}</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @endif
+    </div>
+
+
+    <!-- Displaying Recommended Shops -->
+    @if(count($recommendedShops) > 0)
+    <div class="recommended-shops">
+        <h3>Recommended Shops</h3>
+        <div class="row">
+            @foreach ($recommendedShops as $shop)
+            <div class="col-md-4 mb-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $shop['business_name'] }}</h5>
+                        <p class="card-text">ID: {{ $shop['id'] }}</p>
+                        <p class="card-text">Similarity Score: {{ $shop['similarity_score'] }}</p>
+                        <!-- Add other shop details as needed -->
+                        <a href="{{ url('/showpromo/' . $shop['id']) }}" class="btn btn-primary">View Shop</a>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @else
+    <p>No recommendations available.</p>
+    @endif
+
+
+
+
+    <!-- Carousel wrapper -->
     <footer class="bg-dark text-white py-4">
         <div class="container text-center">
             <p>&copy; {{$business->business_name }}. All rights reserved.</p>
@@ -458,6 +645,11 @@
     </script>
 
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var myCarousel = new mdb.Carousel(document.querySelector("#carouselExampleControls"));
+        });
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -481,7 +673,6 @@
 
 
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

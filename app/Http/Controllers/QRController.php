@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Promotion;
 use App\Models\Business;
+use App\Models\Feedback;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 class QRController extends Controller
 {
@@ -41,8 +43,24 @@ class QRController extends Controller
             abort(404, "Business not found");
         }
 
-
         $user = User::where('name', $business->business_name)->first();
-        return view('showpromotion', compact('userId', 'promotions', 'business', 'user'));
+        $feedbacks = Feedback::where('promotion_id', $business->id)
+            ->with('user')
+            ->get();
+
+
+        // Fetch recommendations from Flask API
+        $response = Http::get("https://model-production-5ace.up.railway.app/recommend/" . urlencode($userId));
+
+        if ($response->successful()) {
+            $data = $response->json();
+            $recommendedShops = $data['recommendations'] ?? [];
+        } else {
+            $recommendedShops = [];
+        }
+
+
+
+        return view('showpromotion', compact('userId', 'promotions', 'business', 'user', 'feedbacks', 'recommendedShops'));
     }
 }

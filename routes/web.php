@@ -15,6 +15,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\RecommendationController;
 
 
 use App\Http\Middleware\TrackPromoViews;
@@ -56,6 +57,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/change-business-profile/{id}', [BusinessController::class, 'changeBusinessProfile'])->name('admin.changeBusinessProfile');
 });
 
+Route::get('/recommend/{user_id}', [RecommendationController::class, 'getRecommendations']);
 
 Route::prefix('signup')->group(function () {
     Route::get('/businessSignUp', function () {
