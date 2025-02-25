@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\BusinessController;
@@ -13,8 +14,10 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RecommendationController;
 
 
@@ -103,6 +106,14 @@ Route::prefix('promotions')->group(function () {
     Route::post('/feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
 });
 
+Route::prefix('product')->group(function () {
+    Route::get('/viewproduct', [ProductController::class, 'getAllProduct'])->name('viewproduct');
+    Route::get('/addproduct', [ProductController::class, 'showForm'])->name('addproduct');
+    Route::get('/product/add', [ProductController::class, 'showForm'])->name('product.add');
+    Route::post('/product/add', [ProductController::class, 'addProduct'])->name('product.add');
+    Route::put('/updateproduct/{promotion}', [ProductController::class, 'update'])->name('product.update');
+});
+
 Route::prefix('services')->group(function () {
     Route::get('/viewpromo', [ServiceController::class, 'getAllService'])->name('viewservice');
     Route::get('/addservice', [ServiceController::class, 'showService'])->name('addservice');
@@ -136,8 +147,17 @@ Route::get('/admin/createDriver', function () {
     return view('admin.createDriver');
 })->name('createDriver');
 
+
+Route::get('/download-cart-pdf', [CartController::class, 'downloadCartPDF'])->name('downloadCartPDF');
+
 Route::post('/notifications/send/{userId}', [NotificationController::class, 'send'])->name('notifications.send');
 Route::get('/notifications', [NotificationController::class, 'getUserNotifications'])->name('notifications.index');
+
+Route::get('/banner', [BannerController::class, 'showForm'])->name('banner.index');
+Route::post('/banner', [BannerController::class, 'addBanner'])->name('banner.add');
+
+Route::get('/about', [AboutController::class, 'showForm'])->name('about');
+Route::post('/about', [AboutController::class, 'addAbout'])->name('about.add');
 
 
 Route::get('/showpromo/{userId}', [QRController::class, 'showPromo'])

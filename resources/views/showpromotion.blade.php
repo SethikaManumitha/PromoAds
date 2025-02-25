@@ -26,19 +26,6 @@
             }, 'google_translate_element');
         }
     </script>
-    <style>
-        .banner {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            background: url("{{ asset($business->business_type == 'Retail' ? 'images/slider-bg.jpeg' : 'images/' . $business->business_type . '.jpg') }}") center/cover no-repeat;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 50px;
-            color: white;
-        }
-    </style>
 </head>
 
 <body>
@@ -84,13 +71,29 @@
 
 
     <!-- Banner Section -->
+    @foreach ($banner as $b)
+    <style>
+        .banner {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: url("{{ asset($b->image) }}") center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 50px;
+            color: white;
+        }
+    </style>
     <div class="banner">
         <div class="banner-content">
             <h1>Welcome to {{ $business->business_name }}</h1>
-            <p>{{$business->description }}</p>
+            <p>{{ $b->description }}</p>
             <a href="#featured-product" class="shop-now">Shop Now</a>
         </div>
     </div>
+    @endforeach
+
     <section class="sect-cateogry" style="display:none">
         <button class="btn">Category</button>
         <button class="btn">Category</button>
@@ -109,7 +112,7 @@
                 </div>
             </div>
             <div class="row">
-                @foreach ($promotions->where('category','Special') as $key => $promotion)
+                @foreach ($promotions as $key => $promotion)
                 <div class="col-md-6 col-lg-4 col-xl-3">
                     <div id="product-{{ $key + 1 }}" class="single-product">
                         <div class="part-1" style="background: url('{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}') no-repeat center; background-size: contain; transition: all 0.3s;">
@@ -162,7 +165,7 @@
 
     <div class="about-section" id="about">
         <div class="about-image">
-            <img src="{{asset($user->profile)}}" alt="About Us">
+            <img src="{{asset($aboutImg)}}" alt="About Us">
         </div>
         <div class="about-content">
             <h2>ABOUT US</h2>
@@ -183,52 +186,43 @@
             <div class="row">
 
 
-                @foreach ($promotions->where('category','!=','Special') as $key => $promotion)
+                @foreach ($products as $key => $product)
                 <div class="col-md-6 col-lg-4 col-xl-3">
                     <div id="product-{{ $key + 1 }}" class="single-product">
-                        <div class="part-1" style="background: url('{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}') no-repeat center; background-size: contain; transition: all 0.3s;">
-                            @php
-                            // Calculate the discount percentage
-                            $discountPercentage = round((($promotion['price'] - $promotion['dis_price']) / $promotion['price']) * 100);
-                            @endphp
-
-                            @if ($discountPercentage > 15)
-                            <span class="discount">{{ $discountPercentage }}% off</span>
-                            @endif
-                            <!-- <span class="new">new</span> -->
+                        <div class="part-1" style="background: url('{{ $product['image'] ? asset($product['image']) : 'https://via.placeholder.com/250x150' }}') no-repeat center; background-size: contain; transition: all 0.3s;">
                             <ul>
                                 <li>
-                                    <a href="javascript:void(0);" class="cart-image" data-image="{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}"
-                                        data-id="{{ $promotion['id'] }}"
-                                        data-title="{{ $promotion['name'] }}"
-                                        data-price="{{ $promotion['dis_price'] }}"
-                                        data-category="{{ $promotion['category'] }}">
+                                    <a href="javascript:void(0);" class="cart-image" data-image="{{ $product['image'] ? asset($product['image']) : 'https://via.placeholder.com/250x150' }}"
+                                        data-id="{{ $product['id'] }}"
+                                        data-title="{{ $product['name'] }}"
+                                        data-price="{{ $product['price'] }}"
+                                        data-category="{{ $product['category'] }}">
                                         <i class="fas fa-shopping-cart" style="font-size: 20px;"></i>
                                     </a>
                                 </li>
 
-
-
+                                <!-- WhatsApp Share -->
                                 <li>
-                                    <a href="https://wa.me/" target="_blank">
+                                    <a href="https://wa.me/?text={{ urlencode('Check out this product: ' . $product['name'] . ' for LKR ' . $product['price'] . ' ' . asset($product['image'])) }}" target="_blank">
                                         <i class="fab fa-whatsapp"></i>
                                     </a>
                                 </li>
+
+                                <!-- Facebook Share -->
                                 <li>
-                                    <a href="https://facebook.com/" target="_blank">
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(asset($product['image'])) }}" target="_blank">
                                         <i class="fab fa-facebook"></i>
                                     </a>
                                 </li>
-
                             </ul>
                         </div>
                         <div class="part-2">
-                            <h3 class="product-title">{{ $promotion['name'] }}</h3>
-                            <h4 class="product-old-price">LKR {{ $promotion['price'] }}</h4>
-                            <h4 class="product-price">LKR {{ $promotion['dis_price'] }}</h4>
+                            <h3 class="product-title">{{ $product['name'] }}</h3>
+                            <h4 class="product-price">LKR {{ $product['price'] }}</h4>
                         </div>
                     </div>
                 </div>
+
                 @endforeach
             </div>
         </div>

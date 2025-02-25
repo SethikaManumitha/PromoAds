@@ -8,6 +8,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>Business Dashboard</title>
     <style>
+        body {
+            background-color: #e8eceb;
+        }
+
         .sidebar {
             height: 100vh;
             width: 200px;
@@ -82,11 +86,12 @@
                     <div class="dropdown-menu" aria-labelledby="menuDropdown">
                         <a class="dropdown-item" href="#">Dashboard</a>
                         <a class="dropdown-item" href="{{ route('getqr') }}">QR Code</a>
+                        <a class="dropdown-item" href="{{ route('banner.index') }}">Add Banner</a>
                         <a class="dropdown-item" href="{{ route('addpromo') }}">Add Promotions</a>
+                        <a class="dropdown-item" href="{{ route('about') }}">About Section</a>
                         <a class="dropdown-item" href="{{ route('viewpromo') }}">View Promotions</a>
-                        <a class="dropdown-item" href="#">Analytics</a>
-                        <a class="dropdown-item" href="#">Users</a>
-                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" href="{{ route('addproduct') }}">Add Product</a>
+                        <a class="dropdown-item" href="{{ route('viewproduct') }}">View Product</a>
                         <a class="dropdown-item" href="{{ route('login') }}">Log Out</a>
                     </div>
                 </li>
@@ -99,8 +104,12 @@
         <h5 class="text-center">Menu</h5>
         <a href="{{route('admin.businessDashboard') }}">Dashboard</a>
         <a href="{{ route('getqr') }}">QR Code</a>
+        <a href="{{ route('banner.index') }}">Add Banner</a>
+        <a href="{{ route('about') }}">About Section</a>
         <a href="{{ route('addpromo') }}">Add Promotions</a>
         <a href="{{ route('viewpromo') }}">View Promotions</a>
+        <a href="{{ route('addproduct') }}">Add Product</a>
+        <a href="{{ route('viewproduct') }}">View Product</a>
         <a href="{{ route('login') }}">Log Out</a>
     </div>
 
