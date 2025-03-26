@@ -9,7 +9,8 @@ use App\Models\Business;
 use App\Models\Driver;
 use App\Models\User;
 use App\Models\Cart;
-
+use App\Models\Customer;
+use App\Models\Promotion;
 use Illuminate\Support\Facades\DB;
 
 
@@ -57,12 +58,46 @@ class UserController extends Controller
                             })
                             ->get();
 
+                        $promotionsNew = Promotion::where('business_id', session('business_id'))->take(6)->get();
+
+                        // Fetch the orders count grouped by month
+                        $ordersCount = DB::table('orders')
+                            ->select(DB::raw('MONTH(created_at) as month'), DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(*) as order_count'))
+                            ->where('shop_id', $business->id)
+                            ->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'))
+                            ->orderBy(DB::raw('YEAR(created_at)'), 'ASC')
+                            ->orderBy(DB::raw('MONTH(created_at)'), 'ASC')
+                            ->get();
+
+                        // Initialize an array to hold the order counts for each month
+                        $monthlyOrderCounts = [
+                            'Jan' => 0,
+                            'Feb' => 0,
+                            'Mar' => 0,
+                            'Apr' => 0,
+                            'May' => 0,
+                            'Jun' => 0,
+                            'Jul' => 0,
+                            'Aug' => 0,
+                            'Sep' => 0,
+                            'Oct' => 0,
+                            'Nov' => 0,
+                            'Dec' => 0
+                        ];
+
+                        // Populate the order counts for each month
+                        foreach ($ordersCount as $order) {
+                            $monthName = date('M', mktime(0, 0, 0, $order->month, 10));
+                            $monthlyOrderCounts[$monthName] = $order->order_count;
+                        }
+
                         $groupedCarts = $carts->groupBy('user_id')->map(function ($group) {
                             return $group->groupBy('promotion_id')->map(function ($promotionGroup) {
                                 return [
                                     'promotion' => $promotionGroup->first()->promotion,
                                     'total_quantity' => $promotionGroup->sum('quantity'),
                                     'user' => $promotionGroup->first()->user,
+
                                 ];
                             });
                         });
@@ -71,9 +106,12 @@ class UserController extends Controller
                             'uniqueVisitorsCount' => $uniqueVisitorsCount,
                             'totalViews' => $totalViews,
                             'groupedCarts' => $groupedCarts,
+                            'promotionsNew' => $promotionsNew,
+                            'monthlyOrderCounts' => $monthlyOrderCounts
                         ]);
 
                     case "customer":
+                        $customer = Auth::user();
                         return redirect()->route('index');
 
                     case "driver":

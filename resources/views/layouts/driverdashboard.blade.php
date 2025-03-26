@@ -8,6 +8,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>Driver Dashboard</title>
     <style>
+        body {
+            background-color: #e8eceb;
+        }
+
         .sidebar {
             height: 100vh;
             width: 200px;
@@ -84,9 +88,7 @@
                         <a class="dropdown-item" href="{{ route('getqr') }}">QR Code</a>
                         <a class="dropdown-item" href="{{ route('addpromo') }}">Add Promotions</a>
                         <a class="dropdown-item" href="{{ route('viewpromo') }}">View Promotions</a>
-                        <a class="dropdown-item" href="#">Analytics</a>
-                        <a class="dropdown-item" href="#">Users</a>
-                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" href="{{ route('orders.driver') }}">Manage Orders</a>
                         <a class="dropdown-item" href="{{ route('login') }}">Log Out</a>
                     </div>
                 </li>
@@ -97,11 +99,10 @@
     <!-- Sidebar -->
     <div class="sidebar d-none d-md-block">
         <h5 class="text-center">Menu</h5>
-        <a href="#">Dashboard</a>
-        <a href="{{ route('getqr') }}">QR Code</a>
+        <a href="{{ route('driver') }}">Dashboard</a>
         <a href="{{ route('addservice') }}">Add Service</a>
         <a href="{{ route('viewservice') }}">View Service</a>
-        <a href="#">Manage Service</a>
+        <a href="{{ route('orders.driver') }}">Manage Orders</a>
         <a href="{{ route('login') }}">Log Out</a>
     </div>
 

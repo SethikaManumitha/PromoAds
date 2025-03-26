@@ -7,6 +7,7 @@ use App\Models\Business;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
+use App\Models\Promotion;
 use Illuminate\Support\Facades\DB;
 use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period as AnalyticsPeriod;
@@ -68,16 +69,52 @@ class BusinessController extends Controller
             // Call the getBusinessData method to fetch the required data
             $businessData = $this->getBusinessData($businessId);
 
+            $promotions = Promotion::where('business_id', session('business_id'))->take(6)->get();
+
+            // Fetch the orders count grouped by month
+            $ordersCount = DB::table('orders')
+                ->select(DB::raw('MONTH(created_at) as month'), DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(*) as order_count'))
+                ->where('shop_id', $businessId)
+                ->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'))
+                ->orderBy(DB::raw('YEAR(created_at)'), 'ASC')
+                ->orderBy(DB::raw('MONTH(created_at)'), 'ASC')
+                ->get();
+
+            // Initialize an array to hold the order counts for each month
+            $monthlyOrderCounts = [
+                'Jan' => 0,
+                'Feb' => 0,
+                'Mar' => 0,
+                'Apr' => 0,
+                'May' => 0,
+                'Jun' => 0,
+                'Jul' => 0,
+                'Aug' => 0,
+                'Sep' => 0,
+                'Oct' => 0,
+                'Nov' => 0,
+                'Dec' => 0
+            ];
+
+            // Populate the order counts for each month
+            foreach ($ordersCount as $order) {
+                $monthName = date('M', mktime(0, 0, 0, $order->month, 10));
+                $monthlyOrderCounts[$monthName] = $order->order_count;
+            }
+
             return view('admin.businessDashboard', [
                 'uniqueVisitorsCount' => $businessData['uniqueVisitorsCount'],
                 'totalViews' => $businessData['totalViews'],
                 'engagementRate' => $businessData['engagementRate'],
                 'groupedCarts' => $businessData['groupedCarts'],
+                'promotionsNew' => $promotions,
+                'monthlyOrderCounts' => $monthlyOrderCounts // Pass the monthly order counts to the view
             ]);
         } else {
             return redirect()->route('login')->withErrors('Business not found in session.');
         }
     }
+
 
 
 

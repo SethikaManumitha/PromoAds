@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Driver;
-use App\Models\Business;
 use App\Models\User;
 
 class DriverController extends Controller
@@ -44,5 +43,12 @@ class DriverController extends Controller
         ]);
 
         return redirect()->route('genQR')->with('success', 'Driver registered successfully!');
+    }
+
+    public function showDashboard()
+    {
+        $driver = Driver::where('name', "Nisha")->first();
+        session(['nic' => $driver->NIC]);
+        return view('admin.driverDashboard');
     }
 }

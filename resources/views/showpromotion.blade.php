@@ -57,7 +57,7 @@
             <!-- Cart Icon -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="#" data-toggle="tooltip" data-placement="bottom" title="View Cart">
+                    <a class="nav-link text-dark" href="{{route('cart.index')}}" data-toggle="tooltip" data-placement="bottom" title="View Cart">
                         <i class="fas fa-shopping-cart" style="font-size: 20px;"></i>
                     </a>
                 </li>
@@ -117,38 +117,37 @@
                     <div id="product-{{ $key + 1 }}" class="single-product">
                         <div class="part-1" style="background: url('{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}') no-repeat center; background-size: contain; transition: all 0.3s;">
                             @php
-                            // Calculate the discount percentage
                             $discountPercentage = round((($promotion['price'] - $promotion['dis_price']) / $promotion['price']) * 100);
+                            $promoUrl = route('promotions.view', ['promotion_id' => $promotion['id']]);
                             @endphp
 
-                            @if ($discountPercentage > 15)
                             <span class="discount">{{ $discountPercentage }}% off</span>
-                            @endif
                             <ul>
                                 <li>
-                                    <a href="javascript:void(0);" class="cart-image" data-image="{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}"
+                                    <a href="javascript:void(0);" class="cart-image"
+                                        data-image="{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}"
                                         data-id="{{ $promotion['id'] }}"
                                         data-title="{{ $promotion['name'] }}"
                                         data-price="{{ $promotion['dis_price'] }}"
                                         data-category="{{ $promotion['category'] }}">
                                         <i class="fas fa-shopping-cart" style="font-size: 20px;"></i>
-
                                     </a>
                                 </li>
 
+                                <!-- WhatsApp Link -->
                                 <li>
-                                    <a href="https://wa.me/" target="_blank">
+                                    <a href="{{ route('promotions.view', ['promotion_id' => $promotion['id']]) }}">
                                         <i class="fab fa-whatsapp"></i>
                                     </a>
                                 </li>
+
+                                <!-- Facebook Link -->
                                 <li>
-                                    <a href="https://facebook.com/" target="_blank">
+                                    <a href="{{ route('promotions.view', ['promotion_id' => $promotion['id']]) }}">
                                         <i class="fab fa-facebook"></i>
                                     </a>
                                 </li>
-
                             </ul>
-
                         </div>
                         <div class="part-2">
                             <h3 class="product-title">{{ $promotion['name'] }}</h3>
@@ -184,8 +183,6 @@
                 </div>
             </div>
             <div class="row">
-
-
                 @foreach ($products as $key => $product)
                 <div class="col-md-6 col-lg-4 col-xl-3">
                     <div id="product-{{ $key + 1 }}" class="single-product">
@@ -201,19 +198,7 @@
                                     </a>
                                 </li>
 
-                                <!-- WhatsApp Share -->
-                                <li>
-                                    <a href="https://wa.me/?text={{ urlencode('Check out this product: ' . $product['name'] . ' for LKR ' . $product['price'] . ' ' . asset($product['image'])) }}" target="_blank">
-                                        <i class="fab fa-whatsapp"></i>
-                                    </a>
-                                </li>
 
-                                <!-- Facebook Share -->
-                                <li>
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(asset($product['image'])) }}" target="_blank">
-                                        <i class="fab fa-facebook"></i>
-                                    </a>
-                                </li>
                             </ul>
                         </div>
                         <div class="part-2">
@@ -339,11 +324,11 @@
                 <div class="form-group">
                     <label for="rating">Rating</label>
                     <select name="rating" id="rating" class="form-control" required>
-                        <option value="1">1 Star</option>
-                        <option value="2">2 Stars</option>
-                        <option value="3">3 Stars</option>
-                        <option value="4">4 Stars</option>
                         <option value="5">5 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="2">2 Stars</option>
+                        <option value="1">1 Star</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -368,9 +353,9 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ $feedback->user ? $feedback->user->name : 'Anonymous' }}</h5>
                     <div class="rating mb-2">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <i class="fas fa-star {{ $i <= $feedback->rating ? 'text-warning' : 'text-muted' }}"></i>
-                            @endfor
+                        @for ($i = 5; $i >=1; $i--)
+                        <i class="fas fa-star {{ $i <= $feedback->rating ? 'text-warning' : 'text-muted' }}"></i>
+                        @endfor
                     </div>
                     <p class="card-text">{{ $feedback->comment }}</p>
 
@@ -380,32 +365,93 @@
             @endforeach
         </div>
         @endif
-    </div>
+
+        <style>
+            .card-title {
+                font-size: 1.4rem;
+                margin-bottom: 10px;
+                font-weight: bold;
+                color: #333;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .card-text {
+                font-size: 1rem;
+                color: #555;
+            }
+
+            .card-price {
+                font-weight: 600;
+                color: #28a745;
+                font-size: 1.2rem;
+            }
+
+            .card-discount {
+                color: #dc3545;
+                font-size: 1.1rem;
+                text-decoration: line-through;
+                margin-right: 10px;
+            }
+
+            .card-save {
+                color: #ffc107;
+                font-weight: bold;
+                font-size: 1rem;
+            }
+        </style>
 
 
-    <!-- Displaying Recommended Shops -->
-    @if(count($recommendedShops) > 0)
-    <div class="recommended-shops">
-        <h3>Recommended Shops</h3>
-        <div class="row">
-            @foreach ($recommendedShops as $shop)
-            <div class="col-md-4 mb-4">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $shop['business_name'] }}</h5>
-                        <p class="card-text">ID: {{ $shop['id'] }}</p>
-                        <p class="card-text">Similarity Score: {{ $shop['similarity_score'] }}</p>
-                        <!-- Add other shop details as needed -->
-                        <a href="{{ url('/showpromo/' . $shop['id']) }}" class="btn btn-primary">View Shop</a>
+        <!-- Displaying Recommended Shops -->
+        @php
+        use Illuminate\Support\Str;
+        @endphp
+
+        @if(count($recommendedShops) > 0)
+        <div class="recommended-shops">
+            <h3>Recommended Shops</h3>
+            <div class="row">
+                @foreach ($recommendedShops as $shop)
+                <div class="col-md-4">
+                    <div class="card promotion-card">
+                        <!-- Display Shop Image -->
+                        <img src="{{ $shop['image_url'] ? asset($shop['image_url']) : 'https://placehold.co/600x400' }}"
+                            class="card-img-top"
+                            alt="{{ $shop['business_name'] }}"
+                            style="height: 200px; object-fit: cover;">
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $shop['business_name'] }}</h5>
+
+                            <!-- Display Business Type -->
+                            <p class="card-text">
+                                <b>Business Type:</b> {{ $shop['business_type'] }}
+                            </p>
+
+                            <!-- Display Business Description with Limit -->
+                            <p class="card-text">
+                                <b>Description:</b> {{ Str::limit($shop['description'], 100, '...') }}
+                            </p>
+
+                            <!-- Add buttons container -->
+                            <div class="buttons-container">
+                                <a href="{{ url('/showpromo/' . $shop['id']) }}" class="btn btn-success w-100" style="margin-bottom: 10px;">Visit Shop</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
+        @else
+        <p class="text-muted">No recommendations available.</p>
+        @endif
+
+
+
+
     </div>
-    @else
-    <p>No recommendations available.</p>
-    @endif
 
 
 
@@ -540,20 +586,12 @@
                     <p class="modal-description">
                         Buy good shoes and a good mattress, because when you're not in one, you're in the other. With four pairs of shoes, I can travel the world.
                     </p>
-                    <!-- <ul class="color-options">
-                        <li><b>Color:</b> Red, White, Black</li>
-                        <li><b>Style:</b> SM3018-100</li>
-                    </ul> -->
+
                     <div class="row align-items-center">
-                        <div class="col-md-4 qty-container">
-                            <button class="qty-btn" onclick="decreaseQty()">-</button>
-                            <input type="text" class="qty-input" id="qty" value="1">
-                            <button class="qty-btn" onclick="increaseQty()">+</button>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <a style="text-decoration: none;color:white" href="{{route('cart.index')}}" class="btn btn-orange">View Cart</a>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <a id="addToCartBtn" style="text-decoration: none;color:white" href="#" class="btn btn-orange">Add to Cart</a>
                         </div>
 
@@ -664,6 +702,7 @@
             });
         });
     </script>
+
 
 
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

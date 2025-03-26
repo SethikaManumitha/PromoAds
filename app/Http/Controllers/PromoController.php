@@ -24,6 +24,12 @@ class PromoController extends Controller
         return view('promotions.viewpromotion', compact('promotions'));
     }
 
+    public function getSpecialPromo()
+    {
+        $promotions = Promotion::all();
+        return view('specialpromotion', compact('promotions'));
+    }
+
     public function getPromo($promotion_id)
     {
         $promotion = Promotion::where('id', $promotion_id)->first();

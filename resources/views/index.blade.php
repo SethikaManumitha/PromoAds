@@ -72,17 +72,7 @@ $categories = [
                     </button>
                     <div class="dropdown-menu" aria-labelledby="locationDropdown">
                         <div class="dropdown-submenu">
-                            <a class="dropdown-item dropdown-toggle" href="#">Galle</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#" onclick="setLocation('Hikkaduwa')">Hikkaduwa</a>
-                                <a class="dropdown-item" href="#" onclick="setLocation('Ambalangoda')">Ambalangoda</a>
-                                <a class="dropdown-item" href="#" onclick="setLocation('Baddegama')">Baddegama</a>
-                                <a class="dropdown-item" href="#" onclick="setLocation('Galle')">Galle</a>
-
-                            </div>
-                            <a class="dropdown-item" href="#" onclick="setLocation('Ambalangoda')">Ambalangoda</a>
-                            <a class="dropdown-item" href="#" onclick="setLocation('Baddegama')">Baddegama</a>
-                            <a class="dropdown-item" href="#" onclick="setLocation('Aluthgama')">Aluthgama</a>
+                            <a class="dropdown-item" href="#" onclick="setLocation('Hikkaduwa')">Hikkaduwa</a>
                         </div>
 
                     </div>

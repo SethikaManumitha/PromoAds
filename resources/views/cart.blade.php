@@ -106,7 +106,9 @@
                     foreach ($cartItems as $item) {
                     $total += $item['promotion']->dis_price * $item['quantity'];
                     }
-                    echo number_format($total, 2); @endphp</p>
+                    echo number_format($total, 2);
+                    session(['cart_total' => $total]);
+                    @endphp</p>
             </div>
 
             <div class="row mt-4">
@@ -115,7 +117,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <a href="{{ route('downloadCartPDF') }}" class="btn btn-success w-100">Download PDF</a>
+                    <a href="{{route('checkout')}}" class="btn btn-success w-100">Proceed to Checkout</a>
                 </div>
             </div>
             @else

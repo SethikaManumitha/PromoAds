@@ -15,25 +15,37 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RecommendationController;
 
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Middleware\TrackPromoViews;
-
-
-
+use Vonage\Verify\Check;
 
 // Default route
 Route::get('/', [MainController::class, 'index'])->name('index');
+
+Route::get('/index', function () {
+    Auth::logout();
+    session()->invalidate();
+    session()->regenerateToken();
+
+    return redirect()->route('index');
+})->name('logout');
 
 
 // Authentication and Role Routes
 Route::get('/signin', function () {
     return view('signin');
 })->name('signin');
+
+
+
+
 
 Route::get('/role', function () {
     return view('role');
@@ -61,6 +73,7 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::get('/recommend/{user_id}', [RecommendationController::class, 'getRecommendations']);
+Route::get('/specialPromo', [PromoController::class, 'getSpecialPromo'])->name('specialPromo');
 
 Route::prefix('signup')->group(function () {
     Route::get('/businessSignUp', function () {
@@ -159,7 +172,30 @@ Route::post('/banner', [BannerController::class, 'addBanner'])->name('banner.add
 Route::get('/about', [AboutController::class, 'showForm'])->name('about');
 Route::post('/about', [AboutController::class, 'addAbout'])->name('about.add');
 
+Route::get('/checkout', [CheckoutController::class, 'showForm'])->name('checkout');
+Route::post('/checkout', [CheckoutController::class, 'checkoutSubmit'])->name('checkout.submit');
+
+
+Route::get('/orders', [CheckoutController::class, 'showOrders'])->name('orders');
+Route::get('/driver-orders', [CheckoutController::class, 'showOrdersDriver'])->name('orders.driver');
+
+Route::post('/orders/{order}/cancel', [CheckoutController::class, 'cancelOrder'])->name('orders.cancel');
+Route::post('/orders/{order}/prepare', [CheckoutController::class, 'prepareOrder'])->name('orders.prepare');
+Route::post('/orders/{order}/process', [CheckoutController::class, 'processOrder'])->name('orders.processed');
+
+
+Route::post('/orders/{order}/driver/accept', [CheckoutController::class, 'acceptOrder'])->name('orders.driver.accept');
+Route::post('/orders/{order}/driver/cancel', [CheckoutController::class, 'cancelDriverOrder'])->name('orders.driver.cancel');
+Route::post('/orders/{order}/driver/delivered', [CheckoutController::class, 'deliveredOrder'])->name('orders.driver.delivered');
+
 
 Route::get('/showpromo/{userId}', [QRController::class, 'showPromo'])
     ->name('showpromo')
     ->middleware(TrackPromoViews::class);
+
+Route::get('/order-success', function () {
+    return view('orderSuccess');
+})->name('orderSuccess');
+
+
+Route::get('/driver', [DriverController::class, 'showDashboard'])->name('driver');

@@ -45,6 +45,7 @@ class QRController extends Controller
         $business = Business::where('id', $userId)->first();
         $about = About::where('shop_id', $userId)->first();
         $aboutImg = $about ? $about->image : null;
+
         if (!$business) {
             abort(404, "Business not found");
         }
@@ -54,19 +55,39 @@ class QRController extends Controller
             ->with('user')
             ->get();
 
-
         // Fetch recommendations from Flask API
         $response = Http::get("https://model-production-5ace.up.railway.app/recommend/" . urlencode($userId));
 
         if ($response->successful()) {
             $data = $response->json();
             $recommendedShops = $data['recommendations'] ?? [];
+
+            // Fetch additional data for recommended shops
+            $recommendedShops = collect($recommendedShops)->map(function ($shop) {
+                $business = Business::where('id', $shop['id'])->first();
+                $user = $business ? User::where('name', $business->business_name)->first() : null;
+                return [
+                    'id' => $shop['id'],
+                    'business_name' => $business->business_name ?? 'Unknown',
+                    'business_type' =>  $business->business_type ?? 'Unknown',
+                    'description' => $business->description ?? '',
+                    'image_url' => $user->profile,
+                ];
+            })->toArray();
         } else {
             $recommendedShops = [];
         }
 
-
-
-        return view('showpromotion', compact('userId', 'banner', 'aboutImg', 'products', 'promotions', 'business', 'user', 'feedbacks', 'recommendedShops'));
+        return view('showpromotion', compact(
+            'userId',
+            'banner',
+            'aboutImg',
+            'products',
+            'promotions',
+            'business',
+            'user',
+            'feedbacks',
+            'recommendedShops'
+        ));
     }
 }

@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('drivers', function (Blueprint $table) {
-            $table->string('NIC')->primary();
-            $table->string('name');
-            $table->string('phone')->unique();
-            $table->string('password');
-            $table->string('vehicle_type');
-            $table->string('registration_number')->unique();
-            $table->string('license_number')->unique();
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->string('fullname');
+            $table->string('address');
+            $table->string('city');
+            $table->string('phone');
+            $table->decimal('total', 8, 2);
+            $table->string('payment_method');
+            $table->string('driver_id');
+            $table->foreign('driver_id')->references('NIC')->on('drivers')->onDelete('cascade'); // Added foreign key constraint
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('drivers');
+        Schema::dropIfExists('orders');
     }
 };

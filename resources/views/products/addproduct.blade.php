@@ -43,7 +43,7 @@
 
 
                     <button type="submit" class="btn btn-success w-100">
-                        {{ isset($promotion) ? 'Update Promotion' : 'Add Promotion' }}
+                        {{ isset($promotion) ? 'Update Promotion' : 'Add Product' }}
                     </button>
                 </div>
             </div>

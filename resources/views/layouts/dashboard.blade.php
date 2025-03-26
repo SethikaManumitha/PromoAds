@@ -92,6 +92,7 @@
                         <a class="dropdown-item" href="{{ route('viewpromo') }}">View Promotions</a>
                         <a class="dropdown-item" href="{{ route('addproduct') }}">Add Product</a>
                         <a class="dropdown-item" href="{{ route('viewproduct') }}">View Product</a>
+                        <a class="dropdown-item" href="{{ route('orders') }}">Manage Orders</a>
                         <a class="dropdown-item" href="{{ route('login') }}">Log Out</a>
                     </div>
                 </li>
@@ -110,6 +111,7 @@
         <a href="{{ route('viewpromo') }}">View Promotions</a>
         <a href="{{ route('addproduct') }}">Add Product</a>
         <a href="{{ route('viewproduct') }}">View Product</a>
+        <a href="{{ route('orders') }}">Manage Orders</a>
         <a href="{{ route('login') }}">Log Out</a>
     </div>
 

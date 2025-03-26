@@ -97,6 +97,56 @@
             <!-- Navbar Items for Larger Screens -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto d-none d-lg-flex align-items-center">
+
+
+                    @if(Auth::check())
+                    <li class="nav-item">
+                        <a class="btn btn-danger mx-2 text-yellow fw-bold shadow-lg rounded-pill px-4 py-2 special-offers-btn" style="color:yellow" href="{{route('specialPromo')}}">
+                            <i class="bi bi-tags-fill"></i>
+                            SPECIAL OFFERS
+                        </a>
+                    </li>
+                    <!-- Points Display -->
+                    <span class="btn btn-outline-success mx-2">
+                        <i class="fas fa-coins"></i> {{ Auth::user()->points }} Points
+                    </span>
+
+                    <!-- Notification Icon -->
+                    <a class="btn btn-outline-success mx-2 position-relative" href="{{ route('notifications.index') }}">
+                        <i class="fas fa-bell"></i>
+                    </a>
+
+                    <!-- Logout Button -->
+                    <a class="btn btn-suc~cess mx-2" href="{{ route('logout') }}">
+                        Log Out
+                    </a>
+                    @else
+                    <!-- Special Offers Button -->
+                    <li class="nav-item">
+                        <a class="btn btn-danger mx-2 text-yellow fw-bold shadow-lg rounded-pill px-4 py-2 special-offers-btn" style="color:yellow" href="{{route('specialPromo')}}">
+                            <i class="bi bi-tags-fill"></i>
+                            SPECIAL OFFERS
+                        </a>
+                    </li>
+
+                    <style>
+                        .special-offers-btn {
+                            transition: all 0.3s ease-in-out;
+                        }
+
+                        .special-offers-btn:hover {
+                            background-color: #ffcc00;
+                            /* Brighter yellow */
+                            color: #fff !important;
+                            /* White text */
+                            transform: scale(1.1);
+                            /* Slight zoom effect */
+                            box-shadow: 0 0 15px rgba(255, 193, 7, 0.8);
+                            /* Glow effect */
+                        }
+                    </style>
+
+                    <!-- Register Business Button -->
                     <li class="nav-item">
                         <a class="btn btn-success mx-2" href="signup/businessSignUp">
                             <i class="bi bi-briefcase"></i>
@@ -104,50 +154,18 @@
                         </a>
                     </li>
 
+
+                    <!-- Login Button -->
                     <a class="btn btn-success mx-2" href="{{ route('signin') }}">
                         <i class="fas fa-user fa-icon icon-user"></i> Log In
                     </a>
+                    @endif
+
+
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
                     <!-- Location Dropdown -->
-                    <li class="nav-item dropdown mx-2">
-                        <a class="nav-link dropdown-toggle btn" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-language"></i> Language
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
-                                English
-                            </a>
-                            <a class="dropdown-item" href="#" onclick="changeLanguage('si')">
-                                සිංහල (Sinhala)
-                            </a>
-                            <a class="dropdown-item" href="#" onclick="changeLanguage('ta')">
-                                தமிழ் (Tamil)
-                            </a>
 
-                            <a class="dropdown-item" href="#" onclick="changeLanguage('ru')">
-                                Русский (Russian)
-                            </a>
-
-                            <a class="dropdown-item" href="#" onclick="changeLanguage('es')">
-                                Español (Spanish)
-                            </a>
-                            <a class="dropdown-item" href="#" onclick="changeLanguage('fr')">
-                                Français (French)
-                            </a>
-                            <a class="dropdown-item" href="#" onclick="changeLanguage('de')">
-                                Deutsch (German)
-                            </a>
-                            <a class="dropdown-item" href="#" onclick="changeLanguage('it')">
-                                Italiano (Italian)
-                            </a>
-                            <a class="dropdown-item" href="#" onclick="changeLanguage('pt')">
-                                Português (Portuguese)
-                            </a>
-
-                            <!-- Add more languages here as needed -->
-                        </div>
-                    </li>
 
 
 
