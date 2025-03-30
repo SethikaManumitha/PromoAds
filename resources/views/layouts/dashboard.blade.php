@@ -112,6 +112,7 @@
         <a href="{{ route('addproduct') }}">Add Product</a>
         <a href="{{ route('viewproduct') }}">View Product</a>
         <a href="{{ route('orders') }}">Manage Orders</a>
+        <a href="{{ route('custom_orders.index') }}">Custom Orders</a>
         <a href="{{ route('login') }}">Log Out</a>
     </div>
 

@@ -243,8 +243,11 @@
 
 
         <div class="row">
-
-            @foreach ($promotionsNew as $promotion)
+            @foreach ($topProducts as $cartItem)
+            @php
+            $promotion = $cartItem->promotion;
+            @endphp
+            @if ($promotion)
             <div class="col-md-4">
                 <div class="card promotion-card">
                     <img class="card-img-top" src="{{ $promotion->image ? asset($promotion->image) : 'https://via.placeholder.com/350x150' }}" alt="Promotion Image">
@@ -258,13 +261,62 @@
                         <span class="card-discount">LKR {{ $promotion->price }}</span>
                         <span class="card-price">LKR {{ $promotion->dis_price }}</span><br>
                         <span class="card-save">SAVE: LKR {{ $promotion->price - $promotion->dis_price }}</span>
-                        <small>Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small>
-
+                        <small>Offer valid until {{ date('F d, Y', strtotime($promotion->end_date)) }}</small><br>
+                        <small>Sold Quantity: {{ $cartItem->total_quantity }}</small>
                     </div>
                 </div>
             </div>
+            @endif
             @endforeach
         </div>
+
+
+        <br>
+
+        @php
+        use Illuminate\Support\Str;
+        @endphp
+
+        @if(count($recommendedShops) > 0)
+        <div class="recommended-shops">
+            <h2><span class="text-success">Similar</span> Shops</h2>
+            <div class="row">
+                @foreach ($recommendedShops as $shop)
+                <div class="col-md-4">
+                    <div class="card promotion-card">
+                        <!-- Display Shop Image -->
+                        <img src="{{ $shop['image_url'] ? asset($shop['image_url']) : 'https://placehold.co/600x400' }}"
+                            class="card-img-top"
+                            alt="{{ $shop['business_name'] }}"
+                            style="height: 200px; object-fit: cover;">
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $shop['business_name'] }}</h5>
+
+                            <!-- Display Business Type -->
+                            <p class="card-text">
+                                <b>Business Type:</b> {{ $shop['business_type'] }}
+                            </p>
+
+                            <!-- Display Business Description with Limit -->
+                            <p class="card-text">
+                                <b>Description:</b> {{ Str::limit($shop['description'], 100, '...') }}
+                            </p>
+
+                            <!-- Add buttons container -->
+                            <div class="buttons-container">
+                                <a href="{{ url('/showpromo/' . $shop['id']) }}" class="btn btn-success w-100" style="margin-bottom: 10px;">Visit Shop</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @else
+        <p class="text-muted">No recommendations available.</p>
+        @endif
+
 
 
 

@@ -16,6 +16,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CustomOrderController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductController;
@@ -163,8 +164,9 @@ Route::get('/admin/createDriver', function () {
 
 Route::get('/download-cart-pdf', [CartController::class, 'downloadCartPDF'])->name('downloadCartPDF');
 
-Route::post('/notifications/send/{userId}', [NotificationController::class, 'send'])->name('notifications.send');
+Route::post('/notifications/send/{userId}', [NotificationController::class, 'sendRequest'])->name('notifications.send');
 Route::get('/notifications', [NotificationController::class, 'getUserNotifications'])->name('notifications.index');
+Route::patch('/notifications/{id}/confirm', [NotificationController::class, 'confirm'])->name('notifications.confirm');
 
 Route::get('/banner', [BannerController::class, 'showForm'])->name('banner.index');
 Route::post('/banner', [BannerController::class, 'addBanner'])->name('banner.add');
@@ -199,3 +201,5 @@ Route::get('/order-success', function () {
 
 
 Route::get('/driver', [DriverController::class, 'showDashboard'])->name('driver');
+Route::post('/custom-orders', [CustomOrderController::class, 'store'])->name('custom_orders.store');
+Route::get('/custom-orders', [CustomOrderController::class, 'index'])->name('custom_orders.index');

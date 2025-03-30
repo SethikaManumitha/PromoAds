@@ -113,14 +113,19 @@
             </div>
             <div class="row">
                 @foreach ($promotions as $key => $promotion)
+                @php
+                $isLoyaltyMember = Auth::check() && \App\Models\Loyalty::where('user_id', Auth::id())
+                ->exists();
+
+                @endphp
                 <div class="col-md-6 col-lg-4 col-xl-3">
                     <div id="product-{{ $key + 1 }}" class="single-product">
                         <div class="part-1" style="background: url('{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}') no-repeat center; background-size: contain; transition: all 0.3s;">
                             @php
-                            $discountPercentage = round((($promotion['price'] - $promotion['dis_price']) / $promotion['price']) * 100);
-                            $promoUrl = route('promotions.view', ['promotion_id' => $promotion['id']]);
+                            $displayPrice = $isLoyaltyMember && isset($promotion['loy_price']) ? $promotion['loy_price'] : $promotion['dis_price'];
+                            $originalPrice = $isLoyaltyMember && isset($promotion['loy_price']) ? $promotion['price'] : $promotion['price'];
+                            $discountPercentage = round((($originalPrice - $displayPrice) / $originalPrice) * 100);
                             @endphp
-
                             <span class="discount">{{ $discountPercentage }}% off</span>
                             <ul>
                                 <li>
@@ -128,7 +133,7 @@
                                         data-image="{{ $promotion['image'] ? asset($promotion['image']) : 'https://via.placeholder.com/250x150' }}"
                                         data-id="{{ $promotion['id'] }}"
                                         data-title="{{ $promotion['name'] }}"
-                                        data-price="{{ $promotion['dis_price'] }}"
+                                        data-price="{{ $displayPrice }}"
                                         data-category="{{ $promotion['category'] }}">
                                         <i class="fas fa-shopping-cart" style="font-size: 20px;"></i>
                                     </a>
@@ -151,8 +156,8 @@
                         </div>
                         <div class="part-2">
                             <h3 class="product-title">{{ $promotion['name'] }}</h3>
-                            <h4 class="product-old-price">LKR {{ $promotion['price'] }}</h4>
-                            <h4 class="product-price">LKR {{ $promotion['dis_price'] }}</h4>
+                            <h4 class="product-old-price">LKR {{ $originalPrice }}</h4>
+                            <h4 class="product-price">LKR {{ $displayPrice }}</h4>
                         </div>
                     </div>
                 </div>
@@ -160,6 +165,7 @@
             </div>
         </div>
     </section>
+
 
 
     <div class="about-section" id="about">
@@ -453,6 +459,60 @@
 
     </div>
 
+
+    <br>
+
+    @php
+    $isLoyaltyMember = Auth::check() && \App\Models\Loyalty::where('user_id', Auth::id())
+    ->exists();
+    @endphp
+
+    @if ($isLoyaltyMember)
+    <!-- Button to trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customOrderModal">
+        Place Custom Order
+    </button>
+
+    <!-- Custom Order Modal -->
+    <div class="modal fade" id="customOrderModal" tabindex="-1" aria-labelledby="customOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customOrderModalLabel">Place Custom Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('custom_orders.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="business_id" value="{{ $business->id }}">
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Additional Details</label>
+                            <textarea name="description" id="description" class="form-control" rows="4" placeholder="Describe your custom order requirements" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">Submit Custom Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
 
 
 

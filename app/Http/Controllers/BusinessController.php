@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
 use App\Models\Promotion;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period as AnalyticsPeriod;
 
@@ -34,19 +35,15 @@ class BusinessController extends Controller
             ->get();
 
         $analyticsData = Analytics::fetchVisitorsAndPageViews(AnalyticsPeriod::days(7));
-        // Calculate Engagement Rate
-        if ($uniqueVisitorsCount > 0) {
-            $engagementRate = ($totalViews / $uniqueVisitorsCount) * 100;
-        } else {
-            $engagementRate = 0;
-        }
+
+        $engagementRate = $uniqueVisitorsCount > 0 ? ($totalViews / $uniqueVisitorsCount) * 100 : 0;
 
         $groupedCarts = $carts->groupBy('user_id')->map(function ($group) {
             return $group->groupBy('promotion_id')->map(function ($promotionGroup) {
                 return [
                     'promotion' => $promotionGroup->first()->promotion,
                     'total_quantity' => $promotionGroup->sum('quantity'),
-                    'user' => $promotionGroup->first()->user, // Include user details
+                    'user' => $promotionGroup->first()->user,
                 ];
             });
         });
@@ -59,19 +56,15 @@ class BusinessController extends Controller
         ];
     }
 
-
-    // Show Business Dashboard
     public function showDashboard()
     {
         $businessId = session('business_id');
 
         if ($businessId) {
-            // Call the getBusinessData method to fetch the required data
             $businessData = $this->getBusinessData($businessId);
 
-            $promotions = Promotion::where('business_id', session('business_id'))->take(6)->get();
+            $promotions = Promotion::where('business_id', $businessId)->take(6)->get();
 
-            // Fetch the orders count grouped by month
             $ordersCount = DB::table('orders')
                 ->select(DB::raw('MONTH(created_at) as month'), DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(*) as order_count'))
                 ->where('shop_id', $businessId)
@@ -80,27 +73,56 @@ class BusinessController extends Controller
                 ->orderBy(DB::raw('MONTH(created_at)'), 'ASC')
                 ->get();
 
-            // Initialize an array to hold the order counts for each month
-            $monthlyOrderCounts = [
-                'Jan' => 0,
-                'Feb' => 0,
-                'Mar' => 0,
-                'Apr' => 0,
-                'May' => 0,
-                'Jun' => 0,
-                'Jul' => 0,
-                'Aug' => 0,
-                'Sep' => 0,
-                'Oct' => 0,
-                'Nov' => 0,
-                'Dec' => 0
-            ];
+            $monthlyOrderCounts = array_fill_keys([
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec'
+            ], 0);
 
-            // Populate the order counts for each month
             foreach ($ordersCount as $order) {
                 $monthName = date('M', mktime(0, 0, 0, $order->month, 10));
                 $monthlyOrderCounts[$monthName] = $order->order_count;
             }
+
+            $response = Http::get("https://model-production-5ace.up.railway.app/recommend/" . urlencode($businessId));
+
+            if ($response->successful()) {
+                $data = $response->json();
+                $recommendedShops = $data['recommendations'] ?? [];
+
+                $recommendedShops = collect($recommendedShops)->map(function ($shop) {
+                    $business = Business::where('id', $shop['id'])->first();
+                    $user = $business ? User::where('name', $business->business_name)->first() : null;
+                    return [
+                        'id' => $shop['id'],
+                        'business_name' => $business->business_name ?? 'Unknown',
+                        'business_type' =>  $business->business_type ?? 'Unknown',
+                        'description' => $business->description ?? '',
+                        'image_url' => $user->profile,
+                    ];
+                })->toArray();
+            } else {
+                $recommendedShops = [];
+            }
+
+            $topProducts = Cart::select('product_id', DB::raw('SUM(quantity) as total_quantity'))
+                ->whereHas('promotion', function ($query) use ($businessId) {
+                    $query->where('business_id', $businessId);
+                })
+                ->groupBy('product_id')
+                ->orderByDesc('total_quantity')
+                ->take(3)
+                ->with('promotion')
+                ->get();
 
             return view('admin.businessDashboard', [
                 'uniqueVisitorsCount' => $businessData['uniqueVisitorsCount'],
@@ -108,13 +130,14 @@ class BusinessController extends Controller
                 'engagementRate' => $businessData['engagementRate'],
                 'groupedCarts' => $businessData['groupedCarts'],
                 'promotionsNew' => $promotions,
-                'monthlyOrderCounts' => $monthlyOrderCounts // Pass the monthly order counts to the view
+                'monthlyOrderCounts' => $monthlyOrderCounts,
+                'topProducts' => $topProducts,
+                'recommendedShops' => $recommendedShops
             ]);
         } else {
             return redirect()->route('login')->withErrors('Business not found in session.');
         }
     }
-
 
 
 

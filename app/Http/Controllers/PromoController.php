@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\Promotion;
 use App\Models\Business;
+use App\Models\Customer;
 use App\Models\Feedback;
-
-
+use App\Models\OrderItem;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PromoController extends Controller
 {
@@ -26,8 +29,58 @@ class PromoController extends Controller
 
     public function getSpecialPromo()
     {
+        $customerId = 2;
+        $user = Auth::user();
+
+        if ($user) {
+            $userName = $user->name;
+            $customer = Customer::where('name', $userName)->first();
+            if ($customer) {
+                $customerId = $customer->id;
+            } else {
+                $customerId = null;
+            }
+        }
+        $apiUrl = "https://productrecommendationmodel-production.up.railway.app/recommend?customer_id=" . $customerId;
+
+        $response = Http::get($apiUrl);
+
+        if ($response->successful()) {
+            $recommendedPromotions = $response->json();
+        } else {
+            $recommendedPromotions = [];
+        }
+
         $promotions = Promotion::all();
-        return view('specialpromotion', compact('promotions'));
+
+        foreach ($recommendedPromotions['recommendations'] as &$promo) {
+            $promotion = $promotions->firstWhere('id', $promo['id']);
+
+            if ($promotion) {
+                $promo['image'] = $promotion->image;
+                $promo['loy_price'] = $promotion->loy_price;
+                $promo['price'] = $promotion->price;
+            } else {
+                $promo['image'] = 'Not Available';
+                $promo['loy_price'] = 'Unknown';
+                $promo['price'] = 0;
+            }
+        }
+        $topPromotions = OrderItem::select('product_id', DB::raw('count(*) as occurrences'))
+            ->groupBy('product_id')
+            ->orderByDesc('occurrences')
+            ->limit(4)
+            ->get();
+
+        // If no promotions are found
+        if ($topPromotions->isEmpty()) {
+            return null;
+        }
+
+        $toppromotions = Promotion::whereIn('id', $topPromotions->pluck('product_id'))->get();
+
+
+        return view('specialpromotion', compact('promotions', 'recommendedPromotions', 'toppromotions'));
     }
 
     public function getPromo($promotion_id)

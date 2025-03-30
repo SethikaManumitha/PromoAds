@@ -12,7 +12,7 @@ use App\Models\Cart;
 use App\Models\Customer;
 use App\Models\Promotion;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
@@ -56,6 +56,38 @@ class UserController extends Controller
                             ->whereHas('promotion', function ($query) use ($business) {
                                 $query->where('business_id', $business->id);
                             })
+                            ->get();
+
+                        $response = Http::get("https://model-production-5ace.up.railway.app/recommend/" . urlencode($business->id));
+
+                        if ($response->successful()) {
+                            $data = $response->json();
+                            $recommendedShops = $data['recommendations'] ?? [];
+
+                            $recommendedShops = collect($recommendedShops)->map(function ($shop) {
+                                $business = Business::where('id', $shop['id'])->first();
+                                $user = $business ? User::where('name', $business->business_name)->first() : null;
+                                return [
+                                    'id' => $shop['id'],
+                                    'business_name' => $business->business_name ?? 'Unknown',
+                                    'business_type' =>  $business->business_type ?? 'Unknown',
+                                    'description' => $business->description ?? '',
+                                    'image_url' => $user->profile,
+                                ];
+                            })->toArray();
+                        } else {
+                            $recommendedShops = [];
+                        }
+
+                        $Id = $business->id;
+                        $topProducts = Cart::select('product_id', DB::raw('SUM(quantity) as total_quantity'))
+                            ->whereHas('promotion', function ($query) use ($Id) {
+                                $query->where('business_id', $Id);
+                            })
+                            ->groupBy('product_id')
+                            ->orderByDesc('total_quantity')
+                            ->take(3)
+                            ->with('promotion')
                             ->get();
 
                         $promotionsNew = Promotion::where('business_id', session('business_id'))->take(6)->get();
@@ -107,7 +139,9 @@ class UserController extends Controller
                             'totalViews' => $totalViews,
                             'groupedCarts' => $groupedCarts,
                             'promotionsNew' => $promotionsNew,
-                            'monthlyOrderCounts' => $monthlyOrderCounts
+                            'monthlyOrderCounts' => $monthlyOrderCounts,
+                            'topProducts' => $topProducts,
+                            'recommendedShops' => $recommendedShops
                         ]);
 
                     case "customer":
