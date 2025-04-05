@@ -12,6 +12,8 @@ class AdminController extends Controller
         $users = User::all();
         return view('admin.adminDashboard', compact('users'));
     }
+
+    // Approve User
     public function editUser($id)
     {
         $user = User::find($id);

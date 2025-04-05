@@ -18,6 +18,7 @@ class AboutController extends Controller
         return view('about', compact('description', 'banner'));
     }
 
+    // Insert About Us Section
     public function addAbout(Request $request)
     {
         $validated = $request->validate([

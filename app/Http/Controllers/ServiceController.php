@@ -21,6 +21,7 @@ class ServiceController extends Controller
         return view('services.viewservice', compact('promotions'));
     }
 
+    // Method to Add Services
     public function addService(Request $request)
     {
         // Validate input data
@@ -34,7 +35,7 @@ class ServiceController extends Controller
             'image' => 'required|mimes:png,jpg,jpeg,webp'
         ]);
 
-        // Add image to upload/promtion route
+        // Add image to upload/service route
         if ($request->has('image')) {
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension();

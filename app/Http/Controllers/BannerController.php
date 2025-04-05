@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class BannerController extends Controller
 {
-    //
+    // insert Banner to the Database
     public function addBanner(Request $request)
     {
         $validated = $request->validate([

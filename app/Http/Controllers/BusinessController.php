@@ -232,8 +232,6 @@ class BusinessController extends Controller
         return redirect()->back()->with('success', 'Profile picture updated successfully!');
     }
 
-
-
     public function store(Request $request)
     {
         // Validate the incoming data

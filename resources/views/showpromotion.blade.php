@@ -190,6 +190,7 @@
             </div>
             <div class="row">
                 @foreach ($products as $key => $product)
+
                 <div class="col-md-6 col-lg-4 col-xl-3">
                     <div id="product-{{ $key + 1 }}" class="single-product">
                         <div class="part-1" style="background: url('{{ $product['image'] ? asset($product['image']) : 'https://via.placeholder.com/250x150' }}') no-repeat center; background-size: contain; transition: all 0.3s;">
@@ -198,7 +199,7 @@
                                     <a href="javascript:void(0);" class="cart-image" data-image="{{ $product['image'] ? asset($product['image']) : 'https://via.placeholder.com/250x150' }}"
                                         data-id="{{ $product['id'] }}"
                                         data-title="{{ $product['name'] }}"
-                                        data-price="{{ $product['price'] }}"
+                                        data-price="{{ $product['special_price'] }}"
                                         data-category="{{ $product['category'] }}">
                                         <i class="fas fa-shopping-cart" style="font-size: 20px;"></i>
                                     </a>
@@ -209,7 +210,7 @@
                         </div>
                         <div class="part-2">
                             <h3 class="product-title">{{ $product['name'] }}</h3>
-                            <h4 class="product-price">LKR {{ $product['price'] }}</h4>
+                            <h4 class="product-price">LKR {{ $product['special_price'] }}</h4>
                         </div>
                     </div>
                 </div>

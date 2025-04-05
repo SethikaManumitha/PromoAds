@@ -88,6 +88,7 @@ class CartController extends Controller
         return $this->getCart();
     }
 
+    // Get the cart information of logged in user
     public function getCart()
     {
         $cartItems = [];

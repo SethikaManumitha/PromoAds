@@ -67,7 +67,7 @@
                     <!-- Add buttons container -->
                     <div class="buttons-container">
                         <a href="{{ route('promo.edit', $promotion) }}" class="btn btn-success w-100" style="margin-bottom: 10px;">Edit Offer</a>
-                        <form action="{{ route('promo.destroy', $promotion) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this promotion?');">
+                        <form action="{{ route('promo.destroy', $promotion) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger w-100">Delete Offer</button>

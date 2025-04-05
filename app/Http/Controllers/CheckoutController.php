@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
+    //Get all drivers
     public function showForm()
     {
         $drivers = Driver::all();
         return view('checkout', compact('drivers'));
     }
 
+    // Get all regular orders
     public function showOrders()
     {
         $orders = Order::where('shop_id', session('business_id'))
@@ -50,6 +52,7 @@ class CheckoutController extends Controller
         return redirect()->route('orders')->with('status', 'Order canceled successfully.');
     }
 
+    // Accept an Order
     public function prepareOrder(Order $order)
     {
         if ($order->business_status !== 'completed' && $order->business_status !== 'canceled') {

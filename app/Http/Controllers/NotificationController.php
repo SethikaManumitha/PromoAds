@@ -49,6 +49,7 @@ class NotificationController extends Controller
         return back()->with('success', 'You are now a loyalty customer!');
     }
 
+    // Get user notifications
     public function getUserNotifications()
     {
         $user = Auth::user();

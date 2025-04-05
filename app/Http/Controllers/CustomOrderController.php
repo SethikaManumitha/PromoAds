@@ -9,9 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class CustomOrderController extends Controller
 {
-    /**
-     * Store a newly created custom order.
-     */
+
+    //Store a newly created custom order.
     public function store(Request $request)
     {
         // Validate the form inputs
@@ -31,9 +30,8 @@ class CustomOrderController extends Controller
         return back()->with('success', 'Custom order placed successfully!');
     }
 
-    /**
-     * Display a list of custom orders for the logged-in user.
-     */
+
+    //Display a list of custom orders for the user
     public function index()
     {
         $customOrders = CustomOrder::where('business_id', session('business_id'))->get();
