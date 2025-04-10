@@ -38,7 +38,7 @@ This system is ideal for:
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/SethikaManumitha/PromoAds](https://github.com/SethikaManumitha/PromoAds/)
+   git clone https://github.com/SethikaManumitha/PromoAds
 
 2. Set up your environment:
    ```bash
