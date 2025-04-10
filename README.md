@@ -42,7 +42,7 @@ This system is ideal for:
 
 2. Set up your environment:
    ```bash
-   cd promo-ads
+   cd PromoAds
 
 3. Install Dependencies:
    ```bash
